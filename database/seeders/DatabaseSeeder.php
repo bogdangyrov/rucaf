@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Attribute;
-use App\Models\AttributeValue;
 use App\Models\ProductType;
+use App\Models\AttributeValue;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,12 +26,7 @@ class DatabaseSeeder extends Seeder
 
         // Создание типа продукта
         $productType = ProductType::create(['name' => 'Редукторы']);
-
-        // Создание продукта
-        $product = Product::create([
-            'name' => '1ЦУ-100',
-            'product_type_id' => $productType->id
-        ]);
+        $categories = ['Редукторы ЦУ', 'Редукторы Ц2У', 'Редукторы Ц3У'];
 
         // Атрибуты продукта
         $attributes = [
@@ -41,11 +37,10 @@ class DatabaseSeeder extends Seeder
 
         // Массивы для массовой вставки атрибутов и их значений
         $attributeRecords = [];
-        $attributeValueRecords = [];
 
         foreach ($attributes as $key => $value) {
             // Подготовка данных для вставки атрибутов
-            $attributeRecords[] = ['name' => $key];
+            $attributeRecords[] = ['name' => $key, 'product_type_id' => $productType->id,];
         }
 
         // Массовая вставка атрибутов
@@ -54,16 +49,29 @@ class DatabaseSeeder extends Seeder
         // Получение всех вставленных атрибутов
         $insertedAttributes = Attribute::whereIn('name', array_keys($attributes))->get();
 
-        foreach ($insertedAttributes as $attribute) {
-            // Подготовка данных для вставки значений атрибутов
-            $attributeValueRecords[] = [
-                'value' => $attributes[$attribute->name],
-                'attribute_id' => $attribute->id,
-                'product_id' => $product->id
-            ];
-        }
+        foreach ($categories as $category) {
+            $category = Category::create(['name' => $category, 'product_type_id' => $productType->id]);
 
-        // Массовая вставка значений атрибутов
-        AttributeValue::insert($attributeValueRecords);
+            // Создание продукта
+            $product = Product::create([
+                'name' => '1ЦУ-100',
+                'product_type_id' => $productType->id,
+                'category_id' => $category->id
+            ]);
+
+            $attributeValueRecords = [];
+
+            foreach ($insertedAttributes as $attribute) {
+                // Подготовка данных для вставки значений атрибутов
+                $attributeValueRecords[] = [
+                    'value' => $attributes[$attribute->name],
+                    'attribute_id' => $attribute->id,
+                    'product_id' => $product->id
+                ];
+            }
+
+            // Массовая вставка значений атрибутов
+            AttributeValue::insert($attributeValueRecords);
+        }
     }
 }
