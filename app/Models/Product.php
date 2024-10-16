@@ -32,7 +32,7 @@ class Product extends Model
             return $query->withWhereHas(
                 'category',
                 function ($query) use ($category) {
-                    $query->where('id', $category);
+                    $query->where('slug', $category);
                 }
             );
         } else {
@@ -46,10 +46,10 @@ class Product extends Model
             $query->whereHas('attributeValues', function ($query) use ($name, $value) {
                 $query
                     ->whereHas('attribute', function ($query) use ($name) {
-                        $query->where('id', $name);
+                        $query->where('slug', $name);
                     })
                     ->whereHas('value', function ($query) use ($value) {
-                        $query->where('id', $value);
+                        $query->where('slug', $value);
                     });
             });
         }

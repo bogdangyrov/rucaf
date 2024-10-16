@@ -22,12 +22,12 @@ class ProductController extends Controller
         $attributes = $productType->attributes()->withUniqueValues();
 
         $category = request()->query('category');
-        $filters = static::filtersFromQuery($attributes->toArray());
+        $filters = static::filtersFromQuery($attributes->pluck('slug')->toArray());
 
         $products = $productType
             ->products()
-            ->withAttributes()
             ->withCategory($category)
+            ->withAttributes()
             ->filterByAttributes($filters)
             ->get();
 

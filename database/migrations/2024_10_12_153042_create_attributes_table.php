@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->foreignIdFor(ProductType::class);
             $table->timestamps();
         });

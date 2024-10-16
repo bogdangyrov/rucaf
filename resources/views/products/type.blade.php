@@ -6,8 +6,8 @@
     <div>
         @foreach ($categories as $category)
             <div>
-                <input type="checkbox" name="category" value="{{ $category->id }}" id="category-{{ $category->id }}">
-                <label for="category-{{ $category->id }}">{{ $category->name }}</label>
+                <input type="checkbox" name="category" value="{{ $category->slug }}" id="category-{{ $category->slug }}">
+                <label for="category-{{ $category->slug }}">{{ $category->name }}</label>
             </div>
         @endforeach
     </div>
@@ -18,9 +18,9 @@
             <div style="margin-left: 10px">
                 @foreach ($attribute->values as $value)
                     <div>
-                        <input type="checkbox" name="{{ $attribute->id }}" value="{{ $value->id }}"
-                            id="{{ $attribute->id . '-' . $value->id }}">
-                        <label for="{{ $attribute->id . '-' . $value->id }}">{{ $value->value }}</label>
+                        <input type="checkbox" name="{{ $attribute->slug }}" value="{{ $value->slug }}"
+                            id="{{ $attribute->slug . '-' . $value->slug }}">
+                        <label for="{{ $attribute->slug . '-' . $value->slug }}">{{ $value->value }}</label>
                     </div>
                 @endforeach
             </div>

@@ -34,14 +34,22 @@ class DatabaseSeeder extends Seeder
 
         $products = [];
         for ($i = 0; $i < count($productNames); $i++) {
-            $category = Category::create(['name' => $categoryNames[$i], 'product_type_id' => $productType->id]);
-            $products[] = Product::create(['name' => $productNames[$i], 'product_type_id' => $productType->id, 'category_id' => $category->id]);
+            $category = Category::create([
+                'name' => $categoryNames[$i],
+                'slug' => Str::slug($categoryNames[$i]),
+                'product_type_id' => $productType->id
+            ]);
+            $products[] = Product::create([
+                'name' => $productNames[$i],
+                'product_type_id' => $productType->id,
+                'category_id' => $category->id
+            ]);
         }
 
         $attributeNames = ['Страна' => 'Россия', 'Тип передачи' => 'цилиндрический', 'Межосевое расстояние, мм' => 160];
         foreach ($attributeNames as $name => $value) {
-            $attribute = Attribute::create(['name' => $name, 'product_type_id' => $productType->id]);
-            $value = Value::create(['value' => $value]);
+            $attribute = Attribute::create(['name' => $name, 'product_type_id' => $productType->id, 'slug' => Str::slug($name)]);
+            $value = Value::create(['value' => $value, 'slug' => Str::slug($value)]);
             foreach ($products as $product) {
                 AttributeValue::create(['attribute_id' => $attribute->id, 'value_id' => $value->id, 'product_id' => $product->id]);
             }
