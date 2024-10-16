@@ -14,4 +14,13 @@ class Attribute extends Model
     {
         return $this->belongsToMany(Value::class, 'attribute_values', 'attribute_id', 'value_id');
     }
+
+    public static function scopeWithUniqueValues($query)
+    {
+        $attributes = $query->with('values')->get();
+        foreach ($attributes as $attribute) {
+            $attribute->values = $attribute->values->unique('value');
+        }
+        return $attributes;
+    }
 }

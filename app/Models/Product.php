@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
+use App\Models\AttributeValue;
 use Illuminate\Database\Eloquent\Model;
-use PDO;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -18,5 +19,40 @@ class Product extends Model
     public function attributeValues()
     {
         return $this->hasMany(AttributeValue::class);
+    }
+
+    public static function scopeWithAttributes($query)
+    {
+        return $query->with('attributeValues.attribute', 'attributeValues.value');
+    }
+
+    public static function scopeWithCategory($query, string $category = null)
+    {
+        if ($category) {
+            return $query->withWhereHas(
+                'category',
+                function ($query) use ($category) {
+                    $query->where('id', $category);
+                }
+            );
+        } else {
+            return $query->with('category');
+        }
+    }
+
+    public static function scopeFilterByAttributes($query, array $filters)
+    {
+        foreach ($filters as $name => $value) {
+            $query->whereHas('attributeValues', function ($query) use ($name, $value) {
+                $query
+                    ->whereHas('attribute', function ($query) use ($name) {
+                        $query->where('id', $name);
+                    })
+                    ->whereHas('value', function ($query) use ($value) {
+                        $query->where('id', $value);
+                    });
+            });
+        }
+        return $query;
     }
 }
