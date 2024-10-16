@@ -17,14 +17,11 @@ class ProductController extends Controller
         return view('products.index')->with('types', $types);
     }
 
-    public function type(string $typeId)
+    public function type(ProductType $productType)
     {
-        $type = ProductType::findOrFail($typeId);
+        $categories = $productType->categories()->get();
 
-
-        $categories = Category::where('product_type_id', $type->id)->get();
-
-        $attributes = $type->attributes()->with('values.products')->get();
+        $attributes = $productType->attributes()->with('values')->get();
         foreach ($attributes as $attribute) {
             $attribute->values = $attribute->values->unique('value');
         }
@@ -49,20 +46,22 @@ class ProductController extends Controller
                     }
                 }
             )
-            ->where('product_type_id', $type->id);
+            ->where('product_type_id', $productType->id);
 
-        $products->whereHas('attributeValues', function ($query) use ($name, $value) {
-            $query
-                ->whereHas('attribute', function ($query) use ($name) {
-                    $query->where('id', $name);
-                })
-                ->whereHas('value', function ($query) use ($value) {
-                    $query->where('id', $value);
-                });
-        });
 
+        foreach ($filter as $name => $value) {
+            $products->whereHas('attributeValues', function ($query) use ($name, $value) {
+                $query
+                    ->whereHas('attribute', function ($query) use ($name) {
+                        $query->where('id', $name);
+                    })
+                    ->whereHas('value', function ($query) use ($value) {
+                        $query->where('id', $value);
+                    });
+            });
+        }
         $products = $products->get();
 
-        return view('products.type')->with(['type' => $type, 'products' => $products, 'categories' => $categories, 'attributes' => $attributes]);
+        return view('products.type')->with(['type' => $productType, 'products' => $products, 'categories' => $categories, 'attributes' => $attributes]);
     }
 }

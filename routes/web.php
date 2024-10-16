@@ -8,4 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/catalog', [ProductController::class, 'index']);
-Route::get('/catalog/{productType}', [ProductController::class, 'type']);
+Route::get('/catalog/{productType:slug}', [ProductController::class, 'type']);

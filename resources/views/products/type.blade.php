@@ -20,8 +20,7 @@
                     <div>
                         <input type="checkbox" name="{{ $attribute->id }}" value="{{ $value->id }}"
                             id="{{ $attribute->id . '-' . $value->id }}">
-                        <label for="{{ $attribute->id . '-' . $value->id }}">{{ $value->value }} |
-                            {{ $value->products->count() }}</label>
+                        <label for="{{ $attribute->id . '-' . $value->id }}">{{ $value->value }}</label>
                     </div>
                 @endforeach
             </div>

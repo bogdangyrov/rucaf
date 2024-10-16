@@ -3,12 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Value;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\ProductType;
+use Illuminate\Support\Str;
 use App\Models\AttributeValue;
-use App\Models\Value;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]); */
 
         // Создание типа продукта
-        $productType = ProductType::create(['name' => 'Редукторы']);
+        $productType = ProductType::create(['name' => 'Редукторы', 'slug' => Str::slug('Редукторы')]);
 
         $categoryNames = ['Редукторы ЦУ', 'Редукторы Ц2У', 'Редукторы Ц3У'];
         $productNames = ['1ЦУ-100', '1ЦУ-160', '1ЦУ-200'];
