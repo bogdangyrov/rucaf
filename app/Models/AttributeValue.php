@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Value;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AttributeValue extends Model
 {
@@ -12,5 +13,10 @@ class AttributeValue extends Model
     public function attribute()
     {
         return $this->belongsTo(Attribute::class);
+    }
+
+    public function value()
+    {
+        return $this->belongsTo(Value::class);
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\ProductType;
 use App\Models\AttributeValue;
+use App\Models\Value;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,52 +27,23 @@ class DatabaseSeeder extends Seeder
 
         // Создание типа продукта
         $productType = ProductType::create(['name' => 'Редукторы']);
-        $categories = ['Редукторы ЦУ', 'Редукторы Ц2У', 'Редукторы Ц3У'];
 
-        // Атрибуты продукта
-        $attributes = [
-            'Страна' => 'Россия',
-            'Тип передачи' => 'цилиндрический',
-            'Межосевое расстояние, мм' => 100
-        ];
+        $categoryNames = ['Редукторы ЦУ', 'Редукторы Ц2У', 'Редукторы Ц3У'];
+        $productNames = ['1ЦУ-100', '1ЦУ-160', '1ЦУ-200'];
 
-        // Массивы для массовой вставки атрибутов и их значений
-        $attributeRecords = [];
-
-        foreach ($attributes as $key => $value) {
-            // Подготовка данных для вставки атрибутов
-            $attributeRecords[] = ['name' => $key, 'product_type_id' => $productType->id,];
+        $products = [];
+        for ($i = 0; $i < count($productNames); $i++) {
+            $category = Category::create(['name' => $categoryNames[$i], 'product_type_id' => $productType->id]);
+            $products[] = Product::create(['name' => $productNames[$i], 'product_type_id' => $productType->id, 'category_id' => $category->id]);
         }
 
-        // Массовая вставка атрибутов
-        Attribute::insert($attributeRecords);
-
-        // Получение всех вставленных атрибутов
-        $insertedAttributes = Attribute::whereIn('name', array_keys($attributes))->get();
-
-        foreach ($categories as $category) {
-            $category = Category::create(['name' => $category, 'product_type_id' => $productType->id]);
-
-            // Создание продукта
-            $product = Product::create([
-                'name' => '1ЦУ-100',
-                'product_type_id' => $productType->id,
-                'category_id' => $category->id
-            ]);
-
-            $attributeValueRecords = [];
-
-            foreach ($insertedAttributes as $attribute) {
-                // Подготовка данных для вставки значений атрибутов
-                $attributeValueRecords[] = [
-                    'value' => $attributes[$attribute->name],
-                    'attribute_id' => $attribute->id,
-                    'product_id' => $product->id
-                ];
+        $attributeNames = ['Страна' => 'Россия', 'Тип передачи' => 'цилиндрический', 'Межосевое расстояние, мм' => 160];
+        foreach ($attributeNames as $name => $value) {
+            $attribute = Attribute::create(['name' => $name, 'product_type_id' => $productType->id]);
+            $value = Value::create(['value' => $value]);
+            foreach ($products as $product) {
+                AttributeValue::create(['attribute_id' => $attribute->id, 'value_id' => $value->id, 'product_id' => $product->id]);
             }
-
-            // Массовая вставка значений атрибутов
-            AttributeValue::insert($attributeValueRecords);
         }
     }
 }

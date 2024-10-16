@@ -2,6 +2,7 @@
 
 use App\Models\Product;
 use App\Models\Attribute;
+use App\Models\Value;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -15,9 +16,9 @@ return new class extends Migration
     {
         Schema::create('attribute_values', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Value::class);
             $table->foreignIdFor(Attribute::class);
             $table->foreignIdFor(Product::class);
-            $table->string('value');
             $table->timestamps();
         });
     }

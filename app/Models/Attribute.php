@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Value;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attribute extends Model
 {
     use HasFactory;
 
-    public function attributeValues()
+    public function values()
     {
-        return $this->hasMany(AttributeValue::class);
+        return $this->belongsToMany(Value::class, 'attribute_values', 'attribute_id', 'value_id');
     }
 }
