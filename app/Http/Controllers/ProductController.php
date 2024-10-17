@@ -10,7 +10,6 @@ class ProductController extends Controller
 {
     public function index(ProductType $productType)
     {
-
         $categories = $productType->categories()->get();
         $attributes = $productType->attributes()->withUniqueValues();
 
@@ -30,6 +29,16 @@ class ProductController extends Controller
             'categories' => $categories,
             'attributes' => $attributes
         ]);
+    }
+
+    public function show(ProductType $productType, Product $product)
+    {
+        $product = $product->load(
+            'category',
+            'attributeValues.attribute',
+            'attributeValues.value'
+        );
+        return view('products.show')->with(['type' => $productType,  'product' => $product]);
     }
 
     private static function filtersFromQuery($attributes)
