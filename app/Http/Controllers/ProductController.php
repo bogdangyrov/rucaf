@@ -8,30 +8,23 @@ use App\Models\ProductType;
 
 class ProductController extends Controller
 {
-
-    public function index()
-    {
-        $types = ProductType::get();
-        return view('products.index')->with('types', $types);
-    }
-
-    public function type(ProductType $productType)
+    public function index(ProductType $productType)
     {
 
         $categories = $productType->categories()->get();
         $attributes = $productType->attributes()->withUniqueValues();
 
-        $category = request()->query('category');
+        $filterCategories = request()->query('category');
         $filters = static::filtersFromQuery($attributes->pluck('slug')->toArray());
 
         $products = $productType
             ->products()
-            ->withCategory($category)
+            ->withCategory($filterCategories)
             ->withAttributes()
             ->filterByAttributes($filters)
             ->get();
 
-        return view('products.type')->with([
+        return view('products.index')->with([
             'type' => $productType,
             'products' => $products,
             'categories' => $categories,

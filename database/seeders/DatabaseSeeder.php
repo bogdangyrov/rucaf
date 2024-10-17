@@ -54,5 +54,15 @@ class DatabaseSeeder extends Seeder
                 AttributeValue::create(['attribute_id' => $attribute->id, 'value_id' => $value->id, 'product_id' => $product->id]);
             }
         }
+
+        $newProductName = 'Китайский 1ЦУ-200';
+        $product = Product::create(['name' => $newProductName, 'product_type_id' => 1, 'category_id' => 3]);
+
+        $newValue = 'Китай';
+        $value = Value::create(['value' => $newValue, 'slug' => Str::slug($newValue)]);
+
+        AttributeValue::create(['attribute_id' => 1, 'value_id' => $value->id, 'product_id' => $product->id]);
+        AttributeValue::create(['attribute_id' => 2, 'value_id' => 2, 'product_id' => $product->id]);
+        AttributeValue::create(['attribute_id' => 3, 'value_id' => 3, 'product_id' => $product->id]);
     }
 }

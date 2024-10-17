@@ -10,7 +10,7 @@
                         <ul class="catalog-menu catalog-menu--sub-menu catalog-menu--sub-menu-lvl1 custom-scroll">
                             @foreach ($type->categories as $category)
                                 <li class="catalog-menu__item">
-                                    <a href="{{ route('products', ['productType' => $type->slug, 'category' => $category->slug]) }}"
+                                    <a href="{{ route('products', ['productType' => $type->slug, 'category' => [$category->slug]]) }}"
                                         class="catalog-menu__link">
                                         {{ $category->name }}
                                     </a>

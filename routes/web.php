@@ -7,5 +7,4 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/catalog', [ProductController::class, 'index']);
-Route::get('/catalog/{productType:slug}', [ProductController::class, 'type'])->name('products');
+Route::get('/catalog/{productType:slug}', [ProductController::class, 'index'])->name('products');
