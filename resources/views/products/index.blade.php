@@ -22,7 +22,7 @@
     @include('products.components.why-choose-us')
     @include('products.components.recently-watched')
     @include('products.components.type-description')
-    @include('products.components.frequent-questions')
+    @include('components.frequent-questions')
 @endsection
 
 @section('js')
