@@ -21,13 +21,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        /*  User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]); */
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => 'admin'
+        ]);
 
         // Создание типа продукта
-        $productType = ProductType::create(['name' => 'Редукторы', 'slug' => Str::slug('Редукторы')]);
+        $productType = ProductType::create(['name' => 'Редукторы']);
 
         $categoryNames = ['Редукторы ЦУ', 'Редукторы Ц2У', 'Редукторы Ц3У'];
         $productNames = ['1ЦУ-100', '1ЦУ-160', '1ЦУ-200'];
