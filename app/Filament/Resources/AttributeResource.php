@@ -5,28 +5,35 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Attribute;
 use Filament\Tables\Table;
-use App\Models\ProductType;
 use Filament\Resources\Resource;
-use App\Filament\Resources\ProductTypeResource\Pages;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\AttributeResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AttributeResource\RelationManagers;
+use App\Filament\Resources\AttributeResource\RelationManagers\ValuesRelationManager;
 
-class ProductTypeResource extends Resource
+class AttributeResource extends Resource
 {
-    protected static ?string $model = ProductType::class;
+    protected static ?string $model = Attribute::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-list-bullet';
+    protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
 
-    protected static ?string $navigationLabel = 'Типы оборудования';
+    protected static ?string $navigationLabel = 'Характеристики';
 
     protected static ?string $navigationGroup = 'Каталог';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Название характеристики')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(255),
             ]);
     }
 
@@ -35,10 +42,14 @@ class ProductTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Название характеристики')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('productType.name')
+                    ->label('Тип оборудования')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -49,11 +60,15 @@ class ProductTypeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('productType')
+                    ->label('Тип оборудования')
+                    ->relationship('productType', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -62,10 +77,19 @@ class ProductTypeResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            ValuesRelationManager::class
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageProductTypes::route('/'),
+            'index' => Pages\ListAttributes::route('/'),
+            'create' => Pages\CreateAttribute::route('/create'),
+            'edit' => Pages\EditAttribute::route('/{record}/edit'),
         ];
     }
 }

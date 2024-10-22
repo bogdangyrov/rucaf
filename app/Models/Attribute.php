@@ -33,4 +33,9 @@ class Attribute extends Model
         }
         return $attributes;
     }
+
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
 }
