@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
         $attributeNames = ['Страна' => 'Россия', 'Тип передачи' => 'цилиндрический', 'Межосевое расстояние, мм' => 160];
         foreach ($attributeNames as $name => $value) {
             $attribute = Attribute::create(['name' => $name, 'product_type_id' => $productType->id, 'slug' => Str::slug($name)]);
-            $value = Value::create(['value' => $value, 'slug' => Str::slug($value)]);
+            $value = Value::create(['value' => $value, 'slug' => Str::slug($value), 'attribute_id' => $attribute->id]);
             foreach ($products as $product) {
                 AttributeValue::create(['attribute_id' => $attribute->id, 'value_id' => $value->id, 'product_id' => $product->id]);
             }
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
         $product = Product::create(['name' => $newProductName, 'slug' => Str::slug($newProductName), 'product_type_id' => 1, 'category_id' => 3]);
 
         $newValue = 'Китай';
-        $value = Value::create(['value' => $newValue, 'slug' => Str::slug($newValue)]);
+        $value = Value::create(['value' => $newValue, 'slug' => Str::slug($newValue), 'attribute_id' => 1]);
 
         AttributeValue::create(['attribute_id' => 1, 'value_id' => $value->id, 'product_id' => $product->id]);
         AttributeValue::create(['attribute_id' => 2, 'value_id' => 2, 'product_id' => $product->id]);
