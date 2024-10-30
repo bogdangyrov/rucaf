@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Page;
 use App\Models\ProductType;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +25,10 @@ class HeaderComposerProvider extends ServiceProvider
         View::composer('layouts.components.catalog-menu', function ($view) {
             $types = ProductType::with('categories')->get();
             $view->with('types', $types);
+        });
+        View::composer('layouts.components.header', function ($view) {
+            $pages = Page::get();
+            $view->with('pages', $pages);
         });
     }
 }

@@ -69,10 +69,11 @@
         </a>
         <div class="header__right">
             <ul class="header__menu header-menu">
-                <li class="header-menu__item"><a href="#" class="header-menu__link">О компании</a></li>
-                <li class="header-menu__item"><a href="#" class="header-menu__link">Доставка и оплата</a>
-                </li>
-                <li class="header-menu__item"><a href="#" class="header-menu__link">Контакты</a></li>
+                @foreach ($pages as $page)
+                    <li class="header-menu__item"><a href="{{ route('page', ['page' => $page->slug]) }}"
+                            class="header-menu__link">{{ $page->title }}</a>
+                    </li>
+                @endforeach
             </ul>
             <div class="header__actions actions">
                 <button class="actions__item actions__item--white actions__item--search" type="button" data-fancybox

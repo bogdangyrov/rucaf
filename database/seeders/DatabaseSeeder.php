@@ -10,6 +10,7 @@ use App\Models\Attribute;
 use App\Models\ProductType;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
+use App\Models\Page;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -37,12 +38,10 @@ class DatabaseSeeder extends Seeder
         for ($i = 0; $i < count($productNames); $i++) {
             $category = Category::create([
                 'name' => $categoryNames[$i],
-                'slug' => Str::slug($categoryNames[$i]),
                 'product_type_id' => $productType->id
             ]);
             $products[] = Product::create([
                 'name' => $productNames[$i],
-                'slug' => Str::slug($productNames[$i]),
                 'product_type_id' => $productType->id,
                 'category_id' => $category->id
             ]);
@@ -66,5 +65,8 @@ class DatabaseSeeder extends Seeder
         AttributeValue::create(['attribute_id' => 1, 'value_id' => $value->id, 'product_id' => $product->id]);
         AttributeValue::create(['attribute_id' => 2, 'value_id' => 2, 'product_id' => $product->id]);
         AttributeValue::create(['attribute_id' => 3, 'value_id' => 3, 'product_id' => $product->id]);
+
+
+        Page::create(['title' => 'Новая страница', 'html' => '<h1>Заголовок</h1><h2>Заголовок поменьше</h2>']);
     }
 }

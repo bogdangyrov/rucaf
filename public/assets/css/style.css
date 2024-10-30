@@ -5982,3 +5982,15 @@ body {
     }
 }
 /* End Media */
+.custom-page {
+    ol {
+        list-style: decimal;
+    }
+    ul {
+        list-style: inside;
+    }
+    blockquote {
+        padding: 10px;
+        border-left: 3px solid black;
+    }
+}
