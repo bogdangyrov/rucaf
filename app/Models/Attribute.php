@@ -25,9 +25,15 @@ class Attribute extends Model
         return $this->hasMany(Value::class);
     }
 
-    public static function scopeWithUniqueValues($query)
+    public static function scopeWithUniqueValues($query, $filter)
     {
-        $attributes = $query->with('values')->get();
+        $attributes = $query->with(['values' => function ($query) use ($filter) {
+            $query->withCount(['products' => function ($query) use ($filter) {
+                $query->withCategory($filter->categories)
+                    ->filterByAttributes($filter->attributes);
+            }]);
+        }])->get();
+
         foreach ($attributes as $attribute) {
             $attribute->values = $attribute->values->unique('value');
         }
@@ -37,5 +43,10 @@ class Attribute extends Model
     public function productType()
     {
         return $this->belongsTo(ProductType::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'attribute_values');
     }
 }

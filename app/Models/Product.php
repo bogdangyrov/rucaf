@@ -41,13 +41,14 @@ class Product extends Model
         return $query->with('attributeValues.attribute', 'attributeValues.value');
     }
 
-    public static function scopeWithCategory($query, array|null $categories = null)
+    public static function scopeWithCategory($query, $categories)
     {
-        if ($categories) {
+        if ($categories->count() > 0) {
+            $categoriesArray = $categories->pluck('slug');
             return $query->withWhereHas(
                 'category',
-                function ($query) use ($categories) {
-                    $query->whereIn('slug', $categories);
+                function ($query) use ($categoriesArray) {
+                    $query->whereIn('slug', $categoriesArray);
                 }
             );
         } else {
@@ -55,10 +56,12 @@ class Product extends Model
         }
     }
 
-    public static function scopeFilterByAttributes($query, array $filters)
+    public static function scopeFilterByAttributes($query, $attributes)
     {
-        foreach ($filters as $name => $values) {
-            $query->whereHas('attributeValues', function ($query) use ($name, $values) {
+        foreach ($attributes as $attribute) {
+            $query->whereHas('attributeValues', function ($query) use ($attribute) {
+                $name = $attribute->slug;
+                $values = $attribute->values->pluck('slug');
                 $query
                     ->whereHas('attribute', function ($query) use ($name) {
                         $query->where('slug', $name);

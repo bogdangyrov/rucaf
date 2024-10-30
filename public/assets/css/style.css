@@ -2530,6 +2530,9 @@ body {
     color: #464654;
     margin-left: 5px;
 }
+.category-list__checkbox:disabled ~ .category-list__txt, .category-list__checkbox:disabled ~ .category-list__txt .category-list__numbs {
+    color: #DADADA;
+}
 .filter-category__btn-more {
     display: block;
     position: relative;

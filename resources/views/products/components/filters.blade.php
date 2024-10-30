@@ -10,9 +10,10 @@
                         @foreach ($categories as $category)
                             <label class="category-list__item">
                                 <input type="checkbox" class="category-list__checkbox" name="category[]"
-                                    value="{{ $category->slug }}">
+                                    value="{{ $category->slug }}" @checked($filter->inCategories($category->slug))
+                                    @disabled($category->products_count === 0)>
                                 <span class="category-list__txt">{{ $category->name }} <span
-                                        class="category-list__numbs">(49)</span></span>
+                                        class="category-list__numbs">({{ $category->products_count }})</span></span>
                             </label>
                         @endforeach
                     </div>
@@ -22,23 +23,24 @@
         @endif
         <div class="filters scroll">
             @foreach ($attributes as $attribute)
-                <div class="filters__item">
+                <div class="filters__item {{ $filter->attributeExists($attribute->slug) ? 'active' : '' }}">
                     <div class="filters__title">{{ $attribute->name }}</div>
                     <div class="filters__list filters-list">
                         @foreach ($attribute->values as $value)
                             <label class="filters-list__item">
                                 <input type="checkbox" class="filters-list__checkbox" name="{{ $attribute->slug }}[]"
                                     value="{{ $value->slug }}" id="filter-{{ $attribute->id }}"
-                                    data-filter-id="{{ $value->slug }}">
+                                    data-filter-id="{{ $value->slug }}" @checked($filter->inAttributeValues($attribute->slug, $value->slug))
+                                    @disabled($value->products_count === 0)>
                                 <span class="filters-list__txt">{{ $value->value }} <span
-                                        class="filters-list__numbs">(33)</span></span>
+                                        class="filters-list__numbs">({{ $value->products_count }})</span></span>
                             </label>
                         @endforeach
                     </div>
                 </div>
             @endforeach
 
-            {{-- <div class="filters__item filters__item--prices">
+            <div class="filters__item filters__item--prices">
                 <div class="filters__title">Цена, руб.</div>
                 <div class="filters__block">
                     <div class="filters-range" id="slider-range"></div>
@@ -57,7 +59,7 @@
                 </div>
             </div>
 
-            <div class="filters__item filters__item--mass">
+            {{-- <div class="filters__item filters__item--mass">
                 <div class="filters__title">Масса, кг</div>
                 <div class="filters__block">
                     <div class="filters-range" id="slider-range-mass"></div>
