@@ -11,6 +11,7 @@ use App\Models\ProductType;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
 use App\Models\Page;
+use App\Models\QuickFilter;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -65,6 +66,9 @@ class DatabaseSeeder extends Seeder
         AttributeValue::create(['attribute_id' => 1, 'value_id' => $value->id, 'product_id' => $product->id]);
         AttributeValue::create(['attribute_id' => 2, 'value_id' => 2, 'product_id' => $product->id]);
         AttributeValue::create(['attribute_id' => 3, 'value_id' => 3, 'product_id' => $product->id]);
+
+        QuickFilter::create(['attribute_id' => 1, 'value_id' => 1, 'product_type_id' => 1, 'name' => 'Россия']);
+        QuickFilter::create(['attribute_id' => 2, 'value_id' => 2, 'product_type_id' => 1, 'name' => 'Цилиндрическая передача']);
 
 
         Page::create(['title' => 'Новая страница', 'html' => '<h1>Заголовок</h1><h2>Заголовок поменьше</h2>']);

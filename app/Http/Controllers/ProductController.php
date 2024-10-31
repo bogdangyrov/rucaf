@@ -17,20 +17,11 @@ class ProductController extends Controller
 
         $filter = new Filter(request()->query());
 
-        debugbar()->info($filter);
-
         $categories = $productType->categories()->withCount(['products' => function ($query) use ($filter) {
             $query->filterByAttributes($filter->attributes);
         }])->get();
 
         $attributes = $productType->attributes()->withUniqueValues($filter);
-
-        /*
-        1. Получаем из query attributes и categories
-        2. Получаем список всех доступных attributes и categories с количеством products
-        3. Получаем products согласно attributes и categories из query + pagination
-        */
-
 
         $products = $productType
             ->products()
@@ -39,12 +30,15 @@ class ProductController extends Controller
             ->filterByAttributes($filter->attributes)
             ->get();
 
+        $quickFilters = $productType->quickFilters()->with('attribute', 'value')->get();
+
         return view('products.index')->with([
             'type' => $productType,
             'products' => $products,
             'categories' => $categories,
             'attributes' => $attributes,
-            'filter' => $filter
+            'filter' => $filter,
+            'quickFilters' => $quickFilters
         ]);
     }
 
@@ -56,16 +50,5 @@ class ProductController extends Controller
             'attributeValues.value'
         );
         return view('products.show')->with(['type' => $productType,  'product' => $product]);
-    }
-
-    private static function filtersFromQuery($attributes)
-    {
-        $filter = [];
-        foreach (request()->query() as $name => $value) {
-            if (in_array($name, $attributes)) {
-                $filter[$name] = $value;
-            }
-        }
-        return $filter;
     }
 }

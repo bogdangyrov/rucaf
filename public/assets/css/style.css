@@ -968,7 +968,7 @@ body {
     background: #F1F1F1;
     border-radius: 4px;
 }
-.search-links__link:hover, .search-links__link:active {
+.search-links__link:hover, .search-links__link:active, .search-links__link.active {
     background: #E4B900;
     color: #F9F9F9;
 }

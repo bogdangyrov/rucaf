@@ -40,7 +40,7 @@
                 </div>
             @endforeach
 
-            <div class="filters__item filters__item--prices">
+            {{-- <div class="filters__item filters__item--prices">
                 <div class="filters__title">Цена, руб.</div>
                 <div class="filters__block">
                     <div class="filters-range" id="slider-range"></div>
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- <div class="filters__item filters__item--mass">
                 <div class="filters__title">Масса, кг</div>

@@ -33,8 +33,6 @@
                     @endif
                 </li>
             @endforeach
-            <li class="catalog-menu__item"><a href="#" class="catalog-menu__link">Электрические тали и
-                    тельферы</a></li>
         </ul>
     </div>
 </nav>
