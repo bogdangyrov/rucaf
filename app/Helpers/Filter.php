@@ -11,6 +11,16 @@ class Filter
     public Collection $categories;
     public Collection $attributes;
 
+    public string $pageSize = '20';
+    public string $sortBy = 'popular';
+    public string $showProducts = 'all';
+    public int $page = 1;
+
+    private static array $availablePageSizes = [20, 60, 100, 'all'];
+    private static array $availableSortBy = ['popular', 'price', 'category'];
+    private static array $availableShowProducts = ['all', 'new', 'hits', 'discounts'];
+
+
     public function __construct(array $requestQuery)
     {
         if (isset($requestQuery['category'])) {
@@ -20,21 +30,28 @@ class Filter
             $this->categories = new Collection();
         }
 
+        if (isset($requestQuery['page-size']) && in_array($requestQuery['page-size'], static::$availablePageSizes)) {
+            $this->pageSize = $requestQuery['page-size'];
+            unset($requestQuery['page-size']);
+        }
+
+        if (isset($requestQuery['show-products']) && in_array($requestQuery['show-products'], static::$availableShowProducts)) {
+            $this->showProducts = $requestQuery['show-products'];
+            unset($requestQuery['show-products']);
+        }
+
+        if (isset($requestQuery['sort-by']) && in_array($requestQuery['sort-by'], static::$availableSortBy)) {
+            $this->sortBy = $requestQuery['sort-by'];
+            unset($requestQuery['sort-by']);
+        }
+
+        if (isset($requestQuery['page']) && ($requestQuery > 0)) {
+            $this->page = $requestQuery['page'];
+            unset($requestQuery['page']);
+        }
+
         if ($requestQuery) {
-            $this->attributes = Attribute::withWhereHas(
-                'values',
-                function ($query) use ($requestQuery) {
-                    $query->where(function ($query) use ($requestQuery) {
-                        foreach ($requestQuery as $name => $values) {
-                            $query->orWhere(function ($query) use ($name, $values) {
-                                $query->whereHas('attribute', function ($query) use ($name) {
-                                    $query->where('slug', $name);
-                                })->whereIn('slug', $values);
-                            });
-                        }
-                    });
-                }
-            )->get();
+            $this->attributes = Attribute::withAttributesValuesFromQuery($requestQuery)->get();
         } else {
             $this->attributes = new Collection();
         }
@@ -101,5 +118,17 @@ class Filter
             }
         }
         return $query;
+    }
+
+    public function getQuery()
+    {
+        return [
+            'category[]' => $this->categories->pluck('slug')->toArray(),
+            ...$this->queryAttributes(),
+            'page-size' => $this->pageSize,
+            'show-products' => $this->showProducts,
+            'page' => $this->page,
+            'sort-by' => $this->sortBy
+        ];
     }
 }

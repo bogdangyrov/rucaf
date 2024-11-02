@@ -17,6 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->integer('price')->nullable();
+            $table->integer('discount_price')->nullable();
+            $table->boolean('is_new')->default(true);
+            $table->boolean('is_hit_of_sales')->default(false);
             $table->foreignIdFor(ProductType::class);
             $table->foreignIdFor(Category::class);
             $table->timestamps();

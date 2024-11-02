@@ -4,11 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Filter;
 use App\Models\Product;
-use App\Models\Category;
-use App\Models\Attribute;
 use App\Models\ProductType;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
@@ -28,7 +24,11 @@ class ProductController extends Controller
             ->withCategory($filter->categories)
             ->withAttributes()
             ->filterByAttributes($filter->attributes)
-            ->get();
+            ->sortBy($filter->sortBy)
+            ->showProducts($filter->showProducts)
+            ->paginate($filter->pageSize);
+
+        debugbar()->info($products);
 
         $quickFilters = $productType->quickFilters()->with('attribute', 'value')->get();
 

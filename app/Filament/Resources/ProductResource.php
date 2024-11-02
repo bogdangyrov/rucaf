@@ -3,18 +3,18 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Filament\Resources\ProductResource\RelationManagers\AttributeValuesRelationManager;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
 {
@@ -33,12 +33,20 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
                 Select::make('product_type_id')
                     ->label('Тип оборудования')
                     ->relationship('productType', 'name')
                     ->required()
                     ->createOptionForm(function (Form $form) {
+                        return $form->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Название типа оборудования')
+                                ->required(),
+                        ]);
+                    })
+                    ->editOptionForm(function (Form $form) {
                         return $form->schema([
                             Forms\Components\TextInput::make('name')
                                 ->label('Название типа оборудования')
@@ -59,7 +67,28 @@ class ProductResource extends Resource
                                 ->relationship('productType', 'name')
                                 ->required()
                         ]);
+                    })
+                    ->editOptionForm(function (Form $form) {
+                        return $form->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Название категории')
+                                ->required(),
+                            Select::make('product_type_id')
+                                ->label('Тип оборудования')
+                                ->relationship('productType', 'name')
+                                ->required()
+                        ]);
                     }),
+                TextInput::make('price')
+                    ->label('Цена')
+                    ->numeric(),
+                TextInput::make('discount_price')
+                    ->label('Скидочная цена')
+                    ->numeric(),
+                Toggle::make('is_new')
+                    ->label('Новинка'),
+                Toggle::make('is_hit_of_sales')
+                    ->label('Хит продаж'),
             ]);
     }
 
@@ -81,6 +110,28 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Категория')
                     ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Цена')
+                    ->dateTime()
+                    ->sortable()
+                    ->numeric()
+                    ->default('По запросу')
+                    ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('discount_price')
+                    ->label('Скидочная цена')
+                    ->dateTime()
+                    ->sortable()
+                    ->numeric()
+                    ->default('Отсутствует')
+                    ->toggleable(isToggledHiddenByDefault: false),
+                ToggleColumn::make('is_new')
+                    ->label('Новинка')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                ToggleColumn::make('is_hit_of_sales')
+                    ->label('Хит продаж')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('created_at')

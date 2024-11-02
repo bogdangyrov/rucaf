@@ -2,6 +2,9 @@
     <button class="filter-btn btn" type="button"><i class="icon-filter"></i><span>Фильтрация</span></button>
     <button class="filter-btn-second btn" type="button"><i class="icon-filter"></i><span>Фильтрация</span></button>
     <form class="w-filters scroll">
+        <input type="text" hidden name="page-size" value="{{ $filter->pageSize }}">
+        <input type="text" hidden name="sort-by" value="{{ $filter->sortBy }}">
+        <input type="text" hidden name="show-products" value="{{ $filter->showProducts }}">
         @if (count($categories) > 0)
             <div class="filter-category filters">
                 <div class="filter-category__title">Категория</div>

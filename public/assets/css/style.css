@@ -587,7 +587,7 @@ display: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  i {
+  div:not(.phpdebugbar) > i {
       width: 20px;
       flex: 20px 0 0;
       height: 20px;
@@ -1433,7 +1433,14 @@ body {
     font-size: 24px;
     line-height: 32px;
     margin-bottom: 8px;
+    display: flex;
 }
+.catalog__old-price {
+    margin-left: 10px;
+    color: #B8B8B8;
+    text-decoration: line-through;
+    }
+
 .catalog__title {
     font-weight: 600;
     font-size: 14px;
@@ -2252,6 +2259,7 @@ body {
     white-space: nowrap;
     border: 1px solid transparent;
     transition: all .3s;
+    color: #000;
 }
 .filters-result__btn i {
     display: flex;

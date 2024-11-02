@@ -16,10 +16,18 @@
         </div>
     </div>
 
-    <a class="catalog__content" href="#">
+    <a
+        class="catalog__content"href="{{ route('product', ['productType' => $type->slug, 'product' => $product->slug]) }}">
         <div class="catalog__price">
             @isset($product->price)
-                {{ $product->price }}₽
+                @isset($product->discount_price)
+                    {{ $product->discount_price }}₽
+                    <div class="catalog__old-price">
+                        {{ $product->price }}₽
+                    </div>
+                @else
+                    {{ $product->price }}₽
+                @endisset
             @else
                 По запросу
             @endisset

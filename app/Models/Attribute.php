@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Filter;
 use App\Models\Value;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,17 @@ class Attribute extends Model
         return $this->hasMany(Value::class);
     }
 
-    public static function scopeWithUniqueValues($query, $filter)
+    public function productType()
+    {
+        return $this->belongsTo(ProductType::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'attribute_values');
+    }
+
+    public static function scopeWithUniqueValues($query, Filter $filter)
     {
         $attributes = $query->with(['values' => function ($query) use ($filter) {
             $query->withCount(['products' => function ($query) use ($filter) {
@@ -40,13 +51,21 @@ class Attribute extends Model
         return $attributes;
     }
 
-    public function productType()
+    public function scopeWithAttributesValuesFromQuery($query, array $requestQuery)
     {
-        return $this->belongsTo(ProductType::class);
-    }
-
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'attribute_values');
+        return  $query->withWhereHas(
+            'values',
+            function ($query) use ($requestQuery) {
+                $query->where(function ($query) use ($requestQuery) {
+                    foreach ($requestQuery as $name => $values) {
+                        $query->orWhere(function ($query) use ($name, $values) {
+                            $query->whereHas('attribute', function ($query) use ($name) {
+                                $query->where('slug', $name);
+                            })->whereIn('slug', $values);
+                        });
+                    }
+                });
+            }
+        );
     }
 }

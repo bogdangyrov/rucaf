@@ -12,6 +12,11 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'is_new' => 'boolean',
+        'is_hit_of_sales' => 'boolean'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -72,5 +77,36 @@ class Product extends Model
             });
         }
         return $query;
+    }
+
+    public static function scopeSortBy($query, $sortBy)
+    {
+        switch ($sortBy) {
+            case 'popular':
+                break;
+            case 'price':
+                $query->whereNotNull('price')->orderByRaw('IFNULL(discount_price, price)');
+                break;
+            case 'category':
+                $query->orderBy('category_id');
+                break;
+        }
+    }
+
+    public static function scopeShowProducts($query, $showProducts)
+    {
+        switch ($showProducts) {
+            case 'all':
+                break;
+            case 'new':
+                $query->where('is_new', 1);
+                break;
+            case 'hits':
+                $query->where('is_hit_of_sales', 1);
+                break;
+            case 'discounts':
+                $query->whereNotNull('discount_price');
+                break;
+        }
     }
 }
