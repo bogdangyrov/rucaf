@@ -7,6 +7,7 @@ use App\Filament\Resources\ProductResource\RelationManagers\AttributeValuesRelat
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -17,6 +18,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use PHPUnit\Framework\TestStatus\Risky;
 
 class ProductResource extends Resource
 {
@@ -97,7 +99,19 @@ class ProductResource extends Resource
                     ->image()
                     ->imageCropAspectRatio('1:1')
                     ->reorderable()
+                    ->columnSpanFull(),
+                RichEditor::make('description')
+                    ->label('Описание')
+                    ->required()
                     ->columnSpanFull()
+                    ->toolbarButtons([
+                        'bold',
+                        'italic',
+                        'strike',
+                        'underline',
+                        'redo',
+                        'undo',
+                    ])
             ]);
     }
 

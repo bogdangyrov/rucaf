@@ -6,6 +6,18 @@
                 src="{{ asset(isset($product->images) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
                 alt="{{ $product->name }}"></a>
         <div class="catalog__wrap-actions">
+            @if (isset($product->price) && isset($product->discount_price))
+                <div class="catalog__stocks catalog-stocks">
+                    <div class="catalog-stocks__sale">
+                        -{{ floor(100 - ($product->discount_price / $product->price) * 100) }}%
+                    </div>
+                </div>
+                &nbsp;
+            @endif
+            @if ($product->is_new)
+                <div class="catalog-stocks__sale catalog-stocks__sale--new catalog-stocks__sale--new-yellow">
+                    Новинка</div>
+            @endif
             <div class="catalog__actions catalog-actions">
                 <div class="catalog-actions__item">
                     <div class="catalog-actions__btn"><i class="icon-fav"></i></div>
@@ -22,12 +34,12 @@
         <div class="catalog__price">
             @isset($product->price)
                 @isset($product->discount_price)
-                    {{ $product->discount_price }}₽
+                    {!! number_format($product->discount_price, 0, ',', '&nbsp') !!}₽
                     <div class="catalog__old-price">
-                        {{ $product->price }}₽
+                        {!! number_format($product->price, 0, ',', '&nbsp') !!}₽
                     </div>
                 @else
-                    {{ $product->price }}₽
+                    {!! number_format($product->price, 0, ',', '&nbsp') !!}₽
                 @endisset
             @else
                 По запросу

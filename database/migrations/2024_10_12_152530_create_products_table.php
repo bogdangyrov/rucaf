@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('images')->nullable();
             $table->integer('price')->nullable();
             $table->integer('discount_price')->nullable();
+            $table->text('description');
             $table->boolean('is_new')->default(true);
             $table->boolean('is_hit_of_sales')->default(false);
             $table->foreignIdFor(ProductType::class);

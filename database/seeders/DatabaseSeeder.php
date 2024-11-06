@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         $productNames = ['1ЦУ-100', '1ЦУ-160', '1ЦУ-200'];
 
         $products = [];
+        $productDescription = '<b>Этот великолепный товар.</b> Предварительные выводы неутешительны: повышение уровня гражданского сознания говорит о возможностях модели развития. <i>Внезапно</i>, сделанные на базе интернет-аналитики выводы преданы социально-демократической анафеме.';
         for ($i = 0; $i < count($productNames); $i++) {
             $category = Category::create([
                 'name' => $categoryNames[$i],
@@ -44,7 +45,8 @@ class DatabaseSeeder extends Seeder
             $products[] = Product::create([
                 'name' => $productNames[$i],
                 'product_type_id' => $productType->id,
-                'category_id' => $category->id
+                'category_id' => $category->id,
+                'description' => $productDescription
             ]);
         }
 
@@ -58,7 +60,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $newProductName = 'Китайский 1ЦУ-200';
-        $product = Product::create(['name' => $newProductName, 'slug' => Str::slug($newProductName), 'product_type_id' => 1, 'category_id' => 3]);
+        $product = Product::create([
+            'name' => $newProductName,
+            'slug' => Str::slug($newProductName),
+            'product_type_id' => 1,
+            'category_id' => 3,
+            'description' => $productDescription
+        ]);
 
         $newValue = 'Китай';
         $value = Value::create(['value' => $newValue, 'slug' => Str::slug($newValue), 'attribute_id' => 1]);

@@ -18,7 +18,9 @@
             </div>
             <div class="title title--inline">
                 <h1>{{ $product->name }}</h1>
-                <span class="title__sale">Новинка</span>
+                @if ($product->is_new)
+                    <span class="title__sale">Новинка</span>
+                @endif
             </div>
         </div>
     </div>
@@ -28,19 +30,32 @@
                 <div class="w-page-product">
                     <div class="goods-wrap-slider">
                         <div class="goods-slider">
-                            @foreach ($product->images as $image)
+                            @isset($product->images)
+                                @foreach ($product->images as $image)
+                                    <div class="goods-slider__item">
+                                        <a href="{{ asset('storage/' . $image) }}" class="goods-slider__link"
+                                            data-fancybox="goods"><img src="{{ asset('storage/' . $image) }}" alt=""
+                                                class="goods-slider__img"></a>
+                                    </div>
+                                @endforeach
+                            @else
                                 <div class="goods-slider__item">
-                                    <a href="{{ asset('storage/' . $image) }}" class="goods-slider__link"
-                                        data-fancybox="goods"><img src="{{ asset('storage/' . $image) }}" alt=""
-                                            class="goods-slider__img"></a>
+                                    <a href="{{ asset('assets/img/content/product-1.jpg') }}" class="goods-slider__link"
+                                        data-fancybox="goods"><img src="{{ asset('assets/img/content/product-1.jpg') }}"
+                                            alt="" class="goods-slider__img"></a>
                                 </div>
-                            @endforeach
+                            @endisset
                         </div>
                         <div class="thumbs-slider">
-                            @foreach ($product->images as $image)
-                                <div class="thumbs-slider__item"><img src="{{ asset('storage/' . $image) }}" alt=""
-                                        class="thumbs-slider__img"></div>
-                            @endforeach
+                            @isset($product->images)
+                                @foreach ($product->images as $image)
+                                    <div class="thumbs-slider__item"><img src="{{ asset('storage/' . $image) }}" alt=""
+                                            class="thumbs-slider__img"></div>
+                                @endforeach
+                            @else
+                                <div class="thumbs-slider__item"><img src="{{ asset('assets/img/content/product-1.jpg') }}"
+                                        alt="" class="thumbs-slider__img"></div>
+                            @endisset
                         </div>
                     </div>
                     <div class="product-info">
@@ -55,9 +70,7 @@
                             </ul>
                             <div id="desc" class="tabs__content tabs-content">
                                 <div class="tabs-txt">
-                                    <p>Предварительные выводы неутешительны: повышение уровня гражданского сознания говорит
-                                        о возможностях модели развития. Внезапно, сделанные на базе интернет-аналитики
-                                        выводы преданы социально-демократической анафеме.</p>
+                                    <p>{!! $product->description !!}</p>
                                 </div>
                                 <div class="tabs-info">
                                     <div class="wrap-good-chars">
@@ -173,12 +186,15 @@
                         </div>
                     </div>
                     <table class="good-chars">
-                        @foreach ($product->attributeValues as $attributeValue)
+                        @php
+                            $endFor = $product->attributeValues->count() < 5 ? $product->attributeValues->count() : 5;
+                        @endphp
+                        @for ($i = 0; $i < $endFor; $i++)
                             <tr>
-                                <th><span>{{ $attributeValue->attribute->name }}</span></th>
-                                <td><span>{{ $attributeValue->value->value }}</span></td>
+                                <th><span>{{ $product->attributeValues[$i]->attribute->name }}</span></th>
+                                <td><span>{{ $product->attributeValues[$i]->value->value }}</span></td>
                             </tr>
-                        @endforeach
+                        @endfor
                     </table>
                     <div class="good-actions">
                         <a class="good-actions__btn-all" href="#desc" data-tab-index="0"><i
@@ -187,22 +203,40 @@
                     </div>
                     <div class="wrap-good-card theiaStickySidebar">
                         <div class="good-card">
-                            <div class="good-card__prices">
-                                <div class="good-card__price">{{ $product->price }}₽</div>
-                                <div class="good-card__old-price">{{ $product->price }}₽</div>
-                            </div>
-                            <div class="good-card__wrap-actions">
-                                <div class="good-card__actions">
-                                    <input type="text" class="good-card__numb" value="1 шт">
-                                    <button class="good-card__add-basket btn" type="button">В корзину</button>
+                            @isset($product->price)
+                                <div class="good-card__prices">
+                                    @isset($product->discount_price)
+                                        <div class="good-card__price">{!! number_format($product->discount_price, 0, ',', '&nbsp') !!}₽
+                                        </div>
+                                        <div class="good-card__old-price">{!! number_format($product->price, 0, ',', '&nbsp') !!}₽</div>
+                                    @else
+                                        <div class="good-card__price">{!! number_format($product->price, 0, ',', '&nbsp') !!}₽
+                                        </div>
+                                    @endisset
                                 </div>
-                                <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
-                                    клик</button>
-                            </div>
+                                <div class="good-card__wrap-actions">
+                                    <div class="good-card__actions">
+                                        <input type="text" class="good-card__numb" value="1 шт">
+                                        <button class="good-card__add-basket btn" type="button">В корзину</button>
+                                    </div>
+                                    <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
+                                        клик</button>
+                                </div>
+                            @else
+                                <div class="good-card__wrap-actions">
+                                    <div class="good-card__actions">
+                                        <input type="text" class="good-card__numb" value="1 шт">
+                                        <button class="good-card__add-basket btn" type="button">Запросить стоимость</button>
+                                    </div>
+                                    <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
+                                        клик</button>
+                                </div>
+                            @endisset
                         </div>
                         <div class="good-card-actions">
                             <button class="good-card-actions__btn" type="button" name="add-wishlist__btn"
-                                data-id="{{ $product->id }}"><i class="icon-fav"></i><span>В избранное</span></button>
+                                data-id="{{ $product->id }}"><i class="icon-fav"></i><span>В
+                                    избранное</span></button>
                             <button class="good-card-actions__btn" type="button"><i
                                     class="icon-compare"></i><span>Сравнение</span></button>
                         </div>
@@ -221,7 +255,8 @@
                 <div class="coop__txt">
                     <p>Имеется спорная точка зрения, гласящая примерно следующее: активно развивающиеся страны третьего
                         мира, вне зависимости от их уровня, должны быть описаны максимально подробно. В своём стремлении
-                        улучшить пользовательский опыт мы упускаем, что некоторые особенности внутренней политики призваны к
+                        улучшить пользовательский опыт мы упускаем, что некоторые особенности внутренней политики
+                        призваны к
                         ответу!</p>
                 </div>
                 <div class="faq__actions faq-actions">
@@ -346,7 +381,8 @@
                         </div>
                         <a class="catalog__content" href="#">
                             <div class="catalog__price">2 490₽</div>
-                            <div class="catalog__title">Пульт управления XAC-A6913Y (6 кнопок, 2 скорости + СТОП + КЛЮЧ)
+                            <div class="catalog__title">Пульт управления XAC-A6913Y (6 кнопок, 2 скорости + СТОП +
+                                КЛЮЧ)
                             </div>
                         </a>
                         <div class="catalog__order catalog-order">
@@ -494,7 +530,8 @@
                         </div>
                         <a class="catalog__content" href="#">
                             <div class="catalog__price">2 490₽</div>
-                            <div class="catalog__title">Пульт управления XAC-A6913Y (6 кнопок, 2 скорости + СТОП + КЛЮЧ)
+                            <div class="catalog__title">Пульт управления XAC-A6913Y (6 кнопок, 2 скорости + СТОП +
+                                КЛЮЧ)
                             </div>
                         </a>
                         <div class="catalog__order catalog-order">
@@ -570,7 +607,8 @@
                         <h2>Частые вопросы</h2>
                     </div>
                     <div class="faq__content">
-                        <p>Мы собрали частые вопросы от партнеров и покупателей. Если не нашли нужную информацию оставьте
+                        <p>Мы собрали частые вопросы от партнеров и покупателей. Если не нашли нужную информацию
+                            оставьте
                             заявку на звонок специалиста или обратитесь в службу поддержки.</p>
                     </div>
                     <div class="faq__actions faq-actions">
@@ -641,7 +679,8 @@
                             <div class="q-a__content">
                                 <p>Учитывая ключевые сценарии поведения, понимание сути ресурсосберегающих технологий не
                                     даёт нам иного выбора, кроме определения новых предложений. Внезапно, тщательные
-                                    исследования конкурентов, вне зависимости от их уровня, должны быть разоблачены. Ясность
+                                    исследования конкурентов, вне зависимости от их уровня, должны быть разоблачены.
+                                    Ясность
                                     нашей позиции очевидна: постоянное информационно-пропагандистское обеспечение нашей
                                     деятельности предопределяет высокую востребованность своевременного выполнения
                                     сверхзадачи.</p>
