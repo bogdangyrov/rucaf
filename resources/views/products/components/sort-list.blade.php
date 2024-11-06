@@ -6,7 +6,6 @@
                 $query = $originalQuery;
                 $query['page'] = 1;
                 $query[$sortSlug] = $slug;
-                debugbar()->info($query);
             @endphp
             <a class="sort-list__item {{ $filter->$attr == $slug ? 'sort-list__item--active' : '' }}"
                 href="{{ route('products', [

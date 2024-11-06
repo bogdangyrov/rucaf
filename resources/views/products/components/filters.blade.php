@@ -82,6 +82,6 @@
             </div> --}}
 
         </div>
-        <button>Применить</button>
+        <button class="btn">Применить</button>
     </form>
 </div>

@@ -38,15 +38,52 @@ class Attribute extends Model
 
     public static function scopeWithUniqueValues($query, Filter $filter)
     {
-        $attributes = $query->with(['values' => function ($query) use ($filter) {
-            $query->withCount(['products' => function ($query) use ($filter) {
-                $query->withCategory($filter->categories)
-                    ->filterByAttributes($filter->attributes);
-            }]);
+        $attributes = $query->with(['values' => function ($query) {
+            $query->orderBy('value');
         }])->get();
 
         foreach ($attributes as $attribute) {
             $attribute->values = $attribute->values->unique('value');
+            /*
+                Код ниже нужен для функции выбора нескольких значений у одного атрибута.
+                Например: пользователь выбрал страну Россия,
+                    в выборе фильтров мы должны дать возможность выбрать ему другую страну(Китай) и корректно отобразить
+                    кол-во для России и для Китая.
+            */
+            $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
+                $productQuery->withCategory($filter->categories);
+                if (in_array($attribute->id, $filter->attributes->pluck('id')->toArray())) {
+                    foreach ($filter->attributes as $filterAttribute) {
+                        if ($filterAttribute->id == $attribute->id) {
+                            $productQuery->whereHas('attributeValues', function ($query) use ($filterAttribute) {
+                                $name = $filterAttribute->slug;
+                                $values = $filterAttribute->values->pluck('slug');
+                                $query
+                                    ->whereHas('attribute', function ($query) use ($name) {
+                                        $query->where('slug', $name);
+                                    })
+                                    ->orWhereHas('value', function ($query) use ($values) {
+                                        $query->whereIn('slug', $values);
+                                    });
+                            });
+                        } else {
+                            $productQuery->whereHas('attributeValues', function ($query) use ($filterAttribute) {
+                                $name = $filterAttribute->slug;
+                                $values = $filterAttribute->values->pluck('slug');
+                                $query
+                                    ->whereHas('attribute', function ($query) use ($name) {
+                                        $query->where('slug', $name);
+                                    })
+                                    ->whereHas('value', function ($query) use ($values) {
+                                        $query->whereIn('slug', $values);
+                                    });
+                            });
+                        }
+                    }
+                } else {
+                    $productQuery->filterByAttributes($filter->attributes);
+                }
+            }]);
         }
         return $attributes;
     }

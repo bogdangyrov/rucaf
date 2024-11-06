@@ -28,8 +28,6 @@ class ProductController extends Controller
             ->showProducts($filter->showProducts)
             ->paginate($filter->pageSize);
 
-        debugbar()->info($products);
-
         $quickFilters = $productType->quickFilters()->with('attribute', 'value')->get();
 
         return view('products.index')->with([

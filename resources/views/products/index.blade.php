@@ -6,7 +6,7 @@
             @include('products.components.breadcrumb')
             <div class="title title--inline">
                 <h1>{{ $type->name }}</h1>
-                <span class="title__sum">{{ count($products) }} товаров</span>
+                <span class="title__sum">{{ $products->total() }} товаров</span>
             </div>
         </div>
     </div>
