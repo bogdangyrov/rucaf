@@ -28,22 +28,19 @@
                 <div class="w-page-product">
                     <div class="goods-wrap-slider">
                         <div class="goods-slider">
-                            <div class="goods-slider__item">
-                                <a href="{{ asset('assets/img/content/product-1.jpg') }}" class="goods-slider__link"
-                                    data-fancybox="goods"><img src="{{ asset('assets/img/content/product-1.jpg') }}"
-                                        alt="" class="goods-slider__img"></a>
-                            </div>
-                            <div class="goods-slider__item">
-                                <a href="{{ 'assets/img/content/img-18.png' }}" class="goods-slider__link"
-                                    data-fancybox="goods"><img src="{{ 'assets/img/content/img-18.png' }}" alt=""
-                                        class="goods-slider__img"></a>
-                            </div>
+                            @foreach ($product->images as $image)
+                                <div class="goods-slider__item">
+                                    <a href="{{ asset('storage/' . $image) }}" class="goods-slider__link"
+                                        data-fancybox="goods"><img src="{{ asset('storage/' . $image) }}" alt=""
+                                            class="goods-slider__img"></a>
+                                </div>
+                            @endforeach
                         </div>
                         <div class="thumbs-slider">
-                            <div class="thumbs-slider__item"><img src="{{ asset('assets/img/content/product-1.jpg') }}"
-                                    alt="" class="thumbs-slider__img"></div>
-                            <div class="thumbs-slider__item"><img src="{{ 'assets/img/content/img-18.png' }}" alt=""
-                                    class="thumbs-slider__img"></div>
+                            @foreach ($product->images as $image)
+                                <div class="thumbs-slider__item"><img src="{{ asset('storage/' . $image) }}" alt=""
+                                        class="thumbs-slider__img"></div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="product-info">

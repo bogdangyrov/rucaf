@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->json('images')->nullable();
             $table->integer('price')->nullable();
             $table->integer('discount_price')->nullable();
             $table->boolean('is_new')->default(true);

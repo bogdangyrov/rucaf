@@ -6,12 +6,14 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers\AttributeValuesRelationManager;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -89,6 +91,13 @@ class ProductResource extends Resource
                     ->label('Новинка'),
                 Toggle::make('is_hit_of_sales')
                     ->label('Хит продаж'),
+                FileUpload::make('images')
+                    ->label('Изображения')
+                    ->multiple()
+                    ->image()
+                    ->imageCropAspectRatio('1:1')
+                    ->reorderable()
+                    ->columnSpanFull()
             ]);
     }
 
@@ -96,6 +105,9 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('images')
+                    ->label('Изображение')
+                    ->limit(2),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
