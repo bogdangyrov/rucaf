@@ -16,12 +16,8 @@ class ProductController extends Controller
 
         $categories = $productType
             ->categories()
-            ->withCount(['products' => function ($query) use ($filter) {
-                $query->filterByAttributes($filter->attributes);
-                if ($filter->priceRange) {
-                    $query->filterByPriceRange($filter->priceRange);
-                }
-            }])->get();
+            ->withProductsCount($filter)
+            ->get();
 
         $attributes = $productType
             ->attributes()
@@ -72,6 +68,7 @@ class ProductController extends Controller
             'attributeValues.attribute',
             'attributeValues.value'
         );
+
         return view('products.show')->with(['type' => $productType,  'product' => $product]);
     }
 }
