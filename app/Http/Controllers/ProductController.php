@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Filter;
 use App\Models\Product;
 use App\Models\ProductType;
+use App\Services\RecentlyViewedService;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -69,6 +70,12 @@ class ProductController extends Controller
             'attributeValues.value'
         );
 
-        return view('products.show')->with(['type' => $productType,  'product' => $product]);
+        RecentlyViewedService::addProduct($product);
+
+        return view('products.show')
+            ->with([
+                'type' => $productType,
+                'product' => $product,
+            ]);
     }
 }
