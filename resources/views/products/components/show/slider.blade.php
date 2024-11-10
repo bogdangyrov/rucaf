@@ -1,6 +1,6 @@
 <div class="goods-wrap-slider">
     <div class="goods-slider">
-        @if (count($product->images))
+        @if (isset($product->images) && count($product->images))
             @foreach ($product->images as $image)
                 <div class="goods-slider__item">
                     <a href="{{ asset('storage/' . $image) }}" class="goods-slider__link" data-fancybox="goods"><img
@@ -16,7 +16,7 @@
         @endif
     </div>
     <div class="thumbs-slider">
-        @if (count($product->images))
+        @if (isset($product->images) && count($product->images))
             @foreach ($product->images as $image)
                 <div class="thumbs-slider__item"><img src="{{ asset('storage/' . $image) }}" alt=""
                         class="thumbs-slider__img"></div>
