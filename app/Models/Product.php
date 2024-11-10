@@ -131,4 +131,11 @@ class Product extends Model
     {
         $query->where(DB::raw('IFNULL(discount_price, price)'), '>=', $priceRange[0])->where(DB::raw('IFNULL(discount_price, price)'), '<=', $priceRange[1]);
     }
+
+    public static function scopeGetPriceRange($query)
+    {
+        return $query->select(DB::raw(
+            'MAX(IFNULL(discount_price, price)) as max_price, MIN(IFNULL(discount_price, price)) as min_price',
+        ))->get();
+    }
 }

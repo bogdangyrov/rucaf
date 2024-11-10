@@ -115,16 +115,12 @@
     </div>
     <div class="header-bottom">
         <ul class="header-bottom__menu category-menu">
-            <li class="category-menu__item"><a href="#" class="category-menu__link">Автоматические
-                    выключатели</a></li>
-            <li class="category-menu__item"><a href="#" class="category-menu__link">Вакуумные
-                    контакторы</a></li>
-            <li class="category-menu__item"><a href="#" class="category-menu__link">Тельферы
-                    электрические</a></li>
-            <li class="category-menu__item"><a href="#" class="category-menu__link">Радиоуправление</a>
-            </li>
-            <li class="category-menu__item"><a href="#" class="category-menu__link">Лебедки
-                    электрические</a></li>
+            @foreach ($productTypes as $type)
+                <li class="category-menu__item"><a
+                        href="{{ route('products.index', ['productType' => $type->slug]) }}"
+                        class="category-menu__link">{{ $type['name'] }}</a>
+                </li>
+            @endforeach
         </ul>
     </div>
     <div class="wrap-menu-mobile scroll">

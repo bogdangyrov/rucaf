@@ -37,8 +37,9 @@ class ProductController extends Controller
 
 
         $productsCopy = clone $products;
-        $maxPrice = $productsCopy->select(DB::raw('MAX(IFNULL(discount_price, price)) as max_price'))->value('max_price');
-        $minPrice = $productsCopy->select(DB::raw('MIN(IFNULL(discount_price, price)) as min_price'))->value('min_price');
+        $priceRange = $productsCopy->getPriceRange();
+        $minPrice = $priceRange->value('min_price');
+        $maxPrice = $priceRange->value('max_price');
 
         if ($filter->priceRange) {
             $products->filterByPriceRange($filter->priceRange);

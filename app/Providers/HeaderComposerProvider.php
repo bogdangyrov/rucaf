@@ -23,12 +23,15 @@ class HeaderComposerProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.components.catalog-menu', function ($view) {
-            $types = ProductType::with('categories')->get();
+            $types = ProductType::with(['categories' => function ($query) {
+                $query->orderBy('name');
+            }])->orderBy('name')->get();
             $view->with('types', $types);
         });
         View::composer('layouts.components.header', function ($view) {
-            $pages = Page::get();
-            $view->with('pages', $pages);
+            $pages = Page::orderBy('title')->get();
+            $types = ProductType::orderBy('name')->limit(5)->get();
+            $view->with(['pages' => $pages, 'productTypes' => $types]);
         });
     }
 }
