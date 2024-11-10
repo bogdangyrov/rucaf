@@ -1,7 +1,7 @@
 <div class="filters-result scroll">
     @foreach ($filter->categories as $category)
         <div class="filters-result__item">
-            <a href="{{ route('products', [
+            <a href="{{ route('products.index', [
                 'productType' => $type->slug,
                 'category' => $filter->queryWithoutCategory($category->slug),
                 ...$filter->queryAttributes(),
@@ -14,7 +14,7 @@
     @foreach ($filter->attributes as $attribute)
         @foreach ($attribute->values as $value)
             <div class="filters-result__item">
-                <a href="{{ route('products', [
+                <a href="{{ route('products.index', [
                     'productType' => $type->slug,
                     'category' => $filter->queryCategories(),
                     ...$filter->queryWithoutAttributeValue($attribute->slug, $value->slug),
@@ -25,10 +25,23 @@
         @endforeach
     @endforeach
 
+    @if ($filter->priceRange)
+        <div class="filters-result__item">
+            <a href="{{ route('products.index', [
+                'productType' => $type->slug,
+                'category' => $filter->queryCategories(),
+                ...$filter->queryAttributes(),
+            ]) }}"
+                class="filters-result__btn" type="button"><span>Цена от {{ $filter->priceRange[0] }} до
+                    {{ $filter->priceRange[1] }} руб.
+                </span><i class="icon-close1"></i></a>
+        </div>
+    @endif
+
     @if ($filter->filtersExists())
         <div class="filters-result__item">
             <a class="filters-result__btn filters-result__btn--reset" type="button"
-                href="{{ route('products', ['productType' => $type]) }}"><span>Сбросить
+                href="{{ route('products.index', ['productType' => $type]) }}"><span>Сбросить
                     все</span><i class="icon-close1"></i></a>
         </div>
     @endif

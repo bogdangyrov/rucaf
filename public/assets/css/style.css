@@ -493,7 +493,8 @@ display: none;
     padding-top: 15px;
 }
 .filters-range {
-    margin: 10px 0 25px;
+    margin-inline: 20px;
+    margin-bottom: 25px;
 }
 .fancybox-button.disabled, .fancybox-button.disabled:hover, .fancybox-button[disabled], .fancybox-button[disabled]:hover {
     color: #fff;
@@ -2606,7 +2607,7 @@ body {
     background: #FFFFFF;
     border: 1px solid #E6E6E6;
     border-radius: 4px;
-    padding: 0 24px;
+    padding-inline: 10px;
 }
 .prices-inputs__input label {
     position: absolute;

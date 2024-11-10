@@ -52,6 +52,11 @@ class Attribute extends Model
             */
             $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
                 $productQuery->withCategory($filter->categories);
+
+                if ($filter->priceRange) {
+                    $productQuery->filterByPriceRange($filter->priceRange);
+                }
+
                 if (in_array($attribute->id, $filter->attributes->pluck('id')->toArray())) {
                     foreach ($filter->attributes as $filterAttribute) {
                         if ($filterAttribute->id == $attribute->id) {
@@ -95,6 +100,10 @@ class Attribute extends Model
             function ($query) use ($requestQuery) {
                 $query->where(function ($query) use ($requestQuery) {
                     foreach ($requestQuery as $name => $values) {
+                        if (!is_array($values)) {
+                            continue;
+                        }
+
                         $query->orWhere(function ($query) use ($name, $values) {
                             $query->whereHas('attribute', function ($query) use ($name) {
                                 $query->where('slug', $name);

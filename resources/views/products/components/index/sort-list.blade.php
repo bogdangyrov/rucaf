@@ -8,7 +8,7 @@
                 $query[$sortSlug] = $slug;
             @endphp
             <a class="sort-list__item {{ $filter->$attr == $slug ? 'sort-list__item--active' : '' }}"
-                href="{{ route('products', [
+                href="{{ route('products.index', [
                     'productType' => $type,
                     ...$query,
                 ]) }}">

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -40,6 +41,21 @@ class Product extends Model
     public function productType()
     {
         return $this->belongsTo(ProductType::class);
+    }
+
+    public function discountPercentage()
+    {
+        return floor(100 - ($this->discount_price / $this->price) * 100);
+    }
+
+    public function getFormattedPrice()
+    {
+        return number_format($this->price, 0, ',', '&nbsp');
+    }
+
+    public function getFormattedDiscountPrice()
+    {
+        return number_format($this->discount_price, 0, ',', '&nbsp');
     }
 
     public static function scopeWithAttributes($query)
@@ -109,5 +125,10 @@ class Product extends Model
                 $query->whereNotNull('discount_price');
                 break;
         }
+    }
+
+    public static function scopeFilterByPriceRange($query, $priceRange)
+    {
+        $query->where(DB::raw('IFNULL(discount_price, price)'), '>=', $priceRange[0])->where(DB::raw('IFNULL(discount_price, price)'), '<=', $priceRange[1]);
     }
 }

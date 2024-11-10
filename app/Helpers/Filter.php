@@ -15,6 +15,7 @@ class Filter
     public string $sortBy = 'popular';
     public string $showProducts = 'all';
     public int $page = 1;
+    public array $priceRange = [];
 
     private static array $availablePageSizes = [20, 60, 100, 'all'];
     private static array $availableSortBy = ['popular', 'price', 'category'];
@@ -48,6 +49,11 @@ class Filter
         if (isset($requestQuery['page']) && ($requestQuery > 0)) {
             $this->page = $requestQuery['page'];
             unset($requestQuery['page']);
+        }
+
+        if (isset($requestQuery['min-price']) && isset($requestQuery['max-price']) && $requestQuery['min-price'] > 0 && $requestQuery['max-price'] > 0) {
+            $this->priceRange = [$requestQuery['min-price'], $requestQuery['max-price']];
+            unset($requestQuery['min-price'], $requestQuery['max-price']);
         }
 
         if ($requestQuery) {
@@ -122,7 +128,7 @@ class Filter
 
     public function getQuery()
     {
-        return [
+        $query = [
             'category[]' => $this->categories->pluck('slug')->toArray(),
             ...$this->queryAttributes(),
             'page-size' => $this->pageSize,
@@ -130,5 +136,11 @@ class Filter
             'page' => $this->page,
             'sort-by' => $this->sortBy
         ];
+
+        if ($this->priceRange) {
+            $query['min-price'] = $this->priceRange[0];
+            $query['max-price'] = $this->priceRange[1];
+        }
+        return $query;
     }
 }

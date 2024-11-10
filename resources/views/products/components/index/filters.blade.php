@@ -43,24 +43,29 @@
                 </div>
             @endforeach
 
-            {{-- <div class="filters__item filters__item--prices">
+            <div class="filters__item filters__item--prices">
                 <div class="filters__title">Цена, руб.</div>
                 <div class="filters__block">
-                    <div class="filters-range" id="slider-range"></div>
+                    <div class="filters-range" id="slider-range" data-min="{{ $minPrice }}"
+                        data-max="{{ $maxPrice }}"></div>
                     <div class="filters__prices prices-inputs">
                         <div class="prices-inputs__input">
-                            <input type="number" class="slider-value" id="min-price" data-index="0" value="0"
-                                placeholder=" " min="0">
+                            <input type="number" class="slider-value" id="min-price" data-index="0" name="min-price"
+                                min="{{ $minPrice }}" max="{{ $maxPrice }}"
+                                value="{{ $filter->priceRange ? $filter->priceRange['0'] : $minPrice }}"
+                                placeholder=" ">
                             <label for="min-price">От</label>
                         </div>
                         <div class="prices-inputs__input">
-                            <input type="number" class="slider-value" id="max-price" data-index="1" value="500000"
-                                placeholder=" " min="0">
+                            <input type="number" class="slider-value" id="max-price" data-index="1" name="max-price"
+                                min="{{ $minPrice }}" max="{{ $maxPrice }}"
+                                value="{{ $filter->priceRange ? $filter->priceRange['1'] : $maxPrice }}"
+                                placeholder=" ">
                             <label for="max-price">До</label>
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
 
             {{-- <div class="filters__item filters__item--mass">
                 <div class="filters__title">Масса, кг</div>

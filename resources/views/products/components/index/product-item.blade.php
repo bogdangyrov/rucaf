@@ -2,22 +2,25 @@
 
     <div class="catalog__wrap-img">
         <a class="catalog__img"
-            href="{{ route('product', ['productType' => $type->slug, 'product' => $product->slug]) }}"><img
-                src="{{ asset(isset($product->images) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
+            href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}"><img
+                src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
                 alt="{{ $product->name }}"></a>
         <div class="catalog__wrap-actions">
-            @if (isset($product->price) && isset($product->discount_price))
-                <div class="catalog__stocks catalog-stocks">
-                    <div class="catalog-stocks__sale">
-                        -{{ floor(100 - ($product->discount_price / $product->price) * 100) }}%
-                    </div>
-                </div>
-                &nbsp;
-            @endif
+
             @if ($product->is_new)
                 <div class="catalog-stocks__sale catalog-stocks__sale--new catalog-stocks__sale--new-yellow">
                     Новинка</div>
+                &nbsp;
             @endif
+
+            @if (isset($product->price) && isset($product->discount_price))
+                <div class="catalog__stocks catalog-stocks">
+                    <div class="catalog-stocks__sale">
+                        -{{ $product->discountPercentage() }}%
+                    </div>
+                </div>
+            @endif
+
             <div class="catalog__actions catalog-actions">
                 <div class="catalog-actions__item">
                     <div class="catalog-actions__btn"><i class="icon-fav"></i></div>
@@ -26,20 +29,21 @@
                     <div class="catalog-actions__btn"><i class="icon-compare"></i></div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <a
-        class="catalog__content"href="{{ route('product', ['productType' => $type->slug, 'product' => $product->slug]) }}">
+        class="catalog__content"href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}">
         <div class="catalog__price">
             @isset($product->price)
                 @isset($product->discount_price)
-                    {!! number_format($product->discount_price, 0, ',', '&nbsp') !!}₽
+                    {!! $product->getFormattedDiscountPrice() !!}₽
                     <div class="catalog__old-price">
-                        {!! number_format($product->price, 0, ',', '&nbsp') !!}₽
+                        {!! $product->getFormattedPrice() !!}₽
                     </div>
                 @else
-                    {!! number_format($product->price, 0, ',', '&nbsp') !!}₽
+                    {!! $product->getFormattedPrice() !!}₽
                 @endisset
             @else
                 По запросу
