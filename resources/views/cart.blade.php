@@ -147,15 +147,15 @@
                                 </div>
                             </div>
                             <div class="cart-item__remove">
-                                <button class="btn btn--gray">Remove</button>
+                                <button class="btn btn--gray">Удалить</button>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
                 <div class="cart-summary">
-                    <p class="cart-summary__total">Total: $59.98</p>
-                    <button class="btn">Proceed to Checkout</button>
+                    <p class="cart-summary__total">Всего: {!! \App\Models\Product::formatPrice($totalSum) !!}₽</p>
+                    <button class="btn">Оставить заявку</button>
                 </div>
             </div>
         </div>

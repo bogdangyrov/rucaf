@@ -50,12 +50,17 @@ class Product extends Model
 
     public function getFormattedPrice()
     {
-        return number_format($this->price, 0, ',', '&nbsp');
+        return static::formatPrice($this->price);
     }
 
     public function getFormattedDiscountPrice()
     {
-        return number_format($this->discount_price, 0, ',', '&nbsp');
+        return static::formatPrice($this->discount_price);
+    }
+
+    public static function formatPrice($price)
+    {
+        return number_format($price, 0, ',', '&nbsp');
     }
 
     public static function scopeWithAttributes($query)

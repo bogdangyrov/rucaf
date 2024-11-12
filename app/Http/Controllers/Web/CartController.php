@@ -10,9 +10,14 @@ class CartController extends Controller
     public function index()
     {
         $products = CartService::get();
+        $totalSum = $products->sum(function ($product) {
+            return $product->discount_price ?? $product->price;
+        });
+
         return view('cart')
             ->with([
-                'products' => $products
+                'products' => $products,
+                'totalSum' => $totalSum
             ]);
     }
 }
