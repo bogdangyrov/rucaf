@@ -29,7 +29,6 @@ class RecentlyViewedProvider extends ServiceProvider
                     ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
                     ->get();
 
-            debugbar()->info(session('products'));
             $view->with('recentlyViewedProducts', $recentlyViewedProducts);
         });
     }
