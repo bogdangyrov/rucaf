@@ -19,10 +19,12 @@ class RecentlyViewedService
     {
         $recentlyViewedProducts = session('products', []);
 
-        if ($recentlyViewedProducts)
+        if ($recentlyViewedProducts) {
             $recentlyViewedProducts = Product::whereIn('id', $recentlyViewedProducts)
                 ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
+                ->limit(5)
                 ->get();
+        }
 
         return $recentlyViewedProducts;
     }

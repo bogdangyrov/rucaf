@@ -72,10 +72,17 @@ class ProductController extends Controller
 
         RecentlyViewedService::addProduct($product);
 
+        $relatedProducts = $productType
+            ->products()
+            ->where('id', '<>', $product->id)
+            ->limit(5)
+            ->get();
+
         return view('products.show')
             ->with([
                 'type' => $productType,
                 'product' => $product,
+                'relatedProducts' => $relatedProducts
             ]);
     }
 }
