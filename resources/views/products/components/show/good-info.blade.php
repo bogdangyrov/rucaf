@@ -44,7 +44,8 @@
                 <div class="good-card__wrap-actions">
                     <div class="good-card__actions">
                         <input type="number" class="good-card__numb" placeholder="1 шт">
-                        <button class="good-card__add-basket btn" type="button">В корзину</button>
+                        <button class="good-card__add-basket btn" type="button" id="add-to-cart"
+                            data-id="{{ $product->id }}">В корзину</button>
                     </div>
                     <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
                         клик</button>

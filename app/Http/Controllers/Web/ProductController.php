@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\Filter;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Services\RecentlyViewedService;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {

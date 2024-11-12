@@ -42,6 +42,32 @@
 @endsection
 
 @section('js')
+    <script>
+        $(function() {
+            $('#add-to-cart').click(function() {
+                const $this = $(this);
+                const productId = $this.attr('data-id');
+
+                let quantity = $this.closest('.good-card__actions').find('input.good-card__numb').val();
+                if (quantity == '') {
+                    quantity = 1;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route('cart.add') }}',
+                    data: {
+                        product_id: productId,
+                        quantity: quantity
+                    },
+                    success: function(data) {
+                        console.log(data);
+                    }
+                });
+
+            });
+        })
+    </script>
+
     {{--  <script>
         $(document).ready(function() {
             $.ajaxSetup({
