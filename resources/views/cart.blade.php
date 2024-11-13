@@ -139,12 +139,7 @@
                                         {!! $product->getFormattedPrice() !!}₽
                                     @endisset
                                 </div>
-                                <div class="cart-item__quantity">
-                                    <button class="btn btn--border cart-item__quantity-btn">-</button>
-                                    <input type="number" class="cart-item__quantity-input" value="{{ $product->quantity }}"
-                                        min="1" max="100">
-                                    <button class="btn btn--border cart-item__quantity-btn">+</button>
-                                </div>
+                                @livewire(CartCounter::class, ['quantity' => $product->quantity, 'product' => $product])
                             </div>
                             <div class="cart-item__remove">
                                 <button class="btn btn--gray">Удалить</button>

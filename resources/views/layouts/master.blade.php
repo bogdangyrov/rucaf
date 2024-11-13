@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/libs/fancybox/dist/jquery.fancybox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     @yield('css')
+    @livewireStyles
 </head>
 
 <body>
@@ -77,6 +78,7 @@
     <script src="{{ asset('assets/libs/sticky/theia-sticky-sidebar.min.js') }}"></script>
     <script src="{{ asset('assets/libs/my/common.js') }}"></script>
     @yield('js')
+    @livewireScripts
 </body>
 
 </html>
