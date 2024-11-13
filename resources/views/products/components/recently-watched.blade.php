@@ -6,12 +6,11 @@
             </div>
             <div class="wrap-catalog scroll">
                 <div class="catalog">
-
                     @foreach ($recentlyViewedProducts as $product)
                         <div class="catalog__item">
                             <div class="catalog__wrap-img">
                                 <a class="catalog__img"
-                                    href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}"><img
+                                    href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}"><img
                                         src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
                                         alt="{{ $product->name }}"></a>
                                 <div class="catalog__wrap-actions">
@@ -41,7 +40,7 @@
                                 </div>
                             </div>
                             <a class="catalog__content"
-                                href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}">
+                                href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
                                 <div class="catalog__price"> @isset($product->price)
                                         @isset($product->discount_price)
                                             {!! $product->getFormattedDiscountPrice() !!}₽

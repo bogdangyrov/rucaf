@@ -26,5 +26,6 @@ class AddButton extends Component
             $this->quantity = 1;
         }
         CartService::add($this->product->id, $this->quantity);
+        $this->dispatch('quantity-updated');
     }
 }

@@ -24,12 +24,12 @@ class CartService
 
         if (is_null($recordIndex)) {
             session()->push('cart', ['product_id' => $productId, 'quantity' => $quantity]);
+            return ['product_id' => $productId, 'quantity' => $quantity];
         } else {
-            $sessionCart[$recordIndex]['quantity'] = $quantity;
+            $sessionCart[$recordIndex]['quantity'] += $quantity;
             session(['cart' => $sessionCart]);
+            return ['product_id' => $productId, 'quantity' => $sessionCart[$recordIndex]['quantity']];
         }
-
-        return ['product_id' => $productId, 'quantity' => $quantity];
     }
 
     public static function delete(int $productId)
@@ -87,5 +87,15 @@ class CartService
             }
         }
         return null;
+    }
+
+    public static function getTotalQuantity()
+    {
+        $sessionCart = session('cart');
+        if (empty($sessionCart)) {
+            return 0;
+        } else {
+            return array_sum(array_column($sessionCart, 'quantity'));
+        }
     }
 }

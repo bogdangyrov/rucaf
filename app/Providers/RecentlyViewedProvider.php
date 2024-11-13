@@ -24,11 +24,12 @@ class RecentlyViewedProvider extends ServiceProvider
         View::composer('products.components.recently-watched', function ($view) {
             $recentlyViewedProducts = session('products', []);
 
-            if ($recentlyViewedProducts)
+            if ($recentlyViewedProducts) {
                 $recentlyViewedProducts = Product::whereIn('id', $recentlyViewedProducts)
                     ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
+                    ->with('productType')
                     ->get();
-
+            }
             $view->with('recentlyViewedProducts', $recentlyViewedProducts);
         });
     }

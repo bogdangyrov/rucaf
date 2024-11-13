@@ -3,19 +3,25 @@
 @section('content')
     <style>
         .cart-page {
-            padding: 20px;
             font-family: 'Source Sans 3';
+            border-bottom: 1px solid #E4E4E4;
+            border-bottom: 1px solid #E4E4E4;
         }
 
         .cart-page__header {
-            text-align: center;
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #E4E4E4;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #E4E4E4;
         }
 
         .cart-items {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            padding: 20px;
+            padding: 20px;
         }
 
         .cart-item {
@@ -79,6 +85,25 @@
         .cart-summary {
             margin-top: 20px;
             text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .btn {
+                max-width: 300px;
+                font-size: 20px;
+            }
+
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .btn {
+                max-width: 300px;
+                font-size: 20px;
+            }
         }
 
         .cart-summary__total {
@@ -91,6 +116,26 @@
             margin-left: 10px;
             color: #B8B8B8;
             text-decoration: line-through;
+        }
+
+        .cart-empty-cart {
+            text-align: center;
+            padding: 40px;
+            font-size: 30px;
+        }
+
+        .cart-summary__total-quantity {
+            color: #666;
+        }
+
+        .cart-empty-cart {
+            text-align: center;
+            padding: 40px;
+            font-size: 30px;
+        }
+
+        .cart-summary__total-quantity {
+            color: #666;
         }
 
         /* Адаптация для мобильных устройств */
@@ -110,48 +155,20 @@
             }
         }
     </style>
-    <div class="wrap-main">
-        <div class="content">
+    <div class="wrap">
+        <div class="wrap">
+            <div class="content">
+                <div class="cart-page">
+                    <div class="cart-page__header title">
+                        <h1>Корзина</h1>
+                    </div>
 
-            <div class="cart-page">
-                <div class="cart-page__header title">
-                    <h1>Корзина</h1>
-                </div>
-
-                <div class="cart-items">
-                    <!-- Пример товара в корзине -->
-                    @foreach ($products as $product)
-                        <div class="cart-item">
-                            <div class="cart-item__image">
-                                <img src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
-                                    alt="{{ $product->name }}">
-                            </div>
-                            <div class="cart-item__details">
-                                <h2 class="cart-item__title">{{ $product->name }}</h2>
-                                <div class="cart-item__price">
-                                    Цена:
-                                    @isset($product->discount_price)
-                                        {!! $product->getFormattedDiscountPrice() !!}₽
-                                        <div class="cart__old-price">
-                                            {!! $product->getFormattedPrice() !!}₽
-                                        </div>
-                                    @else
-                                        {!! $product->getFormattedPrice() !!}₽
-                                    @endisset
-                                </div>
-                                @livewire(Cart\Counter::class, ['quantity' => $product->quantity, 'product' => $product])
-                            </div>
-                            <div class="cart-item__remove">
-                                <button class="btn btn--gray">Удалить</button>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="cart-summary">
-                    <p class="cart-summary__total">Всего: {!! \App\Models\Product::formatPrice($totalSum) !!}₽</p>
-                    <button class="btn">Оставить заявку</button>
+                    <livewire:cart.cart-component />
                 </div>
             </div>
         </div>
+
+        @include('products.components.recently-watched')
+        @include('components.frequent-questions')
     @endsection
+</div>

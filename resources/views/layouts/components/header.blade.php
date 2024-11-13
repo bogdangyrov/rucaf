@@ -88,10 +88,9 @@
                     <span class="actions__btn"><i class="icon-fav"></i></span>
                     <span class="actions__numbs">11</span>
                 </a>
-                <a href="#" class="actions__item">
-                    <span class="actions__btn"><i class="icon-basket"></i></span>
-                    <span class="actions__numbs">3</span>
-                </a>
+
+                <livewire:cart.header />
+
                 <a class="actions__item actions__item--white actions__item--menu">
                     <span class="actions__btn"><i class="icon-menu1"></i></span>
                 </a>
