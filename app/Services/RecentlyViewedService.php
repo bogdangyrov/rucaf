@@ -10,18 +10,19 @@ class RecentlyViewedService
     {
         if (in_array($product->id, session('products', []))) {
             $productIndex = array_search($product->id, session('products'));
-            session()->pull('products.' .  $productIndex);
+            session()->pull('recently-viewed.' .  $productIndex);
         }
-        session()->push('products', $product->id);
+        session()->push('recently-viewed', $product->id);
     }
 
     public static function getProducts()
     {
-        $recentlyViewedProducts = session('products', []);
+        $recentlyViewedProducts = session('recently-viewed', []);
 
         if ($recentlyViewedProducts) {
             $recentlyViewedProducts = Product::whereIn('id', $recentlyViewedProducts)
                 ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
+                ->with('productType')
                 ->limit(5)
                 ->get();
         }

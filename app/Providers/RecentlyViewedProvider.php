@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Product;
+use App\Services\RecentlyViewedService;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,14 +23,7 @@ class RecentlyViewedProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('products.components.recently-watched', function ($view) {
-            $recentlyViewedProducts = session('products', []);
-
-            if ($recentlyViewedProducts) {
-                $recentlyViewedProducts = Product::whereIn('id', $recentlyViewedProducts)
-                    ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
-                    ->with('productType')
-                    ->get();
-            }
+            $recentlyViewedProducts = RecentlyViewedService::getProducts();
             $view->with('recentlyViewedProducts', $recentlyViewedProducts);
         });
     }
