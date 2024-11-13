@@ -68,6 +68,17 @@ class CartService
         return $products;
     }
 
+    public static function getQuantity($productId)
+    {
+        $sessionCart = session('cart', []);
+        return current(array_filter(
+            $sessionCart,
+            function ($el) use ($productId) {
+                return $el['product_id'] == $productId;
+            }
+        ))['quantity'] ?? 0;
+    }
+
     private static function array_first_key(array $array, callable $callback)
     {
         foreach ($array as $key => $value) {

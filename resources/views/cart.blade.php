@@ -139,7 +139,7 @@
                                         {!! $product->getFormattedPrice() !!}₽
                                     @endisset
                                 </div>
-                                @livewire(CartCounter::class, ['quantity' => $product->quantity, 'product' => $product])
+                                @livewire(Cart\Counter::class, ['quantity' => $product->quantity, 'product' => $product])
                             </div>
                             <div class="cart-item__remove">
                                 <button class="btn btn--gray">Удалить</button>

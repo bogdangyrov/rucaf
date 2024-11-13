@@ -42,7 +42,7 @@
 @endsection
 
 @section('js')
-    <script>
+    {{-- <script>
         $(function() {
             $('#add-to-cart').click(function() {
                 const $this = $(this);
@@ -66,7 +66,7 @@
 
             });
         })
-    </script>
+    </script> --}}
 
     {{--  <script>
         $(document).ready(function() {
