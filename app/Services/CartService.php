@@ -24,11 +24,25 @@ class CartService
 
         if (is_null($recordIndex)) {
             session()->push('cart', ['product_id' => $productId, 'quantity' => $quantity]);
-            return ['product_id' => $productId, 'quantity' => $quantity];
+            return true;
         } else {
-            $sessionCart[$recordIndex]['quantity'] += $quantity;
+            return false;
+        }
+    }
+
+    public static function update(int $productId, int $quantity)
+    {
+        $sessionCart = session('cart', []);
+
+        $recordIndex = static::array_first_key($sessionCart, function ($value) use ($productId) {
+            return $value['product_id'] == $productId;
+        });
+
+        if (!is_null($recordIndex)) {
+            $sessionCart[$recordIndex]['quantity'] = $quantity;
             session(['cart' => $sessionCart]);
-            return ['product_id' => $productId, 'quantity' => $sessionCart[$recordIndex]['quantity']];
+        } else {
+            return false;
         }
     }
 

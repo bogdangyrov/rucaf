@@ -20,16 +20,22 @@ class CartComponent extends Component
 
     public function increment($productId)
     {
-        CartService::add($productId, 1);
+        $quantity = CartService::getQuantity($productId);
+        if ($quantity >= 100) {
+            return;
+        }
+        CartService::update($productId, $quantity + 1);
         $this->refreshCart();
     }
 
     public function decrement($productId)
     {
         $product = $this->products->firstWhere('id', $productId);
-        $quantity = CartService::add($productId, -1)['quantity'];
-        if ($quantity <= 0) {
+        $quantity = CartService::getQuantity($productId);
+        if ($quantity <= 1) {
             CartService::delete($productId, $product->quantity);
+        } else {
+            CartService::update($productId, $quantity - 1);
         }
         $this->refreshCart();
     }
