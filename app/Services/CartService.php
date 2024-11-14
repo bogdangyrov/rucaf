@@ -70,6 +70,7 @@ class CartService
         $products_ids = array_column($sessionCart, 'product_id');
 
         $products = Product::whereIn('id', $products_ids)
+            ->active()
             ->with('productType')
             ->get();
 

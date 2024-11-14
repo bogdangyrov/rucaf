@@ -21,6 +21,7 @@ class RecentlyViewedService
 
         if ($recentlyViewedProducts) {
             $recentlyViewedProducts = Product::whereIn('id', $recentlyViewedProducts)
+                ->active()
                 ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
                 ->with('productType')
                 ->limit(5)

@@ -33,6 +33,7 @@ class Category extends Model
     public static function scopeWithProductsCount($query, Filter $filter)
     {
         $query->withCount(['products' => function ($query) use ($filter) {
+            $query->active();
             $query->filterByAttributes($filter->attributes);
             if ($filter->priceRange) {
                 $query->filterByPriceRange($filter->priceRange);

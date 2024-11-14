@@ -25,12 +25,19 @@
     <div class="wrap">
         <div class="page content">
             <div class="page-product">
-                <div class="w-page-product">
-                    @include('products.components.show.slider')
-                    @include('products.components.show.product-info')
-                </div>
+                @if ($product->is_active)
+                    <div class="w-page-product">
+                        @include('products.components.show.slider')
+                        @include('products.components.show.product-info')
+                    </div>
 
-                @include('products.components.show.good-info')
+                    @include('products.components.show.good-info')
+                @else
+                    <p class="product-not-available">К сожалению сейчас этот товар не доступен. С его аналогами можете
+                        ознакомиться в
+                        <a href="{{ route('products.index', ['productType' => $type]) }}">нашем каталоге</a>!
+                    </p>
+                @endif
             </div>
         </div>
     </div>

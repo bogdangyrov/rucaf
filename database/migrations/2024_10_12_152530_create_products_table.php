@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('description');
             $table->boolean('is_new')->default(true);
             $table->boolean('is_hit_of_sales')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->foreignIdFor(ProductType::class);
             $table->foreignIdFor(Category::class);
             $table->timestamps();

@@ -26,6 +26,7 @@ class ProductController extends Controller
 
         $products = $productType
             ->products()
+            ->active()
             ->withCategory($filter->categories)
             ->withAttributes()
             ->filterByAttributes($filter->attributes)
@@ -74,6 +75,7 @@ class ProductController extends Controller
 
         $relatedProducts = $productType
             ->products()
+            ->active()
             ->where('id', '<>', $product->id)
             ->limit(5)
             ->get();

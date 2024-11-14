@@ -16,6 +16,7 @@ class Product extends Model
     protected $casts = [
         'is_new' => 'boolean',
         'is_hit_of_sales' => 'boolean',
+        'is_active' => 'boolean',
         'images' => 'array'
     ];
 
@@ -142,5 +143,10 @@ class Product extends Model
         return $query->select(DB::raw(
             'MAX(IFNULL(discount_price, price)) as max_price, MIN(IFNULL(discount_price, price)) as min_price',
         ))->get();
+    }
+
+    public static function scopeActive($query)
+    {
+        $query->where('is_active', 1);
     }
 }

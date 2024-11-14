@@ -93,6 +93,8 @@ class ProductResource extends Resource
                     ->label('Новинка'),
                 Toggle::make('is_hit_of_sales')
                     ->label('Хит продаж'),
+                Toggle::make('is_active')
+                    ->label('Активен'),
                 FileUpload::make('images')
                     ->label('Изображения')
                     ->multiple()
@@ -160,14 +162,10 @@ class ProductResource extends Resource
                     ->label('Хит продаж')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                ToggleColumn::make('is_active')
+                    ->label('Активен')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 SelectFilter::make('productType')

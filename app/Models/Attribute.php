@@ -51,8 +51,8 @@ class Attribute extends Model
                     кол-во для России и для Китая.
             */
             $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
+                $productQuery->active();
                 $productQuery->withCategory($filter->categories);
-
                 if ($filter->priceRange) {
                     $productQuery->filterByPriceRange($filter->priceRange);
                 }
