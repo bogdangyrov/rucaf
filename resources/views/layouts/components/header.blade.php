@@ -80,10 +80,12 @@
                     data-src="#search">
                     <span class="actions__btn"><i class="icon-search"></i></span>
                 </button>
-                <a href="#" class="actions__item">
+
+                <a href="{{ route('comparison') }}" class="actions__item">
                     <span class="actions__btn"><i class="icon-compare"></i></span>
                     <span class="actions__numbs">99</span>
                 </a>
+
                 <a href="#" class="actions__item">
                     <span class="actions__btn"><i class="icon-fav"></i></span>
                     <span class="actions__numbs">11</span>

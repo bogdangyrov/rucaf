@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Service\ComparisonService;
 use Livewire\Component;
 use App\Services\CartService;
+use League\Csv\Query\Constraint\Comparison;
 
 class ProductItem extends Component
 {
@@ -25,5 +27,11 @@ class ProductItem extends Component
     {
         CartService::add($this->product->id, 1);
         $this->dispatch('cartUpdated');
+    }
+
+    public function addToComparison()
+    {
+        ComparisonService::add($this->product->id);
+        $this->dispatch('comparisonUpdated');
     }
 }

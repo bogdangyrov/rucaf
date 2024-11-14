@@ -26,7 +26,8 @@
                     <div class="catalog-actions__btn"><i class="icon-fav"></i></div>
                 </div>
                 <div class="catalog-actions__item">
-                    <div class="catalog-actions__btn"><i class="icon-compare"></i></div>
+                    <button class="catalog-actions__btn" wire:click="addToComparison"><i
+                            class="icon-compare"></i></button>
                 </div>
             </div>
 

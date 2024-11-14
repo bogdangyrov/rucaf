@@ -5,13 +5,10 @@
         .cart-page {
             font-family: 'Source Sans 3';
             border-bottom: 1px solid #E4E4E4;
-            border-bottom: 1px solid #E4E4E4;
         }
 
         .cart-page__header {
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #E4E4E4;
             padding-bottom: 10px;
             border-bottom: 1px solid #E4E4E4;
         }
@@ -20,7 +17,6 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            padding: 20px;
             padding: 20px;
         }
 
