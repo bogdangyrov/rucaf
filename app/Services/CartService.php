@@ -69,7 +69,9 @@ class CartService
 
         $products_ids = array_column($sessionCart, 'product_id');
 
-        $products = Product::whereIn('id', $products_ids)->get();
+        $products = Product::whereIn('id', $products_ids)
+            ->with('productType')
+            ->get();
 
         foreach ($products as $product) {
             $product->quantity = current(array_filter(

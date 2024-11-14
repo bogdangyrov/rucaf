@@ -7,7 +7,9 @@
             <div class="wrap-catalog scroll">
                 <div class="catalog">
                     @foreach ($recentlyViewedProducts as $product)
-                        <div class="catalog__item">
+                        @include('products.components.index.product-item')
+
+                        {{-- <div class="catalog__item">
                             <div class="catalog__wrap-img">
                                 <a class="catalog__img"
                                     href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}"><img
@@ -64,9 +66,9 @@
                                         data-src="#order{{ $product->id }}">Запросить стоимость</button>
                                 @endisset
                             </div>
-                        </div>
+                        </div> --}}
 
-                        @include('products.components.modal-request-price')
+                        {{--  @include('products.components.modal-request-price') --}}
                     @endforeach
 
                 </div>

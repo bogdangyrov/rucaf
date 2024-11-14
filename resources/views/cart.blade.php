@@ -46,6 +46,7 @@
         .cart-item__title {
             font-size: 18px;
             font-weight: 600;
+            color: #000;
         }
 
         .cart-item__price {
@@ -152,6 +153,12 @@
 
             .cart-item__remove {
                 margin-top: 12px;
+                margin-left: 0px;
+            }
+
+            .cart-item__image img {
+                width: 100%;
+                height: 100%;
             }
         }
     </style>

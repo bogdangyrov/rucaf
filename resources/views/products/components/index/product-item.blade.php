@@ -2,7 +2,7 @@
 
     <div class="catalog__wrap-img">
         <a class="catalog__img"
-            href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}"><img
+            href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}"><img
                 src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
                 alt="{{ $product->name }}"></a>
         <div class="catalog__wrap-actions">
@@ -34,7 +34,7 @@
     </div>
 
     <a
-        class="catalog__content"href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}">
+        class="catalog__content"href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
         <div class="catalog__price">
             @isset($product->price)
                 @isset($product->discount_price)
@@ -54,7 +54,7 @@
 
     <div class="catalog__order catalog-order">
         @isset($product->price)
-            <button class="catalog-order__btn btn" type="button">В корзину</button>
+            <livewire:cart.add-button-from-catalog :product="$product" />
         @else
             <button class="catalog-order__btn btn" type="button" data-fancybox=""
                 data-src="#order{{ $product->id }}">Запросить стоимость</button>
