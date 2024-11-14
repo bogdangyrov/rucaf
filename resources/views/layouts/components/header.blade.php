@@ -75,28 +75,9 @@
                     </li>
                 @endforeach
             </ul>
-            <div class="header__actions actions">
-                <button class="actions__item actions__item--white actions__item--search" type="button" data-fancybox
-                    data-src="#search">
-                    <span class="actions__btn"><i class="icon-search"></i></span>
-                </button>
 
-                <a href="{{ route('comparison') }}" class="actions__item">
-                    <span class="actions__btn"><i class="icon-compare"></i></span>
-                    <span class="actions__numbs">99</span>
-                </a>
+            <livewire:header />
 
-                <a href="#" class="actions__item">
-                    <span class="actions__btn"><i class="icon-fav"></i></span>
-                    <span class="actions__numbs">11</span>
-                </a>
-
-                <livewire:cart.header />
-
-                <a class="actions__item actions__item--white actions__item--menu">
-                    <span class="actions__btn"><i class="icon-menu1"></i></span>
-                </a>
-            </div>
         </div>
         <div class="wrap-msg-city">
             <div class="w-msg-city">
@@ -117,8 +98,7 @@
     <div class="header-bottom">
         <ul class="header-bottom__menu category-menu">
             @foreach ($productTypes as $type)
-                <li class="category-menu__item"><a
-                        href="{{ route('products.index', ['productType' => $type->slug]) }}"
+                <li class="category-menu__item"><a href="{{ route('products.index', ['productType' => $type->slug]) }}"
                         class="category-menu__link">{{ $type['name'] }}</a>
                 </li>
             @endforeach

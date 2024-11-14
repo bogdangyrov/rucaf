@@ -32,4 +32,14 @@ class ComparisonService
 
         return $productTypes;
     }
+
+    public static function inComparison($productId)
+    {
+        return in_array($productId, session('comparison', []));
+    }
+
+    public static function getTotalQuantity()
+    {
+        return count(session('comparison', []));
+    }
 }

@@ -26,8 +26,14 @@
                     <div class="catalog-actions__btn"><i class="icon-fav"></i></div>
                 </div>
                 <div class="catalog-actions__item">
-                    <button class="catalog-actions__btn" wire:click="addToComparison"><i
-                            class="icon-compare"></i></button>
+                    @if ($inComparison)
+                        <a class="catalog-actions__btn catalog-actions__btn--added" href="{{ route('comparison') }}"><i
+                                class="icon-compare"></i>
+                        </a>
+                    @else
+                        <button class="catalog-actions__btn " wire:click="addToComparison"><i
+                                class="icon-compare"></i></button>
+                    @endif
                 </div>
             </div>
 

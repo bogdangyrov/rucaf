@@ -11,6 +11,7 @@ class ProductItem extends Component
 {
     public $product;
     public $quantity;
+    public $inComparison;
 
     public $listeners = ['cartUpdated' => 'render'];
 
@@ -20,6 +21,9 @@ class ProductItem extends Component
         if ($quantity) {
             $this->quantity = $quantity;
         }
+
+        $this->inComparison = ComparisonService::inComparison($this->product->id);
+
         return view('livewire.product-item');
     }
 
