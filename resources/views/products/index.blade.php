@@ -32,7 +32,7 @@
 
     @include('products.components.why-choose-us')
     @include('products.components.recently-watched')
-    @include('products.components.index.type-description')
+    @include('products.components.index.description')
     @include('components.frequent-questions')
 @endsection
 

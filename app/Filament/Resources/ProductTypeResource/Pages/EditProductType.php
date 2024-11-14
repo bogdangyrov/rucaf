@@ -4,16 +4,16 @@ namespace App\Filament\Resources\ProductTypeResource\Pages;
 
 use App\Filament\Resources\ProductTypeResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\EditRecord;
 
-class ManageProductTypes extends ManageRecords
+class EditProductType extends EditRecord
 {
     protected static string $resource = ProductTypeResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }

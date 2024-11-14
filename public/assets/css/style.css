@@ -4848,16 +4848,16 @@ body {
         padding-left: 0;
         padding-right: 25%;
     }
-    .text-block__content>.collapse-content p {
+   /*  .text-block__content>.collapse-content p {
         padding-left: 25%;
-    }
+    } */
     .collapse-actions {
         padding-left: 25%;
     }
-    .text-block__content>.collapse-content.collapse-content--hidden p:first-child {
+    /* .text-block__content>.collapse-content.collapse-content--hidden p:first-child {
         padding-left: 25%;
         padding-right: 0;
-    }
+    } */
     .wrap-catalog {
         margin: 0;
         overflow: visible;
@@ -5998,7 +5998,7 @@ body {
     }
 }
 /* End Media */
-.custom-page {
+.custom-page, .text-block {
     ol {
         list-style: decimal;
     }
