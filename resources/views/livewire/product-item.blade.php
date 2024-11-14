@@ -33,8 +33,8 @@
         </div>
     </div>
 
-    <a
-        class="catalog__content"href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
+    <a class="catalog__content"
+        href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
         <div class="catalog__price">
             @isset($product->price)
                 @isset($product->discount_price)
@@ -54,7 +54,11 @@
 
     <div class="catalog__order catalog-order">
         @isset($product->price)
-            <livewire:cart.add-button-from-catalog :product="$product" />
+            @if ($quantity)
+                <a class="catalog-order__btn--added btn" href="{{ route('cart') }}">В корзине</a>
+            @else
+                <button class="catalog-order__btn btn" type="button" wire:click='addToCart'>В корзину</button>
+            @endif
         @else
             <button class="catalog-order__btn btn" type="button" data-fancybox=""
                 data-src="#order{{ $product->id }}">Запросить стоимость</button>

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Livewire\Cart;
+namespace App\Livewire;
 
 use Livewire\Component;
 use App\Services\CartService;
 
-class AddButtonFromCatalog extends Component
+class ProductItem extends Component
 {
     public $product;
     public $quantity;
 
-    public $listeners = ['quantity-updated' => 'render'];
+    public $listeners = ['cartUpdated' => 'render'];
 
     public function render()
     {
@@ -18,12 +18,12 @@ class AddButtonFromCatalog extends Component
         if ($quantity) {
             $this->quantity = $quantity;
         }
-        return view('livewire.cart.add-button-from-catalog');
+        return view('livewire.product-item');
     }
 
     public function addToCart()
     {
         CartService::add($this->product->id, 1);
-        $this->dispatch('quantity-updated');
+        $this->dispatch('cartUpdated');
     }
 }

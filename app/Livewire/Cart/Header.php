@@ -8,7 +8,7 @@ use Livewire\Component;
 class Header extends Component
 {
     public $listeners = [
-        'quantity-updated' => 'render',
+        'cartUpdated' => 'render',
     ];
 
     public function render()

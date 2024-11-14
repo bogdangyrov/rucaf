@@ -3,10 +3,11 @@
         <div class="title">
             <h2>Сопутствующие товары</h2>
         </div>
+
         <div class="wrap-catalog scroll">
             <div class="catalog">
                 @foreach ($relatedProducts as $product)
-                    @include('products.components.index.product-item')
+                    <livewire:product-item :product="$product" />
                 @endforeach
             </div>
         </div>

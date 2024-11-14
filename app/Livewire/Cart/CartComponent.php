@@ -52,7 +52,7 @@ class CartComponent extends Component
         $this->totalSum = $this->products
             ->sum(fn($product) => ($product->discount_price ?? $product->price) * $product->quantity);
         $this->totalQuantity = CartService::getTotalQuantity();
-        $this->dispatch('quantity-updated');
+        $this->dispatch('cartUpdated');
     }
 
     public function render()
