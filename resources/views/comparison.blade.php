@@ -5,14 +5,19 @@
         /* Основной контейнер */
         .comparison-page {
             padding: 20px;
-            background: #FAFAFA;
             display: flex;
             flex-direction: column;
+            border-bottom: 1px solid #E4E4E4;
+
+            .tabs {
+                padding-top: 20px !important;
+            }
         }
 
         .comparison-page__header {
             margin-bottom: 20px;
             padding-bottom: 10px;
+            border-bottom: 1px solid #E4E4E4;
         }
 
         /* Навигация по категориям */
@@ -23,7 +28,6 @@
         }
 
         .category-btn {
-            padding: 10px 20px;
             background: #F3F3F3;
             border-radius: 4px;
             color: #000;
@@ -34,8 +38,11 @@
 
         .category-btn.active,
         .category-btn:hover {
-            background: #E4B900;
-            color: #fff;
+            .tabs-menu__link {
+                background-color: #E4B900;
+                color: #fff;
+                border: 1px solid #fff;
+            }
         }
 
         /* Обертка таблицы для сравнения */
@@ -67,6 +74,7 @@
 
             p {
                 color: #EAEAEA;
+                height: 25px;
             }
 
             img {
@@ -113,11 +121,6 @@
                 width: 100%;
             }
 
-            /* .comparison-row {
-                                                                            display: flex;
-                                                                            flex-direction: column;
-                                                                        } */
-
             .comparison-header,
             .comparison-row {
                 display: flex;
@@ -149,83 +152,46 @@
         .tabs-info {
             flex-direction: row;
         }
+
+        .comparicom-header__close-btn {
+            position: relative;
+            top: -140px;
+            left: 112px;
+            color: #EAEAEA;
+        }
+
+        .comparicom-header__close-btn:hover,
+        .comparicom-header__close-btn:active {
+            color: #E4B900
+        }
+
+        .comparison-empty-comparison {
+            text-align: center;
+            padding: 40px;
+            font-size: 30px;
+        }
+
+        .tabs__content:not(:first-of-type) {
+            display: none;
+        }
     </style>
+
     <div class="wrap">
-        <div class="content">
-            <div class="comparison-page">
-                <div class="comparison-page__header title">
-                    <h1>Сравнение товаров</h1>
-                </div>
+        <div class="wrap">
+            <div class="content">
+                <div class="comparison-page">
 
-                <div class="tabs">
-                    <ul class="tabs__menu tabs-menu scroll">
-                        @foreach ($productTypes as $type)
-                            <li class="tabs-menu__item category-btn">
-                                <a href="#type-{{ $type->slug }}" class="tabs-menu__link">{{ $type->name }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <div class="comparison-page__header title">
+                        <h1>Сравнение товаров</h1>
+                    </div>
 
-                    @foreach ($productTypes as $type)
-                        <div id="type-{{ $type->slug }}" class="tabs__content tabs-content">
-                            <div class="tabs-info">
+                    <livewire:comparison-component>
 
-                                <div class="comparison-table-wrapper" id="comparison-table-1">
-                                    <div class="comparison-table">
-
-                                        <div class="comparison-header">
-                                            <div class="comparison-header-item">{{ $type->name }}</div>
-                                            @foreach ($type->products as $product)
-                                                <a class="comparison-header-item"
-                                                    href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}">
-                                                    <img src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
-                                                        alt="">
-                                                    <p>{{ $product->name }}</p>
-                                                </a>
-                                            @endforeach
-                                        </div>
-
-                                        @foreach ($type->attributes as $attribute)
-                                            <div class="comparison-row">
-                                                <div class="comparison-cell characteristic">{{ $attribute->name }}</div>
-                                                @foreach ($type->products as $product)
-                                                    <div class="comparison-cell">
-                                                        {{ $product->attributeValues->where('attribute.id', $attribute->id)->first()->value->value ?? '-' }}
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        @endforeach
-
-                                        <div class="comparison-row">
-                                            <div class="comparison-cell characteristic">Цена</div>
-                                            @foreach ($type->products as $product)
-                                                <div class="comparison-cell">
-                                                    @isset($product->price)
-                                                        @isset($product->discount_price)
-                                                            {!! $product->getFormattedDiscountPrice() !!}₽
-                                                            <div class="catalog__old-price">
-                                                                {!! $product->getFormattedPrice() !!}₽
-                                                            </div>
-                                                        @else
-                                                            {!! $product->getFormattedPrice() !!}₽
-                                                        @endisset
-                                                    @else
-                                                        По запросу
-                                                    @endisset
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    @endforeach
                 </div>
             </div>
         </div>
+    </div>
 
-        @include('products.components.recently-watched')
-        @include('components.frequent-questions')
-    @endsection
-</div>
+    @include('products.components.recently-watched')
+    @include('components.frequent-questions')
+@endsection

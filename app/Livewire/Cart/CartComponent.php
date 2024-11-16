@@ -11,11 +11,13 @@ class CartComponent extends Component
     public $totalSum;
     public $totalQuantity;
 
-    protected $listeners = ['refreshCounter' => 'refreshCart'];
-
     public function mount()
     {
-        $this->refreshCart();
+        $this->products = CartService::get();
+        $this->totalSum = $this->products
+            ->sum(fn($product) => ($product->discount_price ?? $product->price) * $product->quantity);
+        $this->totalQuantity = CartService::getTotalQuantity();
+        $this->dispatch('cartUpdated');
     }
 
     public function increment($productId)
@@ -25,7 +27,7 @@ class CartComponent extends Component
             return;
         }
         CartService::update($productId, $quantity + 1);
-        $this->refreshCart();
+        $this->mount();
     }
 
     public function decrement($productId)
@@ -37,22 +39,13 @@ class CartComponent extends Component
         } else {
             CartService::update($productId, $quantity - 1);
         }
-        $this->refreshCart();
+        $this->mount();
     }
 
     public function delete($productId)
     {
         CartService::delete($productId, 0);
-        $this->refreshCart();
-    }
-
-    public function refreshCart()
-    {
-        $this->products = CartService::get();
-        $this->totalSum = $this->products
-            ->sum(fn($product) => ($product->discount_price ?? $product->price) * $product->quantity);
-        $this->totalQuantity = CartService::getTotalQuantity();
-        $this->dispatch('cartUpdated');
+        $this->mount();
     }
 
     public function render()

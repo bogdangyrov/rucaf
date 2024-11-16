@@ -42,4 +42,21 @@ class ComparisonService
     {
         return count(session('comparison', []));
     }
+
+    public static function delete($productId)
+    {
+        $sessionComparison = session('comparison', []);
+        if (empty($sessionComparison)) {
+            return false;
+        }
+
+        $productIndex = array_search($productId, $sessionComparison);
+
+        if ($productIndex === false) {
+            return false;
+        }
+
+        session()->pull('comparison.' . $productIndex);
+        return true;
+    }
 }
