@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Livewire\Cart;
+namespace App\Livewire;
 
-use App\Livewire\CartCounter;
-use App\Services\CartService;
 use Livewire\Component;
+use App\Services\CartService;
+use App\Service\ComparisonService;
 
-class AddButton extends Component
+class ProductActions extends Component
 {
     public $product;
     public $quantity;
+    public $inComparison;
 
     public function render()
     {
@@ -17,7 +18,10 @@ class AddButton extends Component
         if ($quantity) {
             $this->quantity = $quantity;
         }
-        return view('livewire.cart.add-button');
+
+        $this->inComparison = ComparisonService::inComparison($this->product->id);
+
+        return view('livewire.product-actions');
     }
 
     public function addToCart()
@@ -27,5 +31,11 @@ class AddButton extends Component
         }
         CartService::add($this->product->id, $this->quantity);
         $this->dispatch('cartUpdated');
+    }
+
+    public function addToComparison()
+    {
+        ComparisonService::add($this->product->id);
+        $this->dispatch('comparisonUpdated');
     }
 }

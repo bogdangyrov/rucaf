@@ -28,41 +28,7 @@
                 характеристики</span></a>
         <div class="good-actions__article">Артикул: <span>9957</span></div>
     </div>
-    <div class="wrap-good-card theiaStickySidebar">
-        <div class="good-card">
-            @isset($product->price)
-                <div class="good-card__prices">
-                    @isset($product->discount_price)
-                        <div class="good-card__price">{!! $product->getFormattedDiscountPrice() !!}₽
-                        </div>
-                        <div class="good-card__old-price">{!! $product->getFormattedPrice() !!}₽</div>
-                    @else
-                        <div class="good-card__price">{!! $product->getFormattedPrice() !!}₽
-                        </div>
-                    @endisset
-                </div>
-                <div class="good-card__wrap-actions">
-                    @livewire(Cart\AddButton::class, ['product' => $product])
-                    <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
-                        клик</button>
-                </div>
-            @else
-                <div class="good-card__wrap-actions">
-                    <div class="good-card__actions">
-                        <input type="number" class="good-card__numb" placeholder="1 шт">
-                        <button class="good-card__add-basket btn" type="button">Запросить стоимость</button>
-                    </div>
-                    <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
-                        клик</button>
-                </div>
-            @endisset
-        </div>
-        <div class="good-card-actions">
-            <button class="good-card-actions__btn" type="button" name="add-wishlist__btn"
-                data-id="{{ $product->id }}"><i class="icon-fav"></i><span>В
-                    избранное</span></button>
-            <button class="good-card-actions__btn" type="button"><i
-                    class="icon-compare"></i><span>Сравнение</span></button>
-        </div>
-    </div>
+
+    <livewire:product-actions :product="$product" />
+
 </div>

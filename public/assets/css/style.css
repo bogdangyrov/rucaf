@@ -2845,7 +2845,7 @@ body {
 .good-card-actions__btn i.favorites {
     color: #F4CA19;
 }
-.good-card-actions__btn:hover i {
+.good-card-actions__btn:hover i, .good-card-actions__btn-added i, .good-card-actions__btn-added span {
     color: #F4CA19;
 }
 .w-page-product {
