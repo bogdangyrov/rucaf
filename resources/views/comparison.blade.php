@@ -36,15 +36,6 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        .category-btn.active,
-        .category-btn:hover {
-            .tabs-menu__link {
-                background-color: #E4B900;
-                color: #fff;
-                border: 1px solid #fff;
-            }
-        }
-
         /* Обертка таблицы для сравнения */
         .comparison-table-wrapper {
             overflow-x: auto;
