@@ -24,18 +24,18 @@
             <div class="catalog__actions catalog-actions">
                 <div class="catalog-actions__item">
                     @if ($inFavorites)
-                        <a class="catalog-actions__btn catalog-actions__btn--added" href="{{ route('favorites') }}">
+                        <div class="catalog-actions__btn catalog-actions__btn--added" wire:click="deleteFromFavorites">
                             <i class="icon-fav"></i>
-                        </a>
+                        </div>
                     @else
                         <div class="catalog-actions__btn" wire:click="addToFavorites"><i class="icon-fav"></i></div>
                     @endif
                 </div>
                 <div class="catalog-actions__item">
                     @if ($inComparison)
-                        <a class="catalog-actions__btn catalog-actions__btn--added" href="{{ route('comparison') }}"><i
-                                class="icon-compare"></i>
-                        </a>
+                        <div class="catalog-actions__btn catalog-actions__btn--added" wire:click="deleteFromComparison">
+                            <i class="icon-compare"></i>
+                        </div>
                     @else
                         <button class="catalog-actions__btn " wire:click="addToComparison"><i
                                 class="icon-compare"></i></button>

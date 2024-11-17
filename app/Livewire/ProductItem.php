@@ -41,9 +41,21 @@ class ProductItem extends Component
         $this->dispatch('comparisonUpdated');
     }
 
+    public function deleteFromComparison()
+    {
+        ComparisonService::delete($this->product->id);
+        $this->dispatch('comparisonUpdated');
+    }
+
     public function addToFavorites()
     {
         FavoritesService::add($this->product->id);
+        $this->dispatch('favoritesUpdated');
+    }
+
+    public function deleteFromFavorites()
+    {
+        FavoritesService::delete($this->product->id);
         $this->dispatch('favoritesUpdated');
     }
 }

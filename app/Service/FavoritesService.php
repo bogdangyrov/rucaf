@@ -31,6 +31,23 @@ class FavoritesService
         return $products;
     }
 
+    public static function delete($productId)
+    {
+        $sessionComparison = session('favorites', []);
+        if (empty($sessionComparison)) {
+            return false;
+        }
+
+        $productIndex = array_search($productId, $sessionComparison);
+
+        if ($productIndex === false) {
+            return false;
+        }
+
+        session()->pull('favorites.' . $productIndex);
+        return true;
+    }
+
     public static function getTotalQuantity()
     {
         return count(session('favorites', []));
