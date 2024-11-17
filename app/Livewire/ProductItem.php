@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Service\ComparisonService;
+use App\Service\FavoritesService;
 use Livewire\Component;
 use App\Services\CartService;
 use League\Csv\Query\Constraint\Comparison;
@@ -12,6 +13,7 @@ class ProductItem extends Component
     public $product;
     public $quantity;
     public $inComparison;
+    public $inFavorites;
 
     public $listeners = ['cartUpdated' => 'render'];
 
@@ -23,7 +25,7 @@ class ProductItem extends Component
         }
 
         $this->inComparison = ComparisonService::inComparison($this->product->id);
-
+        $this->inFavorites = FavoritesService::inFavorites($this->product->id);
         return view('livewire.product-item');
     }
 
@@ -37,5 +39,11 @@ class ProductItem extends Component
     {
         ComparisonService::add($this->product->id);
         $this->dispatch('comparisonUpdated');
+    }
+
+    public function addToFavorites()
+    {
+        FavoritesService::add($this->product->id);
+        $this->dispatch('favoritesUpdated');
     }
 }

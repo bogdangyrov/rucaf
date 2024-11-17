@@ -12,9 +12,11 @@
         @endif
     </a>
 
-    <a href="#" class="actions__item">
+    <a href="{{ route('favorites') }}" class="actions__item">
         <span class="actions__btn"><i class="icon-fav"></i></span>
-        <span class="actions__numbs">11</span>
+        @if ($favoritesQuantity)
+            <span class="actions__numbs">{{ $favoritesQuantity }}</span>
+        @endif
     </a>
 
     <a href="{{ route('cart') }}" class="actions__item">

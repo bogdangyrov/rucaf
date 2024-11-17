@@ -23,7 +23,13 @@
 
             <div class="catalog__actions catalog-actions">
                 <div class="catalog-actions__item">
-                    <div class="catalog-actions__btn"><i class="icon-fav"></i></div>
+                    @if ($inFavorites)
+                        <a class="catalog-actions__btn catalog-actions__btn--added" href="{{ route('favorites') }}">
+                            <i class="icon-fav"></i>
+                        </a>
+                    @else
+                        <div class="catalog-actions__btn" wire:click="addToFavorites"><i class="icon-fav"></i></div>
+                    @endif
                 </div>
                 <div class="catalog-actions__item">
                     @if ($inComparison)
