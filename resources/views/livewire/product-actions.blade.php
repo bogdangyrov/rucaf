@@ -38,15 +38,24 @@
         @endisset
     </div>
     <div class="good-card-actions">
-        <button class="good-card-actions__btn" type="button" name="add-wishlist__btn" data-id="{{ $product->id }}"><i
-                class="icon-fav"></i><span>В
-                избранное</span></button>
+        @if ($inFavorites)
+            <a class="good-card-actions__btn good-card-actions__btn-added" type="button" name="add-wishlist__btn"
+                href="{{ route('favorites') }}"><i class="icon-fav"></i>
+                <span>В избранном</span></a>
+        @else
+            <button class="good-card-actions__btn" type="button" name="add-wishlist__btn"
+                wire:click="addToFavorites"><i class="icon-fav"></i>
+                <span>В избранное</span></button>
+        @endif
+
         @if ($inComparison)
             <a class="good-card-actions__btn good-card-actions__btn-added" type="button"
-                href="{{ route('comparison') }}"><i class="icon-compare"></i><span>В сравнении</span></a>
+                href="{{ route('comparison') }}"><i class="icon-compare"></i>
+                <span>В сравнении</span></a>
         @else
             <button class="good-card-actions__btn" type="button" wire:click="addToComparison"><i
-                    class="icon-compare"></i><span>Сравнение</span></button>
+                    class="icon-compare"></i>
+                <span>Сравнение</span></button>
         @endif
     </div>
 </div>

@@ -5,12 +5,14 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Services\CartService;
 use App\Service\ComparisonService;
+use App\Service\FavoritesService;
 
 class ProductActions extends Component
 {
     public $product;
     public $quantity;
     public $inComparison;
+    public $inFavorites;
 
     public function render()
     {
@@ -20,6 +22,7 @@ class ProductActions extends Component
         }
 
         $this->inComparison = ComparisonService::inComparison($this->product->id);
+        $this->inFavorites = FavoritesService::inFavorites($this->product->id);
 
         return view('livewire.product-actions');
     }
@@ -37,5 +40,11 @@ class ProductActions extends Component
     {
         ComparisonService::add($this->product->id);
         $this->dispatch('comparisonUpdated');
+    }
+
+    public function addToFavorites()
+    {
+        FavoritesService::add($this->product->id);
+        $this->dispatch('favoritesUpdated');
     }
 }
