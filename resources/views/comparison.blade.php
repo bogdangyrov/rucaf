@@ -218,4 +218,5 @@
 
     @include('products.components.recently-watched')
     @include('components.frequent-questions')
+    @include('components.cities')
 @endsection

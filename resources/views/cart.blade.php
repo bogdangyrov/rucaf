@@ -92,11 +92,6 @@
                 font-size: 20px;
             }
 
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
             .btn {
                 max-width: 300px;
                 font-size: 20px;
@@ -113,16 +108,6 @@
             margin-left: 10px;
             color: #B8B8B8;
             text-decoration: line-through;
-        }
-
-        .cart-empty-cart {
-            text-align: center;
-            padding: 40px;
-            font-size: 30px;
-        }
-
-        .cart-summary__total-quantity {
-            color: #666;
         }
 
         .cart-empty-cart {
@@ -173,5 +158,6 @@
 
         @include('products.components.recently-watched')
         @include('components.frequent-questions')
+        @include('components.cities')
     @endsection
 </div>

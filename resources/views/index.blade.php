@@ -550,32 +550,6 @@
         </div>
     </section>
 
-    <div class="wrap wrap--content">
-        <div class="content">
-            <div class="text-block">
-                <div class="text-block__content wrap-collapse-content">
-                    <div class="collapse-content">
-                        <p>Есть над чем задуматься: представители современных социальных резервов смешаны с не уникальными
-                            данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.
-                        </p>
-                        <p>Предварительные выводы неутешительны: социально-экономическое развитие выявляет срочную
-                            потребность распределения внутренних резервов и ресурсов.</p>
-                    </div>
-                    <div class="collapse-content collapse-content--hidden">
-                        <p>Есть над чем задуматься: представители современных социальных резервов смешаны с не уникальными
-                            данными до степени совершенной неузнаваемости, из-за чего возрастает их статус бесполезности.
-                        </p>
-                        <p>Предварительные выводы неутешительны: социально-экономическое развитие выявляет срочную
-                            потребность распределения внутренних резервов и ресурсов.</p>
-                    </div>
-                    <div class="collapse-actions">
-                        <a href="#" class="collapse-actions__btn btn">Перейти в каталог</a>
-                        <button class="collapse-actions__btn-open" type="button">Показать больше</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @include('components.frequent-questions')
+    @include('components.cities')
 @endsection

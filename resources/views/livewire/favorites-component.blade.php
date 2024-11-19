@@ -8,7 +8,7 @@
             </div>
         </div>
     @else
-        <div class="cart-empty-cart">
+        <div class="favorites-empty">
             <p>Избранные товары отсутствуют!</p>
             <p>Вы можете добавить в неё новые товары из каталога!</p>
         </div>

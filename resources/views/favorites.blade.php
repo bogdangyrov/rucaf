@@ -22,6 +22,12 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #E4E4E4;
         }
+
+        .favorites-empty {
+            text-align: center;
+            padding: 40px;
+            font-size: 30px;
+        }
     </style>
     <div class="wrap">
         <div class="wrap">
@@ -38,5 +44,6 @@
 
         @include('products.components.recently-watched')
         @include('components.frequent-questions')
+        @include('components.cities')
     @endsection
 </div>
