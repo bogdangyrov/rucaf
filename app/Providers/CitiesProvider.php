@@ -23,12 +23,7 @@ class CitiesProvider extends ServiceProvider
     {
         View::composer('components.cities', function ($view) {
             $cities = City::orderBy('name')->get();
-            $citiesGrouped = [];
-            foreach ($cities as $city) {
-                $capitalLetter = mb_substr($city['name'], 0, 1, 'UTF-8');
-                $citiesGrouped[$capitalLetter][] = $city;
-            }
-
+            $citiesGrouped = City::groupByCapitalLetter($cities);
             $view->with('citiesGrouped', $citiesGrouped);
         });
     }

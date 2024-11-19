@@ -4,14 +4,7 @@
             <a class="header__catalog-btn btn btn--white js-open-menu" href="#catalog-menu"
                 data-menu="#catalog-menu">Каталог товаров</a>
             <div class="header__faq-actions faq-actions">
-                <div class="faq-actions__item">
-                    <div class="faq-actions__icon"><i class="icon-geo"></i></div>
-                    <div class="faq-actions__content">
-                        <div class="faq-actions__title">Санкт-Петербург</div>
-                        <button class="faq-actions__data" type="button" data-fancybox=""
-                            data-src="#city">изменить</button>
-                    </div>
-                </div>
+                <livewire:city-action />
                 <div class="faq-actions__item">
                     <div class="faq-info">
                         <div class="faq-info__icon"><i class="icon-phone"></i></div>
@@ -79,21 +72,9 @@
             <livewire:header />
 
         </div>
-        <div class="wrap-msg-city">
-            <div class="w-msg-city">
-                <div class="msg-city">
-                    <div class="msg-city__icon"><i class="icon-geo"></i></div>
-                    <div class="msg-city__content">
-                        <div class="msg-city__title">Санкт-Петербург</div>
-                        <div class="msg-city__data">Это ваш город?</div>
-                    </div>
-                </div>
-                <div class="msg-city__actions">
-                    <button class="msg-city__btn btn" type="button">Подтвердить</button>
-                    <button class="msg-city__link" type="button" data-fancybox data-src="#city">Изменить</button>
-                </div>
-            </div>
-        </div>
+
+        <livewire:choose-city />
+
     </div>
     <div class="header-bottom">
         <ul class="header-bottom__menu category-menu">
