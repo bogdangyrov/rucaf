@@ -1596,7 +1596,8 @@ body {
     line-height: 18px;
     color: #919199;
 }
-.faq-info__data span {
+.faq-info__data strong {
+    font-weight: 400;
     color: #000;
 }
 .faq__hidden-info {

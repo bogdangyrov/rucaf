@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Page;
+use App\Models\PhoneNumber;
 use App\Models\ProductType;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -31,7 +32,8 @@ class HeaderComposerProvider extends ServiceProvider
         View::composer('layouts.components.header', function ($view) {
             $pages = Page::orderBy('title')->get();
             $types = ProductType::orderBy('name')->limit(5)->get();
-            $view->with(['pages' => $pages, 'productTypes' => $types]);
+            $phoneNumbers = PhoneNumber::get();
+            $view->with(['pages' => $pages, 'productTypes' => $types, 'phoneNumbers' => $phoneNumbers]);
         });
     }
 }

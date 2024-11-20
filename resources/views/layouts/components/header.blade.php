@@ -18,25 +18,22 @@
                     <div class="faq-info">
                         <div class="faq-info__icon"><i class="icon-phone"></i></div>
                         <div class="faq-info__content">
-                            <a href="tel:88007700890" class="faq-info__title">8 (800) 770-08-90</a>
-                            <div class="faq-info__data">с 09:00 до 20:00</div>
+                            <a href="tel:{{ $phoneNumbers->first()->formattedLinkNumber() }}"
+                                class="faq-info__title">{{ $phoneNumbers->first()->formattedNumber() }}</a>
+                            <div class="faq-info__data">{!! $phoneNumbers->first()->data !!}</div>
                         </div>
                     </div>
                     <div class="hidden-info faq-info">
-                        <div class="hidden-info__item">
-                            <div class="faq-info__icon"><i class="icon-phone"></i></div>
-                            <div class="faq-info__content">
-                                <a href="tel:88127003376" class="faq-info__title">8 (812) 700-33-76</a>
-                                <div class="faq-info__data"><span>Офис</span> с 10:00 до 18:00</div>
+                        @for ($i = 1; $i < count($phoneNumbers); $i++)
+                            <div class="hidden-info__item">
+                                <div class="faq-info__icon"><i class="icon-phone"></i></div>
+                                <div class="faq-info__content">
+                                    <a href="tel:{{ $phoneNumbers[$i]->formattedLinkNumber() }}"
+                                        class="faq-info__title">{{ $phoneNumbers[$i]->formattedNumber() }}</a>
+                                    <div class="faq-info__data">{!! $phoneNumbers[$i]->data !!}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="hidden-info__item">
-                            <div class="faq-info__icon"><i class="icon-phone"></i></div>
-                            <div class="faq-info__content">
-                                <a href="tel:84954300243" class="faq-info__title">8 (495) 430-02-43</a>
-                                <div class="faq-info__data"><span>Главный склад</span> с 08:00 до 18:00</div>
-                            </div>
-                        </div>
+                        @endfor
                         <div class="hidden-info__item">
                             <button class="hidden-info__btn btn" type="button" data-fancybox
                                 data-src="#form-price">Звонок специалиста</button>

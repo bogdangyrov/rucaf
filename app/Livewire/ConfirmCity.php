@@ -12,7 +12,6 @@ class ConfirmCity extends Component
     public function render()
     {
         $this->city = CustomerService::getCity();
-        debugbar()->info(session('city', 'Не задано'));
         return view('livewire.confirm-city');
     }
 
