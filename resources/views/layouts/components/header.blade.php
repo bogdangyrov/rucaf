@@ -4,7 +4,16 @@
             <a class="header__catalog-btn btn btn--white js-open-menu" href="#catalog-menu"
                 data-menu="#catalog-menu">Каталог товаров</a>
             <div class="header__faq-actions faq-actions">
-                <livewire:city-action />
+                <div class="faq-actions__item">
+                    <div class="faq-actions__icon"><i class="icon-geo"></i></div>
+                    <div class="faq-actions__content">
+                        <div class="faq-actions__title">
+                            <livewire:city-name />
+                        </div>
+                        <button class="faq-actions__data" type="button" data-fancybox=""
+                            data-src="#city">изменить</button>
+                    </div>
+                </div>
                 <div class="faq-actions__item">
                     <div class="faq-info">
                         <div class="faq-info__icon"><i class="icon-phone"></i></div>
@@ -69,12 +78,10 @@
                 @endforeach
             </ul>
 
-            <livewire:header />
-
+            <livewire:header-actions />
         </div>
 
-        <livewire:choose-city />
-
+        <livewire:confirm-city />
     </div>
     <div class="header-bottom">
         <ul class="header-bottom__menu category-menu">
@@ -85,12 +92,15 @@
             @endforeach
         </ul>
     </div>
+
     <div class="wrap-menu-mobile scroll">
         <div class="header-func">
             <div class="header-func__item">
                 <div class="header-func__icon"><i class="icon-geo"></i></div>
                 <div class="header-func__content">
-                    <div class="header-func__title">Санкт-Петербург</div>
+                    <div class="header-func__title">
+                        <livewire:city-name />
+                    </div>
                     <button class="header-func__data" type="button" data-fancybox data-src="#city">изменить</button>
                 </div>
             </div>
@@ -112,11 +122,20 @@
         <a class="header-catalog-btn btn" href="#catalog-menu">Каталог</a>
         <nav class="wrap-header-menu">
             <ul class="header-menu">
-                <li class="header-menu__item"><a href="#" class="header-menu__link">О компании</a></li>
-                <li class="header-menu__item"><a href="#" class="header-menu__link">Доставка и
-                        оплата</a></li>
-                <li class="header-menu__item"><a href="#" class="header-menu__link">Контакты</a></li>
+                @foreach ($pages as $page)
+                    <li class="header-menu__item"><a href="{{ route('page', ['page' => $page->slug]) }}"
+                            class="header-menu__link">{{ $page->title }}</a>
+                    </li>
+                @endforeach
             </ul>
         </nav>
     </div>
 </header>
+
+<div style="display: none;" class="modal modal--no-price modal--bottom" id="city">
+    <div class="modal-wrap">
+        <div class="modal-title"><span>Изменить город</span><button class="modal-close-btn" type="button"
+                data-fancybox-close><i class="icon-close1"></i></button></div>
+        <livewire:city-search />
+    </div>
+</div>

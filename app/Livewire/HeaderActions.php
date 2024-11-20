@@ -7,7 +7,7 @@ use App\Service\FavoritesService;
 use App\Services\CartService;
 use Livewire\Component;
 
-class Header extends Component
+class HeaderActions extends Component
 {
     public $listeners = [
         'cartUpdated' => 'render',
@@ -25,6 +25,6 @@ class Header extends Component
         $this->comparisonQuantity = ComparisonService::getTotalQuantity();
         $this->favoritesQuantity = FavoritesService::getTotalQuantity();
 
-        return view('livewire.header');
+        return view('livewire.header-actions');
     }
 }

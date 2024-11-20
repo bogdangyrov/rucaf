@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Service\CustomerService;
 use Livewire\Component;
 
-class ChooseCity extends Component
+class ConfirmCity extends Component
 {
     public $city;
 
@@ -13,7 +13,7 @@ class ChooseCity extends Component
     {
         $this->city = CustomerService::getCity();
         debugbar()->info(session('city', 'Не задано'));
-        return view('livewire.choose-city');
+        return view('livewire.confirm-city');
     }
 
     public function confirm()
