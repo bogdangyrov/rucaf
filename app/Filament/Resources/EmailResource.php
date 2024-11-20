@@ -2,22 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PhoneNumberResource\Pages;
-use App\Models\PhoneNumber;
+use App\Filament\Resources\EmailResource\Pages;
+use App\Models\Email;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Propaganistas\LaravelPhone\PhoneNumber as PhoneNumberFormatter;
 
-class PhoneNumberResource extends Resource
+class EmailResource extends Resource
 {
-    protected static ?string $model = PhoneNumber::class;
+    protected static ?string $model = Email::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-phone';
+    protected static ?string $navigationIcon = 'heroicon-c-envelope';
 
-    protected static ?string $navigationLabel = 'Номера';
+    protected static ?string $navigationLabel = 'Email';
 
     protected static ?string $navigationGroup = 'Сайт';
 
@@ -25,23 +24,14 @@ class PhoneNumberResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('number')
-                    ->label('Номер телефона')
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->required()
                     ->maxLength(255)
-                    ->formatStateUsing(function (string $state) {
-                        $phone = new PhoneNumberFormatter($state, "RU");
-                        return $phone->formatNational();
-                    })
                     ->columnSpanFull(),
-                Forms\Components\RichEditor::make('data')
+                Forms\Components\TextInput::make('data')
                     ->label('Информация')
                     ->required()
-                    ->toolbarButtons([
-                        'bold',
-                        'redo',
-                        'undo',
-                    ])
                     ->maxLength(255)
                     ->columnSpanFull(),
             ]);
@@ -51,16 +41,10 @@ class PhoneNumberResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('number')
-                    ->label('Номер телефона')
-                    ->formatStateUsing(function (string $state) {
-                        $phone = new PhoneNumberFormatter($state, "RU");
-                        return $phone->formatNational();
-                    })
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('data')
                     ->label('Информация')
-                    ->html()
                     ->searchable(),
             ])
             ->filters([
@@ -80,7 +64,7 @@ class PhoneNumberResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePhoneNumbers::route('/'),
+            'index' => Pages\ManageEmails::route('/'),
         ];
     }
 }

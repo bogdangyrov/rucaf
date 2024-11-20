@@ -40,19 +40,22 @@
                         <div class="faq__info faq-info">
                             <div class="faq-info__icon"><i class="icon-mail"></i></div>
                             <div class="faq-info__content">
-                                <a href="mailto:info-order@rucaf.ru" class="faq-info__title">info-order@rucaf.ru</a>
-                                <div class="faq-info__data">написать</div>
+                                <a href="mailto:{{ $emails->first()->email }}"
+                                    class="faq-info__title">{{ $emails->first()->email }}</a>
+                                <div class="faq-info__data">{{ $emails->first()->data }}</div>
                             </div>
                         </div>
                         <div class="faq__hidden-info hidden-info faq-info" style="display: none;">
-                            <div class="hidden-info__item">
-                                <div class="faq-info__icon"><i class="icon-mail"></i></div>
-                                <div class="faq-info__content">
-                                    <a href="mailto:site-review@rucaf.ru"
-                                        class="faq-info__title">site-review@rucaf.ru</a>
-                                    <div class="faq-info__data">Вопросы по сайту</div>
+                            @for ($i = 1; $i < count($emails); $i++)
+                                <div class="hidden-info__item">
+                                    <div class="faq-info__icon"><i class="icon-mail"></i></div>
+                                    <div class="faq-info__content">
+                                        <a href="mailto:{{ $emails[$i]->email }}"
+                                            class="faq-info__title">{{ $emails[$i]->email }}</a>
+                                        <div class="faq-info__data">{{ $emails[$i]->data }}</div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endfor
                         </div>
                     </div>
                     <div class="faq-actions__item">

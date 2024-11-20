@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\City;
+use App\Models\Email;
 use App\Models\Page;
 use App\Models\PhoneNumber;
 use App\Models\ProductType;
@@ -51,7 +52,8 @@ class ViewComposerProvider extends ServiceProvider
                 $sharedData = [
                     'pages' => Page::orderBy('title')->get(),
                     'productTypes' => ProductType::orderBy('name')->get(),
-                    'phoneNumbers' => PhoneNumber::get()
+                    'phoneNumbers' => PhoneNumber::get(),
+                    'emails' => Email::get()
                 ];
             }
 
