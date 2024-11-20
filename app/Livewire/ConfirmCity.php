@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Service\CustomerService;
+use App\Services\CustomerService;
 use Livewire\Component;
 
 class ConfirmCity extends Component

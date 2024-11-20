@@ -4,8 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Services\CartService;
-use App\Service\ComparisonService;
-use App\Service\FavoritesService;
+use App\Services\ComparisonService;
+use App\Services\FavoritesService;
 
 class ProductActions extends Component
 {

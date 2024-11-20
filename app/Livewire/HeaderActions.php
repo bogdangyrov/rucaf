@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Service\ComparisonService;
-use App\Service\FavoritesService;
+use App\Services\ComparisonService;
+use App\Services\FavoritesService;
 use App\Services\CartService;
 use Livewire\Component;
 

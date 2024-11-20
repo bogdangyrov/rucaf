@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\City;
-use App\Service\CustomerService;
+use App\Services\CustomerService;
 use Livewire\Component;
 
 class CityName extends Component

@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Service\ComparisonService;
+use App\Services\ComparisonService;
 
 class ComparisonComponent extends Component
 {
