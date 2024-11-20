@@ -39,7 +39,12 @@ class ViewComposerProvider extends ServiceProvider
             $view->with('types', $types);
         });
 
-        View::composer(['layouts.components.header', 'layouts.components.footer'], function ($view) {
+        View::composer([
+            'layouts.components.header',
+            'layouts.components.footer',
+            'products.components.why-choose-us',
+            'components.frequent-questions'
+        ], function ($view) {
             static $sharedData;
 
             if (!$sharedData) {
