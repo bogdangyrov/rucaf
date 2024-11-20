@@ -19,7 +19,7 @@ class AttributeResource extends Resource
 {
     protected static ?string $model = Attribute::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-chart-bar';
+    protected static ?string $navigationIcon = 'heroicon-s-document-chart-bar';
 
     protected static ?string $navigationLabel = 'Характеристики';
 
