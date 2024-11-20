@@ -8,7 +8,7 @@ use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\Web\ProductController;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/comparison', [ComparisonController::class, 'index'])->name('comparison');
 Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites');

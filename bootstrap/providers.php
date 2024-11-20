@@ -2,8 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\CitiesProvider::class,
+    App\Providers\ViewComposerProvider::class,
     App\Providers\Filament\AdminPanelProvider::class,
-    App\Providers\HeaderComposerProvider::class,
-    App\Providers\RecentlyViewedProvider::class,
 ];

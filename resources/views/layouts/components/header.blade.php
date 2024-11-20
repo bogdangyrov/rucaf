@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <a href="/" class="header__logo logo">
+        <a href="{{ route('home') }}" class="header__logo logo">
             <picture class="logo__picture">
                 <source srcset="{{ asset('assets/img/logo.svg') }}" media="(min-width: 601px)">
                 <img src="{{ asset('assets/img/logo-mini.svg') }}" alt="ruCaf" class="logo__img">
@@ -82,7 +82,7 @@
     </div>
     <div class="header-bottom">
         <ul class="header-bottom__menu category-menu">
-            @foreach ($productTypes as $type)
+            @foreach ($productTypes->take(5) as $type)
                 <li class="category-menu__item"><a href="{{ route('products.index', ['productType' => $type->slug]) }}"
                         class="category-menu__link">{{ $type['name'] }}</a>
                 </li>
@@ -104,8 +104,9 @@
             <div class="header-func__item">
                 <div class="header-func__icon"><i class="icon-phone"></i></div>
                 <div class="header-func__content">
-                    <a class="header-func__title" href="tel:88007700890">8 (800) 770-08-90</a>
-                    <div class="header-func__data"><span>Поддержка</span> с 09:00 до 20:00</div>
+                    <a class="header-func__title"
+                        href="tel:{{ $phoneNumbers->first()->formattedLinkNumber() }}">{{ $phoneNumbers->first()->formattedNumber() }}</a>
+                    <div class="header-func__data">{!! $phoneNumbers->first()->data !!}</div>
                 </div>
             </div>
             <div class="header-func__item">
@@ -127,6 +128,7 @@
             </ul>
         </nav>
     </div>
+
 </header>
 
 <div style="display: none;" class="modal modal--no-price modal--bottom" id="city">

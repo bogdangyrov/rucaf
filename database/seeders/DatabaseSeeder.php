@@ -8,11 +8,14 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\ProductType;
+use App\Models\QuickFilter;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
-use App\Models\Page;
-use App\Models\QuickFilter;
 use Illuminate\Database\Seeder;
+use Database\Seeders\CitySeeder;
+use Database\Seeders\PageSeeder;
+use Database\Seeders\PhoneNumberSeeder;
+use Database\Seeders\ProductTypeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +24,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            CitySeeder::class,
+            ProductTypeSeeder::class,
+            PageSeeder::class,
+            PhoneNumberSeeder::class
+        ]);
 
         User::factory()->create([
             'name' => 'Admin',
@@ -29,8 +37,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'admin'
         ]);
 
-        // Создание типа продукта
-        $productType = ProductType::create(['name' => 'Редукторы']);
+        $productType = ProductType::where('name', 'Редукторы')->first();
 
         $categoryNames = ['Редукторы ЦУ', 'Редукторы Ц2У', 'Редукторы Ц3У'];
         $productNames = ['1ЦУ-100', '1ЦУ-160', '1ЦУ-200'];
@@ -77,8 +84,5 @@ class DatabaseSeeder extends Seeder
 
         QuickFilter::create(['attribute_id' => 1, 'value_id' => 1, 'product_type_id' => 1, 'name' => 'Россия']);
         QuickFilter::create(['attribute_id' => 2, 'value_id' => 2, 'product_type_id' => 1, 'name' => 'Цилиндрическая передача']);
-
-
-        Page::create(['title' => 'Новая страница', 'html' => '<h1>Заголовок</h1><h2>Заголовок поменьше</h2>']);
     }
 }

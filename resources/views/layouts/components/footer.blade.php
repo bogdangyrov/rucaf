@@ -1,30 +1,19 @@
 <footer class="wrap-footer">
     <div class="wrap-footer-top">
         <div class="footer-content footer-top">
-            <a class="footer-top__logo logo" href="#"><img src="{{ asset('assets/img/logo.svg') }}"
+            <a class="footer-top__logo logo" href="{{ route('home') }}"><img src="{{ asset('assets/img/logo.svg') }}"
                     alt="ruCaf"></a>
             <div class="footer-top__info info">
-                <div class="info__item">
-                    <div class="info__icon"><i class="icon-phone"></i></div>
-                    <div class="info__content">
-                        <a href="tel:88007700890" class="info__title">8 (800) 770-08-90</a>
-                        <div class="info__data"><span>Поддержка</span> с 09:00 до 20:00</div>
+                @foreach ($phoneNumbers as $phoneNumber)
+                    <div class="info__item">
+                        <div class="info__icon"><i class="icon-phone"></i></div>
+                        <div class="info__content">
+                            <a href="tel:{{ $phoneNumber->formattedLinkNumber() }}"
+                                class="info__title">{{ $phoneNumber->formattedNumber() }}</a>
+                            <div class="info__data">{!! $phoneNumber->data !!}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="info__item">
-                    <div class="info__icon"><i class="icon-phone"></i></div>
-                    <div class="info__content">
-                        <a href="tel:88127003376" class="info__title">8 (812) 700-33-76</a>
-                        <div class="info__data"><span>Офис</span> с 10:00 до 18:00</div>
-                    </div>
-                </div>
-                <div class="info__item">
-                    <div class="info__icon"><i class="icon-phone"></i></div>
-                    <div class="info__content">
-                        <a href="tel:84954300243" class="info__title">8 (495) 430-02-43</a>
-                        <div class="info__data"><span>Главный склад</span> с 08:00 до 18:00</div>
-                    </div>
-                </div>
+                @endforeach
                 <div class="info__item">
                     <button class="info__btn btn" type="button" data-fancybox data-src="#form-price">Звонок
                         специалиста</button>
@@ -38,12 +27,11 @@
                 <ul class="footer-menu">
                     <li class="footer-menu__item"><a href="#" class="footer-menu__link">Каталог</a>
                     </li>
-                    <li class="footer-menu__item"><a href="#" class="footer-menu__link">О компании</a>
-                    </li>
-                    <li class="footer-menu__item"><a href="#" class="footer-menu__link">Доставка и
-                            оплата</a></li>
-                    <li class="footer-menu__item"><a href="#" class="footer-menu__link">Контакты</a>
-                    </li>
+                    @foreach ($pages as $page)
+                        <li class="footer-menu__item"><a href="{{ route('page', ['page' => $page->slug]) }}"
+                                class="footer-menu__link">{{ $page->title }}</a>
+                        </li>
+                    @endforeach
                 </ul>
             </nav>
         </div>
@@ -57,30 +45,11 @@
             </div>
             <nav class="footer-bottom__wrap-footer-bottom-menu">
                 <ul class="footer-bottom-menu">
-                    <li class="footer-bottom-menu__item"><a href="#"
-                            class="footer-bottom-menu__link">Автоматические выключатели</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#" class="footer-bottom-menu__link">Вакуумные
-                            контакторы</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#" class="footer-bottom-menu__link">Крановые
-                            весы</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#"
-                            class="footer-bottom-menu__link">Радиоуправление краном</a></li>
-                </ul>
-                <ul class="footer-bottom-menu">
-                    <li class="footer-bottom-menu__item"><a href="#" class="footer-bottom-menu__link">Лебедки
-                            электрические</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#"
-                            class="footer-bottom-menu__link">Редукторы</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#" class="footer-bottom-menu__link">Крановые
-                            электродвигатели</a></li>
-                </ul>
-                <ul class="footer-bottom-menu">
-                    <li class="footer-bottom-menu__item"><a href="#" class="footer-bottom-menu__link">Пульт
-                            управления</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#"
-                            class="footer-bottom-menu__link">Электрические тали и тельферы</a></li>
-                    <li class="footer-bottom-menu__item"><a href="#" class="footer-bottom-menu__link">Запчасти для
-                            тельфера</a></li>
+                    @foreach ($productTypes as $type)
+                        <li class="footer-bottom-menu__item"><a
+                                href="{{ route('products.index', ['productType' => $type->slug]) }}"
+                                class="footer-bottom-menu__link">{{ $type->name }}</a></li>
+                    @endforeach
                 </ul>
             </nav>
         </div>

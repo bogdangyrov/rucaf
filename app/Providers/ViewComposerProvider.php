@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Providers;
+
+use App\Models\City;
+use App\Models\Page;
+use App\Models\PhoneNumber;
+use App\Models\ProductType;
+use Illuminate\Support\Facades\View;
+use App\Services\RecentlyViewedService;
+use Illuminate\Support\ServiceProvider;
+
+class ViewComposerProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap services.
+     */
+    public function boot(): void
+    {
+
+        View::composer('components.cities', function ($view) {
+            $cities = City::orderBy('name')->get();
+            $citiesGrouped = City::groupByCapitalLetter($cities);
+            $view->with('citiesGrouped', $citiesGrouped);
+        });
+
+        View::composer('layouts.components.catalog-menu', function ($view) {
+            $types = ProductType::with(['categories' => function ($query) {
+                $query->orderBy('name');
+            }])->orderBy('name')->get();
+            $view->with('types', $types);
+        });
+
+        View::composer(['layouts.components.header', 'layouts.components.footer'], function ($view) {
+            static $sharedData;
+
+            if (!$sharedData) {
+                $sharedData = [
+                    'pages' => Page::orderBy('title')->get(),
+                    'productTypes' => ProductType::orderBy('name')->get(),
+                    'phoneNumbers' => PhoneNumber::get()
+                ];
+            }
+
+            $view->with($sharedData);
+        });
+
+        View::composer('products.components.recently-watched', function ($view) {
+            $recentlyViewedProducts = RecentlyViewedService::getProducts();
+            $view->with('recentlyViewedProducts', $recentlyViewedProducts);
+        });
+    }
+}
