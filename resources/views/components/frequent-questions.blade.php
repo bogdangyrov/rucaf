@@ -11,7 +11,7 @@
                 </div>
                 <div class="faq__actions faq-actions">
                     <div class="faq-actions__item">
-                        <div class="faq-info">
+                        <div class="faq__info faq-info">
                             <div class="faq-info__icon"><i class="icon-phone"></i></div>
                             <div class="faq-info__content">
                                 <a href="tel:{{ $phoneNumbers->first()->formattedLinkNumber() }}"
