@@ -101,6 +101,7 @@ class ProductResource extends Resource
                     ->image()
                     ->imageCropAspectRatio('1:1')
                     ->reorderable()
+                    ->directory('products')
                     ->columnSpanFull(),
                 RichEditor::make('description')
                     ->label('Описание')

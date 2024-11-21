@@ -12,6 +12,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/comparison', [ComparisonController::class, 'index'])->name('comparison');
 Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites');
-Route::get('/{page:slug}', [PageController::class, 'index'])->name('page');
+
+
+Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog');
 Route::get('/catalog/{productType:slug}', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{productType:slug}/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('/{page:slug}', [PageController::class, 'index'])->name('page');

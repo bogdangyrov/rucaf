@@ -60,7 +60,8 @@
                     <div class="main-slider__item">
                         <div class="main-content">
                             <a class="main-content__wrap-img" href="#">
-                                <div class="main-content__img"><img src="assets/img/content/img-8.png" alt=""></div>
+                                <div class="main-content__img"><img src="{{ asset('assets/img/content/img-8.png') }}"
+                                        alt=""></div>
                                 <div class="main-content__title">Автоматические выключатели</div>
                             </a>
                             <div class="main-content__wrap-menus">
@@ -145,73 +146,35 @@
                         </div>
                         <div class="main-slider-dots"></div>
                     </div>
-                    <a href="#" class="main-link"><span>Перейти в каталог</span><i class="icon-arrow2"></i></a>
+                    <a href="{{ route('catalog') }}" class="main-link"><span>Перейти в каталог</span><i
+                            class="icon-arrow2"></i></a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="wrap wrap--main-catalog wrap--light-gray">
-        <div class="content">
-            <div class="wrap-main-catalog">
-                <div class="main-catalog">
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-1.png" alt=""></div>
-                        <div class="main-catalog__title">Автоматические выключатели</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-2.png" alt=""></div>
-                        <div class="main-catalog__title">Вакуумные контакторы</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-3.png" alt=""></div>
-                        <div class="main-catalog__title">Крановые весы</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-4.png" alt=""></div>
-                        <div class="main-catalog__title">Радиоуправление краном и кран балкой</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-5.png" alt=""></div>
-                        <div class="main-catalog__title">Лебедки электрические</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-6.png" alt=""></div>
-                        <div class="main-catalog__title">Редукторы</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-7.png" alt=""></div>
-                        <div class="main-catalog__title">Крановые электродвигатели</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-8.png" alt=""></div>
-                        <div class="main-catalog__title">Электрические тали и тельферы</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-9.png" alt=""></div>
-                        <div class="main-catalog__title">Запчасти для тельфера</div>
-                    </a>
-                    <a href="#" class="main-catalog__item">
-                        <div class="main-catalog__img"><img src="assets/img/content/img-10.png" alt=""></div>
-                        <div class="main-catalog__title">Пульт управления</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('components.catalog')
 
     <div class="wrap wrap--brands wrap--light-gray">
         <div class="content">
             <div class="wrap-brands-slider">
                 <div class="brands-slider">
-                    <div class="brands-slider__item"><img src="assets/img/content/img-11.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-12.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-13.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-15.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-11.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-12.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-13.png" alt=""></div>
-                    <div class="brands-slider__item"><img src="assets/img/content/img-15.png" alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-11.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-12.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-13.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-15.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-11.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-12.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-13.png') }}"
+                            alt=""></div>
+                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-15.png') }}"
+                            alt=""></div>
                 </div>
             </div>
         </div>
@@ -281,8 +244,8 @@
                 <div class="catalog">
                     <div class="catalog__item">
                         <div class="catalog__wrap-img">
-                            <a class="catalog__img" href="#"><img src="assets/img/content/img-7.png"
-                                    alt=""></a>
+                            <a class="catalog__img" href="#"><img
+                                    src="{{ asset('assets/img/content/img-7.png') }}" alt=""></a>
                             <div class="catalog__wrap-actions">
                                 <div class="catalog__stocks catalog-stocks">
                                     <div class="catalog-stocks__sale">-30%</div>

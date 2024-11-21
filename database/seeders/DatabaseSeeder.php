@@ -14,6 +14,7 @@ use App\Models\AttributeValue;
 use Illuminate\Database\Seeder;
 use Database\Seeders\CitySeeder;
 use Database\Seeders\PageSeeder;
+use Database\Seeders\EmailSeeder;
 use Database\Seeders\PhoneNumberSeeder;
 use Database\Seeders\ProductTypeSeeder;
 
@@ -28,7 +29,8 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             ProductTypeSeeder::class,
             PageSeeder::class,
-            PhoneNumberSeeder::class
+            PhoneNumberSeeder::class,
+            EmailSeeder::class
         ]);
 
         User::factory()->create([

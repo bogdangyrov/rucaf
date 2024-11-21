@@ -22,10 +22,10 @@
             <nav class="footer-top__footer-menu footer-wrap-menu">
                 <button class="footer-menu-btn btn footer-menu-btn--menu" type="button"><i
                         class="icon-menu1"></i><span>Меню</span></button>
-                <a class="footer-menu-btn btn footer-menu-btn--catalog" href="#catalog-menu"><span>Каталог
+                <a class="footer-menu-btn btn footer-menu-btn--catalog" data-menu="#catalog-menu"><span>Каталог
                         товаров</span></a>
                 <ul class="footer-menu">
-                    <li class="footer-menu__item"><a href="#" class="footer-menu__link">Каталог</a>
+                    <li class="footer-menu__item"><a href="{{ route('catalog') }}" class="footer-menu__link">Каталог</a>
                     </li>
                     @foreach ($pages as $page)
                         <li class="footer-menu__item"><a href="{{ route('page', ['page' => $page->slug]) }}"

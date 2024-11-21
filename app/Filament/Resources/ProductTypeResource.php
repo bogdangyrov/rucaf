@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductTypeResource\Pages;
 use App\Filament\Resources\ProductTypeResource\RelationManagers;
+use Filament\Forms\Components\FileUpload;
 
 class ProductTypeResource extends Resource
 {
@@ -72,7 +73,10 @@ class ProductTypeResource extends Resource
                         'underline',
                         'undo',
                     ]),
-
+                FileUpload::make('image')
+                    ->label('Изображение')
+                    ->image()
+                    ->directory('product-types')
             ]);
     }
 
