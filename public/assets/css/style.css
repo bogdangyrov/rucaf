@@ -2011,8 +2011,14 @@ body {
 }
 .modal-form__item {
     display: block;
-    margin-bottom: 16px;
     position: relative;
+}
+.modal-form__error {
+    min-height: 16px;
+    p {
+        margin-left: 10px;
+        color: #c62829;
+    }
 }
 .modal-form__item:last-child {
     margin-bottom: 0;
@@ -2031,13 +2037,14 @@ body {
     padding: 0 24px;
 }
 .modal-form__item--actions .modal-form__sum {
-    max-width: 60px;
-    margin-right: 25px;
+    max-width: 65px;
+    margin-right: 20px;
     position: relative;
 }
 .modal-form__item--actions .modal-form__sum .modal-form__input {
-    color: #b8b8b8;
-    padding: 0 16px;
+    color: #000;
+    padding: 0 0;
+    text-align: center;
 }
 .modal-form__item--actions .modal-form__sum .modal-form__label,
 .modal-form__sum
@@ -2121,6 +2128,7 @@ body {
 }
 .modal-form__item--privacy {
     position: relative;
+    margin-top: 10px;
 }
 .modal-form__check {
     position: absolute;
@@ -2151,6 +2159,9 @@ body {
     position: absolute;
     top: 2px;
     left: 0;
+}
+.modal-form__txt.error::before {
+    border-color: #c62829;
 }
 .modal-form__item--privacy:hover .modal-form__txt::before {
     border: 1px solid #e4b900;
@@ -2251,9 +2262,7 @@ body {
     max-width: none;
     object-fit: cover;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
 }
 .order__sum {
     margin-bottom: 8px;
