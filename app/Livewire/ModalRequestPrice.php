@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Models\Product;
 use Livewire\Component;
+use App\Mail\RequestPrice;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Mail;
 
 class ModalRequestPrice extends Component
 {
@@ -26,6 +29,8 @@ class ModalRequestPrice extends Component
     #[Validate('accepted', message: 'Примите пользовательское соглашение.', translate: false)]
     public $privacy;
 
+    public $emailSended = false;
+
     public function render()
     {
         return view('livewire.modal-request-price');
@@ -34,5 +39,25 @@ class ModalRequestPrice extends Component
     public function sendEmail()
     {
         $this->validate();
+
+        $product = Product::with(
+            'productType',
+            'attributeValues.attribute',
+            'attributeValues.value',
+            'category'
+        )
+            ->findOrFail($this->product->id);
+
+        $result = Mail::to(env('MAIL_TO_ADDRESS'))->send(new RequestPrice(
+            $this->name,
+            $this->phone,
+            $this->comment,
+            $this->quantity,
+            $product
+        ));
+
+        if ($result) {
+            $this->emailSended = true;
+        }
     }
 }
