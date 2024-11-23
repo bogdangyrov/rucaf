@@ -36,7 +36,7 @@
                         @endfor
                         <div class="hidden-info__item">
                             <button class="hidden-info__btn btn" type="button" data-fancybox
-                                data-src="#form-price">Звонок специалиста</button>
+                                data-src="#request-call">Звонок специалиста</button>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@
             </div>
             <div class="faq__actions faq-actions">
                 <div class="faq-actions__item">
-                    <button class="faq-actions__btn btn" type="button" data-fancybox data-src="#form-price">Звонок
+                    <button class="faq-actions__btn btn" type="button" data-fancybox data-src="#request-call">Звонок
                         специалиста</button>
                 </div>
                 <div class="faq-actions__item">
@@ -37,8 +37,8 @@
                             </div>
                         @endfor
                         <div class="hidden-info__item">
-                            <button class="hidden-info__btn btn" type="button" data-fancybox=""
-                                data-src="#form-price">Звонок специалиста</button>
+                            <button class="hidden-info__btn btn" type="button" data-fancybox
+                                data-src="#request-call">Звонок специалиста</button>
                         </div>
                     </div>
                 </div>

@@ -28,23 +28,8 @@
 
     @include('layouts.components.catalog-menu')
 
-    <div style="display: none;" class="modal modal--bottom" id="form-price-ok">
-        <div class="modal-wrap">
-            <div class="modal-title"><span>Звонок специалиста</span><button class="modal-close-btn" type="button"
-                    data-fancybox-close><i class="icon-close1"></i></button></div>
-            <div class="modal-content scroll">
-                <div class="msg-ok">
-                    <div class="msg-ok__icon"><i class="icon-check1"></i></div>
-                    <div class="msg-ok__content">
-                        <p><b>Заявка отправлена</b></p>
-                        <p>Вам перезвонят в течение 15 минут.</p>
-                    </div>
-                </div>
-                <div class="msg-actions">
-                    <button class="msg-actions__btn btn btn--gray" type="button" data-fancybox-close>Закрыть</button>
-                </div>
-            </div>
-        </div>
+    <div style="display: none;" class="modal modal--bottom" id="request-call">
+        <livewire:modal-request-call />
     </div>
 
     <div class="overflow-bg"></div>
