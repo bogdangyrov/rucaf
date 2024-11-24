@@ -33,14 +33,12 @@ class ModalRequestCall extends Component
     {
         $this->validate();
 
-        $result = Mail::to(env('MAIL_TO_ADDRESS'))->send(new RequestCall(
+        Mail::to(env('MAIL_TO_ADDRESS'))->queue(new RequestCall(
             $this->name,
             $this->phone,
             $this->comment
         ));
 
-        if ($result) {
-            $this->emailSended = true;
-        }
+        $this->emailSended = true;
     }
 }

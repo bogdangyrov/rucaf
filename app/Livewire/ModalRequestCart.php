@@ -35,15 +35,13 @@ class ModalRequestCart extends Component
 
         $products = CartService::get();
 
-        $result = Mail::to(env('MAIL_TO_ADDRESS'))->send(new RequestCart(
+        Mail::to(env('MAIL_TO_ADDRESS'))->queue(new RequestCart(
             $this->name,
             $this->phone,
             $this->comment,
             $products
         ));
 
-        if ($result) {
-            $this->emailSended = true;
-        }
+        $this->emailSended = true;
     }
 }

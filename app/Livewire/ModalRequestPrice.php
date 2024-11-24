@@ -45,10 +45,9 @@ class ModalRequestPrice extends Component
             'attributeValues.attribute',
             'attributeValues.value',
             'category'
-        )
-            ->findOrFail($this->product->id);
+        )->findOrFail($this->product->id);
 
-        $result = Mail::to(env('MAIL_TO_ADDRESS'))->send(new RequestPrice(
+        Mail::to(env('MAIL_TO_ADDRESS'))->queue(new RequestPrice(
             $this->name,
             $this->phone,
             $this->comment,
@@ -56,8 +55,6 @@ class ModalRequestPrice extends Component
             $product
         ));
 
-        if ($result) {
-            $this->emailSended = true;
-        }
+        $this->emailSended = true;
     }
 }
