@@ -42,7 +42,7 @@
         <div class="cart-summary">
             <p class="cart-summary__total">Всего: {!! \App\Models\Product::formatPrice($totalSum) !!}₽ <span
                     class="cart-summary__total-quantity">({{ $totalQuantity }} товаров)</span></p>
-            <button class="btn">Оставить заявку</button>
+            <button class="btn" data-fancybox data-src="#request-cart">Оставить заявку</button>
         </div>
     @else
         <div class="cart-empty-cart">

@@ -9,6 +9,8 @@ use App\Http\Controllers\Web\PageController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\Web\ProductController;
+use App\Mail\RequestCart;
+use App\Services\CartService;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -16,8 +18,13 @@ Route::get('/comparison', [ComparisonController::class, 'index'])->name('compari
 Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites');
 
 Route::get('/mailable', function () {
-    $product = Product::first();
-    return (new RequestPrice('Богдан', '79789999999', 'Бла Бла Бла Бла Бла БлаБла Бла БлаБла Бла БлаБла Бла БлаБла Бла Бла', 100500, $product))->render();
+    $products = CartService::get();
+    return (new RequestCart(
+        'Богдан',
+        '79789999999',
+        'Бла Бла Бла Бла Бла БлаБла Бла БлаБла Бла БлаБла Бла БлаБла Бла Бла',
+        $products
+    ))->render();
 });
 
 Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog');

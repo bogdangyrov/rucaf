@@ -59,9 +59,9 @@ class Product extends Model
         return static::formatPrice($this->discount_price);
     }
 
-    public static function formatPrice($price)
+    public static function formatPrice($price, $thousandsSeparator = '&nbsp')
     {
-        return number_format($price, 0, ',', '&nbsp');
+        return number_format($price, 0, ',', $thousandsSeparator);
     }
 
     public static function scopeWithAttributes($query)

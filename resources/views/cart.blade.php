@@ -156,6 +156,10 @@
             </div>
         </div>
 
+        <div style="display: none;" class="modal modal--bottom" id="request-cart">
+            <livewire:modal-request-cart />
+        </div>
+
         @include('products.components.recently-watched')
         @include('components.frequent-questions')
         @include('components.cities')
