@@ -52,7 +52,7 @@
                 <label class="modal-form__item modal-form__item--privacy">
                     <input type="checkbox" class="modal-form__check" wire:model="privacy">
                     <span class="modal-form__txt @error('privacy') error @enderror">Даю согласие на <a
-                            href="#">обработку
+                            href="{{ route('privacy') }}">обработку
                             персональных данных.</a></span>
                 </label>
             </form>

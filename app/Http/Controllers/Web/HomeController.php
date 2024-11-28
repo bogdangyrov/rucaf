@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Helper\Seo;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Models\Email;
+use App\Models\PhoneNumber;
 
 class HomeController extends Controller
 {
@@ -29,7 +31,7 @@ class HomeController extends Controller
     {
         $seo = new Seo(
             'Каталог промышленного оборудования — Rucaf | rucaf.com',
-            'Каталог оборудования от компании RUCAF: автоматические выключатели, вакуумные контакторы, тали, лебедки, электродвигатели и многое другое. Доставка по всей России.',
+            'Каталог оборудования от компании Rucaf: автоматические выключатели, вакуумные контакторы, тали, лебедки, электродвигатели и многое другое. Доставка по всей России.',
             'Каталог оборудования — Rucaf',
             'Ознакомьтесь с каталогом промышленного оборудования Rucaf. Автоматические выключатели, запчасти для тельферов, редукторы, пульты управления и многое другое. Доставка по всей России.',
             asset('assets/img/logo.svg'),
@@ -38,5 +40,27 @@ class HomeController extends Controller
         );
 
         return view('catalog')->with('seo', $seo);
+    }
+
+    public function privacy()
+    {
+        $seo = new Seo(
+            'Политика конфиденциальности | Rucaf',
+            'Узнайте, как мы обрабатываем и защищаем ваши персональные данные на сайте rucaf.com',
+            'Защита персональных данных на сайте — Rucaf',
+            'Полная информация о целях, условиях хранения и передачи данных.',
+            asset('assets/img/logo.svg'),
+            route('privacy'),
+            'website',
+        );
+
+        $phoneNumber = PhoneNumber::first();
+        $email = Email::first();
+
+        return view('privacy')->with([
+            'seo' => $seo,
+            'phoneNumber' => $phoneNumber,
+            'email' => $email
+        ]);
     }
 }

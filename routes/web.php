@@ -9,6 +9,7 @@ use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\Web\ProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/privacy', [HomeController::class, 'privacy'])->name('privacy');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::get('/comparison', [ComparisonController::class, 'index'])->name('comparison');

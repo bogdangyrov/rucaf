@@ -39,7 +39,7 @@
     <div class="wrap-footer-bottom">
         <div class="footer-content footer-bottom">
             <div class="footer-bottom__copy footer-copy">
-                <a href="#" class="footer-copy__link"><i class="icon-form"></i><span>Обработка
+                <a href="{{ route('privacy') }}" class="footer-copy__link"><i class="icon-form"></i><span>Обработка
                         данных</span></a>
                 <div class="footer-copy__copy">Copyright <br>&copy;2022</div>
             </div>
