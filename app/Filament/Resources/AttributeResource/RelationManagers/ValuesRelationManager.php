@@ -19,6 +19,7 @@ class ValuesRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('value')
+                    ->label('Значение')
                     ->required()
                     ->maxLength(255),
             ]);

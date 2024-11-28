@@ -12,10 +12,7 @@ use App\Models\QuickFilter;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\QuickFilterResource\Pages;
-use App\Filament\Resources\QuickFilterResource\RelationManagers;
 
 class QuickFilterResource extends Resource
 {
@@ -32,6 +29,7 @@ class QuickFilterResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Название')
                     ->required()
                     ->maxLength(255),
                 Select::make('product_type_id')

@@ -2,23 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers\AttributeValuesRelationManager;
-use App\Models\Product;
 use Filament\Forms;
+use Filament\Tables;
+use App\Models\Product;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
-use PHPUnit\Framework\TestStatus\Risky;
+use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers\AttributeValuesRelationManager;
+use Filament\Forms\Components\Tabs\Tab;
 
 class ProductResource extends Resource
 {
@@ -34,87 +35,104 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Название')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-                Select::make('product_type_id')
-                    ->label('Тип оборудования')
-                    ->relationship('productType', 'name')
-                    ->required()
-                    ->createOptionForm(function (Form $form) {
-                        return $form->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Название типа оборудования')
-                                ->required(),
-                        ]);
-                    })
-                    ->editOptionForm(function (Form $form) {
-                        return $form->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Название типа оборудования')
-                                ->required(),
-                        ]);
-                    }),
-                Select::make('category_id')
-                    ->label('Категория')
-                    ->relationship('category', 'name')
-                    ->required()
-                    ->createOptionForm(function (Form $form) {
-                        return $form->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Название категории')
-                                ->required(),
-                            Select::make('product_type_id')
-                                ->label('Тип оборудования')
-                                ->relationship('productType', 'name')
-                                ->required()
-                        ]);
-                    })
-                    ->editOptionForm(function (Form $form) {
-                        return $form->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Название категории')
-                                ->required(),
-                            Select::make('product_type_id')
-                                ->label('Тип оборудования')
-                                ->relationship('productType', 'name')
-                                ->required()
-                        ]);
-                    }),
-                TextInput::make('price')
-                    ->label('Цена')
-                    ->numeric(),
-                TextInput::make('discount_price')
-                    ->label('Скидочная цена')
-                    ->numeric(),
-                Toggle::make('is_new')
-                    ->label('Новинка'),
-                Toggle::make('is_hit_of_sales')
-                    ->label('Хит продаж'),
-                Toggle::make('is_active')
-                    ->label('Активен'),
-                FileUpload::make('images')
-                    ->label('Изображения')
-                    ->multiple()
-                    ->image()
-                    ->imageCropAspectRatio('1:1')
-                    ->reorderable()
-                    ->directory('products')
-                    ->columnSpanFull(),
-                RichEditor::make('description')
-                    ->label('Описание')
-                    ->required()
+                Tabs::make('Tabs')
                     ->columnSpanFull()
-                    ->toolbarButtons([
-                        'bold',
-                        'italic',
-                        'strike',
-                        'underline',
-                        'redo',
-                        'undo',
-                    ])
+                    ->tabs([
+                        Tab::make('Информация')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Название')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
+                                Select::make('product_type_id')
+                                    ->label('Тип оборудования')
+                                    ->relationship('productType', 'name')
+                                    ->required()
+                                    ->createOptionForm(function (Form $form) {
+                                        return $form->schema([
+                                            Forms\Components\TextInput::make('name')
+                                                ->label('Название типа оборудования')
+                                                ->required(),
+                                        ]);
+                                    })
+                                    ->editOptionForm(function (Form $form) {
+                                        return $form->schema([
+                                            Forms\Components\TextInput::make('name')
+                                                ->label('Название типа оборудования')
+                                                ->required(),
+                                        ]);
+                                    }),
+                                Select::make('category_id')
+                                    ->label('Категория')
+                                    ->relationship('category', 'name')
+                                    ->required()
+                                    ->createOptionForm(function (Form $form) {
+                                        return $form->schema([
+                                            Forms\Components\TextInput::make('name')
+                                                ->label('Название категории')
+                                                ->required(),
+                                            Select::make('product_type_id')
+                                                ->label('Тип оборудования')
+                                                ->relationship('productType', 'name')
+                                                ->required()
+                                        ]);
+                                    })
+                                    ->editOptionForm(function (Form $form) {
+                                        return $form->schema([
+                                            Forms\Components\TextInput::make('name')
+                                                ->label('Название категории')
+                                                ->required(),
+                                            Select::make('product_type_id')
+                                                ->label('Тип оборудования')
+                                                ->relationship('productType', 'name')
+                                                ->required()
+                                        ]);
+                                    }),
+                                RichEditor::make('description')
+                                    ->label('Описание')
+                                    ->required()
+                                    ->columnSpanFull()
+                                    ->toolbarButtons([
+                                        'bold',
+                                        'italic',
+                                        'strike',
+                                        'underline',
+                                        'redo',
+                                        'undo',
+                                    ]),
+                            ]),
+                        Tab::make('Цена')
+                            ->schema([
+                                TextInput::make('price')
+                                    ->label('Цена')
+                                    ->numeric(),
+                                TextInput::make('discount_price')
+                                    ->label('Скидочная цена')
+                                    ->numeric(),
+
+                            ]),
+                        Tab::make('Файлы')
+                            ->schema([
+                                FileUpload::make('images')
+                                    ->label('Изображения')
+                                    ->multiple()
+                                    ->image()
+                                    ->imageCropAspectRatio('1:1')
+                                    ->reorderable()
+                                    ->directory('products')
+                                    ->columnSpanFull(),
+                            ]),
+                        Tab::make('Статус')
+                            ->schema([
+                                Toggle::make('is_new')
+                                    ->label('Новинка'),
+                                Toggle::make('is_hit_of_sales')
+                                    ->label('Хит продаж'),
+                                Toggle::make('is_active')
+                                    ->label('Активен'),
+                            ])
+                    ])->persistTabInQueryString()
             ]);
     }
 
