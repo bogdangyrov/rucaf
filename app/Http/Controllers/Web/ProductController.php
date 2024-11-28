@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Helper\Seo;
 use App\Helpers\Filter;
 use App\Models\Product;
 use App\Models\ProductType;
+use App\Http\Controllers\Controller;
 use App\Services\RecentlyViewedService;
 
 class ProductController extends Controller
@@ -51,6 +52,16 @@ class ProductController extends Controller
             ->with('attribute', 'value')
             ->get();
 
+        $seo = new Seo(
+            "{$productType->name} — Промышленное оборудование от Rucaf | rucaf.com",
+            'Купить ' .  mb_strtolower($productType->name) . ' для промышленных нужд от компании Rucaf. Надежное оборудование с доставкой по всей России.',
+            "{$productType->name} — Промышленное оборудование от Rucaf",
+            'Посмотрите наш ассортимент — ' . mb_strtolower($productType->name) . ' для различных промышленных нужд. Выбор качественного оборудования от Rucaf с доставкой по всей России.',
+            asset('storage/' . $productType->image),
+            route('products.index', ['productType' => $productType->slug]),
+            'website',
+        );
+
         return view('products.index')
             ->with([
                 'type' => $productType,
@@ -61,6 +72,7 @@ class ProductController extends Controller
                 'quickFilters' => $quickFilters,
                 'minPrice' => $minPrice,
                 'maxPrice' => $maxPrice,
+                'seo' => $seo
             ]);
     }
 
@@ -82,11 +94,22 @@ class ProductController extends Controller
             ->limit(5)
             ->get();
 
+        $seo = new Seo(
+            "{$product->name} — Купить промышленное оборудование в Rucaf",
+            "{$product->name} от компании Rucaf. Высокое качество и надежность для промышленных нужд. Доставка по всей России.",
+            "{$product->name} — Купить в Rucaf",
+            "{$product->name} для промышленных приложений. Отличается высокой надежностью и долговечностью. Закажите с доставкой по всей России от компании Rucaf.",
+            isset($product->images[0]) ? asset('storage/' . $product->images[0]) : asset('storage/' . $productType->image),
+            route('products.show', ['productType' => $productType->slug, 'product' => $product->slug]),
+            'product',
+        );
+
         return view('products.show')
             ->with([
                 'type' => $productType,
                 'product' => $product,
-                'relatedProducts' => $relatedProducts
+                'relatedProducts' => $relatedProducts,
+                'seo' => $seo
             ]);
     }
 }

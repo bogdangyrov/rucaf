@@ -2,13 +2,24 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
+use App\Helper\Seo;
 use App\Models\Page;
+use App\Http\Controllers\Controller;
 
 class PageController extends Controller
 {
     public function index(Page $page)
     {
-        return view('page')->with('page', $page);
+        $seo = new Seo(
+            $page->title,
+            $page->description,
+            $page->og_title,
+            $page->og_description,
+            asset('assets/img/logo.svg'),
+            route('page', ['page' => $page->slug]),
+            'article',
+        );
+
+        return view('page')->with(['page' => $page, 'seo' => $seo]);
     }
 }

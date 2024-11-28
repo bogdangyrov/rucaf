@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('title');
             $table->longText('html');
+            $table->string('description');
+            $table->string('og_title');
+            $table->string('og_description');
             $table->timestamps();
         });
     }

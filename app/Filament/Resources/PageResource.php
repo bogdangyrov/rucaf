@@ -30,6 +30,19 @@ class PageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
+                    ->label('Название страницы')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('description')
+                    ->label('Описание')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('og_title')
+                    ->label('Open Graph Title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('og_description')
+                    ->label('Open Graph Description')
                     ->required()
                     ->maxLength(255),
                 RichEditor::make('html')
@@ -50,7 +63,7 @@ class PageResource extends Resource
                         'strike',
                         'underline',
                         'undo',
-                    ])
+                    ]),
             ]);
     }
 

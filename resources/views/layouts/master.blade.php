@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $seo->title ?? '' }}</title>
-    <meta name="description" content="{{ $seo->description ?? '' }}">
+    @include('layouts.components.seo')
     <link rel="stylesheet" href="{{ asset('assets/libs/slick/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/jquery-ui/jquery-ui.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/libs/jScrollPane/jquery.jscrollpane.css') }}">

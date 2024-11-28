@@ -13,8 +13,28 @@ class PageSeeder extends Seeder
      */
     public function run(): void
     {
-        Page::create(['title' => 'О компании', 'html' => '<h1>О компании</h1><h2>Заголовок поменьше</h2>']);
-        Page::create(['title' => 'Доставка и оплата', 'html' => '<h1>Доставка и оплата</h1><h2>Заголовок поменьше</h2>']);
-        Page::create(['title' => 'Контакты', 'html' => '<h1>Контакты</h1><h2>Заголовок поменьше</h2>']);
+        Page::create([
+            'title' => 'О компании',
+            'html' => '<h1>О компании</h1><h2>Заголовок поменьше</h2>',
+            'description' => 'О компании Rucaf',
+            'og_title' => 'О компании',
+            'og_description' => 'О компании'
+        ]);
+
+        Page::create([
+            'title' => 'Доставка и оплата',
+            'html' => '<h1>Доставка и оплата</h1><h2>Заголовок поменьше</h2>',
+            'description' => 'Доставка и оплата Rucaf',
+            'og_title' => 'Доставка и оплата',
+            'og_description' => 'Доставка и оплата'
+        ]);
+
+        Page::create([
+            'title' => 'Контакты',
+            'html' => '<h1>Контакты</h1><h2>Заголовок поменьше</h2>',
+            'description' => 'Контакты',
+            'og_title' => 'Контакты',
+            'og_description' => 'Контакты'
+        ]);
     }
 }
