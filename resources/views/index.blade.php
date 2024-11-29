@@ -4,11 +4,7 @@
     <div class="wrap-main">
         <div class="content content--main">
             <div class="wrap-search">
-                <form action="#" class="search">
-                    <input type="search" class="search__input" id="search1" placeholder=" ">
-                    <label for="search1" class="search__label">Поиск по сайту</label>
-                    <button class="search__btn" type="submit"><i class="icon-search"></i></button>
-                </form>
+                <livewire:search />
                 <div class="search-links">
                     <div class="search-links__item"><a href="#" class="search-links__link">Автоматические выключатели
                             220В</a></div>
@@ -247,7 +243,8 @@
 
                     </div>
                     <div class="collapse-actions">
-                        <a href="#" class="collapse-actions__btn btn">О компании</a>
+                        <a href="{{ route('page', ['page' => 'o-kompanii']) }}" class="collapse-actions__btn btn">О
+                            компании</a>
                         <button class="collapse-actions__btn-open" type="button">Показать больше</button>
                     </div>
                 </div>
