@@ -3185,49 +3185,18 @@ body {
 .tabs-txt ul,
 .tabs-txt ol {
     margin-bottom: 24px;
+    margin-left: 20px;
+}
+.tabs-txt ul {
+    list-style: disc;
 }
 .tabs-txt ul li,
 .tabs-txt ol li {
-    margin-bottom: 24px;
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
+    margin-bottom: 20px;
 }
 .tabs-txt ul li:last-child,
 .tabs-txt ol li:last-child {
     margin-bottom: 0;
-}
-.tabs-txt ul li::before {
-    content: "";
-    display: flex;
-    width: 6px;
-    flex: 6px 0 0;
-    height: 6px;
-    margin: 5px 21px 0 9px;
-    background: #e4b900;
-    border-radius: 100%;
-}
-.tabs-txt ol {
-    counter-reset: list;
-}
-.tabs-txt ol li {
-    display: flex;
-    align-items: flex-start;
-}
-.tabs-txt ol li::before {
-    counter-increment: list;
-    content: "0" counter(list) ".";
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    height: 17px;
-    margin-right: 12px;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    color: #e4b900;
 }
 .about-brands {
     display: flex;
