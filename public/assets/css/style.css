@@ -2655,10 +2655,22 @@ body {
     overflow: hidden;
     transition: all 0.3s;
 }
-.wrap-category-list.is-open .filter-category__list {
+
+.filter-category__list.open {
     height: auto;
     transition: all 0.3s;
 }
+
+.filter-category__list.closed .category-list__item {
+    display: none;
+    transition: all 0.3s;
+}
+
+.filter-category__list.open .category-list__item {
+    display: block;
+    transition: all 0.3s;
+}
+
 .category-list__item {
     display: block;
     margin-bottom: 15px;
@@ -2711,9 +2723,9 @@ body {
 .category-list__checkbox:checked ~ .category-list__txt::before {
     border: 1px solid #e6e6e6;
 }
-.category-list__item:last-child {
+/* .category-list__item:last-child {
     margin-bottom: 0;
-}
+} */
 .category-list__checkbox {
     position: absolute;
     width: 1px;
@@ -2732,7 +2744,7 @@ body {
 .filter-category__btn-more {
     display: block;
     position: relative;
-    margin-top: 15px;
+    /* margin-top: 15px; */
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;

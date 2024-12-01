@@ -465,7 +465,9 @@ $(document).ready(function () {
     }
 
     $(".filter-category__btn-more").click(function () {
-        $(this).parents(".wrap-category-list").toggleClass("is-open");
+        $(this).parents(".filter-category__list").toggleClass("open");
+        $(this).parents(".filter-category__list").toggleClass("closed");
+
         $(this).toggleClass("filter-category__btn-more--opened");
         $(this).text(function (i, text) {
             return text === "Показать все" ? "Скрыть" : "Показать все";
