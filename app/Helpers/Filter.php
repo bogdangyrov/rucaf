@@ -17,7 +17,7 @@ class Filter
     public int $page = 1;
     public array $priceRange = [];
 
-    private static array $availablePageSizes = [20, 60, 100, 'all'];
+    private static array $availablePageSizes = [20, 60, 100];
     private static array $availableSortBy = ['popular', 'price', 'category'];
     private static array $availableShowProducts = ['all', 'new', 'hits', 'discounts'];
 

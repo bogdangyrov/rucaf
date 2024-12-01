@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
         $product = Product::create([
             'name' => $newProductName,
             'slug' => Str::slug($newProductName),
-            'product_type_id' => 1,
+            'product_type_id' => $productType->id,
             'category_id' => 3,
             'description' => $productDescription
         ]);

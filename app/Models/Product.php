@@ -106,6 +106,7 @@ class Product extends Model
     {
         switch ($sortBy) {
             case 'popular':
+                $query->orderBy('views', 'desc');
                 break;
             case 'price':
                 $query->whereNotNull('price')->orderByRaw('IFNULL(discount_price, price)');

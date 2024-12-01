@@ -19,7 +19,7 @@
 
     @include('products.components.index.sort-list', [
         'sortTitle' => 'Показать по',
-        'sortList' => ['20' => '20', '60' => '60', '100' => '100', 'Все' => 'all'],
+        'sortList' => ['20' => '20', '60' => '60', '100' => '100'],
         'sortSlug' => 'page-size',
         'attr' => 'pageSize',
     ])

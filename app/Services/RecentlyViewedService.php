@@ -8,7 +8,7 @@ class RecentlyViewedService
 {
     public static function addProduct(Product $product)
     {
-        if (in_array($product->id, session('products', []))) {
+        if (RecentlyViewedService::inProducts($product)) {
             $productIndex = array_search($product->id, session('products'));
             session()->pull('recently-viewed.' .  $productIndex);
         }
@@ -29,5 +29,10 @@ class RecentlyViewedService
         }
 
         return $recentlyViewedProducts;
+    }
+
+    public static function inProducts(Product $product)
+    {
+        return in_array($product->id, session('products', []));
     }
 }

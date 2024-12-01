@@ -84,6 +84,10 @@ class ProductController extends Controller
             'attributeValues.value'
         );
 
+        if (!RecentlyViewedService::inProducts($product)) {
+            $product->update(['views' => $product->views + 1]);
+        }
+
         RecentlyViewedService::addProduct($product);
 
         $relatedProducts = $productType
