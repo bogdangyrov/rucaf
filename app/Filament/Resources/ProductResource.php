@@ -45,6 +45,21 @@ class ProductResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
+                                Forms\Components\TextInput::make('article')
+                                    ->label('Артикул')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('dimensions')
+                                    ->label('Габариты ШхВхГ, мм')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
+                                Forms\Components\TextInput::make('mass')
+                                    ->label('Масса, кг')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
                                 Select::make('product_type_id')
                                     ->label('Тип оборудования')
                                     ->relationship('productType', 'name')
