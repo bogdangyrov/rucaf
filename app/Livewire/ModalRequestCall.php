@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Mail\RequestCall;
 use App\Mail\RequestPrice;
+use App\Services\CustomerService;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
 
@@ -36,7 +37,8 @@ class ModalRequestCall extends Component
         Mail::to(env('MAIL_TO_ADDRESS'))->queue(new RequestCall(
             $this->name,
             $this->phone,
-            $this->comment
+            $this->comment,
+            CustomerService::getCity()
         ));
 
         $this->emailSended = true;

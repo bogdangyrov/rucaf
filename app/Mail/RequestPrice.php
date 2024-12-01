@@ -20,17 +20,19 @@ class RequestPrice extends Mailable
     public $comment;
     public $quantity;
     public $product;
+    public $city;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name, string $phone, ?string $comment, ?int $quantity, Product $product)
+    public function __construct(string $name, string $phone, ?string $comment, ?int $quantity, Product $product, ?string $city)
     {
         $this->name = $name;
         $this->phone = new PhoneNumber($phone, 'RU');;
         $this->comment = $comment;
         $this->quantity = $quantity;
         $this->product = $product;
+        $this->city = $city;
     }
 
     /**

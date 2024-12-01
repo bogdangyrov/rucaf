@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Mail\OneClickOrder;
 use App\Models\Product;
+use App\Services\CustomerService;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
@@ -51,7 +52,8 @@ class ModalOrderOneClick extends Component
             $this->phone,
             $this->comment,
             $this->quantity,
-            $product
+            $product,
+            CustomerService::getCity()
         ));
 
         $this->emailSended = true;

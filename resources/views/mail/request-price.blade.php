@@ -5,22 +5,9 @@
         <h1>Отправлен запрос на стоимость</h1>
 
         <div class="email-content">
-            <section>
-                <p><b>Клиент:</b> {{ $name }}, <a
-                        href="tel:+{{ $phone->formatE164() }}">+{{ $phone->formatNational() }}</a>
-                </p>
-            </section>
-
-            @isset($comment)
-                <section>
-                    <p><b>Комментарий: </b></p>
-                    <p>{{ $comment }}</p>
-                </section>
-            @endisset
-
-            <h3>Товар: <a
-                    href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">{{ $product->name }}</a>
-            </h3>
+            @include('mail.components.client')
+            @include('mail.components.comment')
+            @include('mail.components.product-name')
 
             @isset($quantity)
                 <section>

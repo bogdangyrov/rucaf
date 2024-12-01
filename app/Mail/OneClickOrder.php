@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Product;
+use App\Services\CustomerService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -20,17 +21,19 @@ class OneClickOrder extends Mailable
     public $comment;
     public $quantity;
     public $product;
+    public $city;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name, string $phone, ?string $comment, ?int $quantity, Product $product)
+    public function __construct(string $name, string $phone, ?string $comment, ?int $quantity, Product $product, ?string $city)
     {
         $this->name = $name;
         $this->phone = new PhoneNumber($phone, 'RU');;
         $this->comment = $comment;
         $this->quantity = $quantity;
         $this->product = $product;
+        $this->city = $city;
     }
 
     /**

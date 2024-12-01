@@ -5,19 +5,8 @@
         <h1>Отправлена заявка на заказ</h1>
 
         <div class="email-content">
-            <section>
-                <p><b>Клиент:</b> {{ $name }}, <a
-                        href="tel:+{{ $phone->formatE164() }}">+{{ $phone->formatNational() }}</a>
-                </p>
-            </section>
-
-            @isset($comment)
-                <section>
-                    <p><b>Комментарий: </b></p>
-                    <p>{{ $comment }}</p>
-                </section>
-            @endisset
-
+            @include('mail.components.client')
+            @include('mail.components.comment')
         </div>
 
         <div>

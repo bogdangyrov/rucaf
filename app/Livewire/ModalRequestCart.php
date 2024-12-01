@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Mail\RequestCart;
 use App\Services\CartService;
+use App\Services\CustomerService;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,7 +40,8 @@ class ModalRequestCart extends Component
             $this->name,
             $this->phone,
             $this->comment,
-            $products
+            $products,
+            CustomerService::getCity()
         ));
 
         $this->emailSended = true;

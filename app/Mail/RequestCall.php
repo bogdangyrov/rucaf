@@ -17,15 +17,17 @@ class RequestCall extends Mailable
     public $name;
     public $phone;
     public $comment;
+    public $city;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name, string $phone, ?string $comment)
+    public function __construct(string $name, string $phone, ?string $comment, ?string $city)
     {
         $this->name = $name;
         $this->phone = new PhoneNumber($phone, 'RU');
         $this->comment = $comment;
+        $this->city = $city;
     }
 
     /**

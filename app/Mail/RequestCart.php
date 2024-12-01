@@ -20,6 +20,7 @@ class RequestCart extends Mailable
     public $phone;
     public $comment;
     public $products;
+    public $city;
 
     public $totalQuantity;
     public $totalSum;
@@ -27,12 +28,13 @@ class RequestCart extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(string $name, string $phone, ?string $comment, Collection $products)
+    public function __construct(string $name, string $phone, ?string $comment, Collection $products, ?string $city)
     {
         $this->name = $name;
         $this->phone = new PhoneNumber($phone, 'RU');
         $this->comment = $comment;
         $this->products = $products;
+        $this->city = $city;
 
         $this->totalSum = $products
             ->sum(fn($product) => ($product->discount_price ?? $product->price) * $product->quantity);

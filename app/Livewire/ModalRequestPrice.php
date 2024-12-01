@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use Livewire\Component;
 use App\Mail\RequestPrice;
+use App\Services\CustomerService;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Mail;
 
@@ -52,7 +53,8 @@ class ModalRequestPrice extends Component
             $this->phone,
             $this->comment,
             $this->quantity,
-            $product
+            $product,
+            CustomerService::getCity()
         ));
 
         $this->emailSended = true;
