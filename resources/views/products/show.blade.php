@@ -42,115 +42,11 @@
         </div>
     </div>
 
+    @include('products.components.modal-request-price')
+    @include('products.components.show.modal-one-click-order')
+
     @include('products.components.why-choose-us')
     @include('products.components.show.related-products')
     @include('products.components.recently-watched')
     @include('components.frequent-questions')
-@endsection
-
-@section('js')
-    {{-- <script>
-        $(function() {
-            $('#add-to-cart').click(function() {
-                const $this = $(this);
-                const productId = $this.attr('data-id');
-
-                let quantity = $this.closest('.good-card__actions').find('input.good-card__numb').val();
-                if (quantity == '') {
-                    quantity = 1;
-                }
-                $.ajax({
-                    type: 'post',
-                    url: '{{ route('cart.add') }}',
-                    data: {
-                        product_id: productId,
-                        quantity: quantity
-                    },
-                    success: function(data) {
-                        console.log(data);
-                    }
-                });
-
-            });
-        })
-    </script> --}}
-
-    {{--  <script>
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $('#add-to-cart').click(function() {
-                let productId = $(this).attr('data-id');
-                let count = $('#items-count').val();
-
-                $.ajax({
-                    type: 'post',
-                    url: '{{ route('cart.add') }}',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        product_id: productId,
-                        count: count
-                    },
-                    success: function(data) {
-                        console.log(data);
-                        $('#grid-include').html(data.html);
-                    }
-                });
-            });
-
-            $.ajax({
-                type: 'get',
-                url: '{{ route('favorites.check') }}',
-                data: {
-                    product_id: $('[name="add-wishlist__btn"]').attr('data-id'),
-                },
-                success: function(data) {
-                    if (data.status == 'success') {
-                        $('[name="add-wishlist__btn"] > i').addClass('favorites');
-                        $('[name="add-wishlist__btn"] > span').text('В избранном');
-
-                    }
-                }
-            });
-
-            $('[name="add-wishlist__btn"]').click(function() {
-                if ($('[name="add-wishlist__btn"] > i').hasClass('favorites') === true) {
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ route('favorites.remove') }}',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            product_id: $(this).attr('data-id'),
-                        },
-                        success: function(data) {
-                            if (data.status == 'success') {
-                                $('[name="add-wishlist__btn"] > i').removeClass('favorites');
-                                $('[name="add-wishlist__btn"] > span').text('В избранное');
-
-                            }
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        type: 'post',
-                        url: '{{ route('favorites.add') }}',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            product_id: $(this).attr('data-id'),
-                        },
-                        success: function(data) {
-                            if (data.status == 'success') {
-                                $('[name="add-wishlist__btn"] > i').addClass('favorites');
-                                $('[name="add-wishlist__btn"] > span').text('В избранном');
-                            }
-                        }
-                    });
-                }
-            });
-        });
-    </script> --}}
 @endsection

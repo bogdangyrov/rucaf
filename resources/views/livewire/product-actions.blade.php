@@ -30,9 +30,12 @@
             <div class="good-card__wrap-actions">
                 <div class="good-card__actions">
                     <input type="number" class="good-card__numb" placeholder="1 шт">
-                    <button class="good-card__add-basket btn" type="button">Запросить стоимость</button>
+                    <button class="good-card__add-basket btn" type="button" data-fancybox
+                        data-src="#order{{ $product->id }}">Запросить
+                        стоимость</button>
                 </div>
-                <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
+                <button class="good-card__one-click btn btn--gray" type="button" data-fancybox
+                    data-src="#order-one-click{{ $product->id }}">Заказать в 1
                     клик</button>
             </div>
         @endisset
