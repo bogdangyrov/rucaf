@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Models\Category;
+use App\Models\ProductType;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
@@ -17,7 +19,9 @@ class Product extends Model
         'is_new' => 'boolean',
         'is_hit_of_sales' => 'boolean',
         'is_active' => 'boolean',
-        'images' => 'array'
+        'images' => 'array',
+        'docs' => 'array',
+        'docs_file_names' => 'array'
     ];
 
     protected static function boot()
@@ -57,6 +61,26 @@ class Product extends Model
     public function getFormattedDiscountPrice()
     {
         return static::formatPrice($this->discount_price);
+    }
+
+    public static function getDocExtension(string $doc)
+    {
+        return Str::upper(pathinfo($doc, PATHINFO_EXTENSION));
+    }
+
+    public static function getDocIcon(string $doc)
+    {
+        $mimeType = Storage::disk('public')->mimeType($doc);
+        $iconMap = [
+            'application/pdf' => 'icon-list6',
+            'image/jpeg' => 'icon-list1',
+            'image/webp' => 'icon-list1',
+            'image/png' => 'icon-list1',
+            'application/msword' => 'icon-list2',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'icon-list2',
+        ];
+
+        return $iconMap[$mimeType] ?? 'icon-list4';
     }
 
     public static function formatPrice($price, $thousandsSeparator = '&nbsp')

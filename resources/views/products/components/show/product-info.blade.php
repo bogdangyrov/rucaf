@@ -13,6 +13,30 @@
                 <p>{!! $product->description !!}</p>
             </div>
             <div class="tabs-info">
+                @if (isset($product->docs) && count($product->docs) > 0)
+                    <div class="docs">
+                        @foreach ($product->docs_file_names as $doc => $name)
+                            <a href="{{ Storage::url($doc) }}" class="docs__item">
+                                <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
+                                <div class="docs__content">
+                                    <div class="docs__title">{{ $name }}</div>
+                                    <div class="docs__format">
+                                        <span>
+                                            @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
+                                                {{ round(Storage::disk('public')->size($doc) / 1024) }}
+                                                Kб
+                                            @else
+                                                {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
+                                                Мб
+                                            @endif
+                                        </span>
+                                        <span>{{ $product::getDocExtension($doc) }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="wrap-good-chars">
                     <div class="good-chars-title">Технические характеристики</div>
                     <table class="good-chars">
@@ -23,52 +47,6 @@
                             </tr>
                         @endforeach
                     </table>
-                </div>
-                <div class="docs">
-                    <a href="#" class="docs__item docs__item--pdf">
-                        <i class="docs__icon icon-list1"></i>
-                        <div class="docs__content">
-                            <div class="docs__title">Технический каталог</div>
-                            <div class="docs__format"><span>2,14 Мб</span><span>PDF</span></div>
-                        </div>
-                    </a>
-                    <a href="#" class="docs__item docs__item--pdf">
-                        <i class="docs__icon icon-list1"></i>
-                        <div class="docs__content">
-                            <div class="docs__title">Техническое описание и Инструкция по эксплуатации
-                            </div>
-                            <div class="docs__format"><span>0,70 Мб</span><span>PDF</span></div>
-                        </div>
-                    </a>
-                    <a href="#" class="docs__item docs__item--doc">
-                        <i class="docs__icon icon-list2"></i>
-                        <div class="docs__content">
-                            <div class="docs__title">Опросный лист</div>
-                            <div class="docs__format"><span>0,03 Мб</span><span>DOC</span></div>
-                        </div>
-                    </a>
-                    <a href="#" class="docs__item docs__item--jpg">
-                        <i class="docs__icon icon-list3"></i>
-                        <div class="docs__content">
-                            <div class="docs__title">Сертификат</div>
-                            <div class="docs__format"><span>0,27 Мб</span><span>JPG</span></div>
-                        </div>
-                    </a>
-                    <a href="#" class="docs__item docs__item--jpg">
-                        <i class="docs__icon icon-list3"></i>
-                        <div class="docs__content">
-                            <div class="docs__title">Сертификат соответствия</div>
-                            <div class="docs__format"><span>0,19 Мб</span><span>JPG</span></div>
-                        </div>
-                    </a>
-                    <a href="#" class="docs__item docs__item--jpg">
-                        <i class="docs__icon icon-list3"></i>
-                        <div class="docs__content">
-                            <div class="docs__title">Каталог электронных расцепителей для выключателей
-                                пр-ва АО Контактор г. Ульяновск</div>
-                            <div class="docs__format"><span>0,39 Мб</span><span>JPG</span></div>
-                        </div>
-                    </a>
                 </div>
             </div>
         </div>

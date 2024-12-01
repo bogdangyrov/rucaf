@@ -1,5 +1,5 @@
 <div class="good-info">
-    <div class="good-data">
+    {{-- <div class="good-data">
         <div class="good-data__title">Номинальный ток, А</div>
         <div class="good-data__choice good-choice">
             <label class="good-choice__item">
@@ -11,7 +11,7 @@
                 <span class="good-choice__txt">1500</span>
             </label>
         </div>
-    </div>
+    </div> --}}
     <table class="good-chars">
         @php
             $endFor = $product->attributeValues->count() < 5 ? $product->attributeValues->count() : 5;

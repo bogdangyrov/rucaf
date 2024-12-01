@@ -4885,8 +4885,8 @@ body {
     .tabs-info {
         display: flex;
         align-items: stretch;
-        justify-content: flex-start;
-        flex-direction: row-reverse;
+        /*    justify-content: flex-start;
+        flex-direction: row-reverse; */
     }
     .docs {
         max-width: 220px;

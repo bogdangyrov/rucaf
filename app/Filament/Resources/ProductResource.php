@@ -122,6 +122,13 @@ class ProductResource extends Resource
                                     ->reorderable()
                                     ->directory('products')
                                     ->columnSpanFull(),
+                                FileUpload::make('docs')
+                                    ->label('Документы')
+                                    ->multiple()
+                                    ->reorderable()
+                                    ->directory('products')
+                                    ->storeFileNamesIn('docs_file_names')
+                                    ->columnSpanFull(),
                             ]),
                         Tab::make('Статус')
                             ->schema([
