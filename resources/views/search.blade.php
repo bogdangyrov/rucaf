@@ -2,28 +2,18 @@
 
 @section('content')
     <style>
-        .favorites-page {
+        .search-page {
             font-family: 'Source Sans 3';
             border-bottom: 1px solid #E4E4E4;
-
-            .catalog {
-                display: block;
-            }
-
-            @media only screen and (min-width: 601px) {
-                .catalog {
-                    display: flex;
-                }
-            }
         }
 
-        .favorites-page__header {
+        .search-page__header {
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 1px solid #E4E4E4;
         }
 
-        .favorites-empty {
+        .search-empty {
             text-align: center;
             padding: 40px;
             font-size: 30px;
@@ -31,12 +21,18 @@
     </style>
     <div class="wrap">
         <div class="content">
-            <div class="favorites-page">
-                <div class="favorites-page__header title">
-                    <h1>Избранные</h1>
+            <div class="search-page">
+                <div class="search-page__header title">
+                    <h1>Поиск</h1>
                 </div>
 
-                <livewire:favorites-component />
+                <div class="wrap-main">
+                    <div class="content content--main">
+                        <div class="wrap-search">
+                            <livewire:search />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

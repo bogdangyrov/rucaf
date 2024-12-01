@@ -1,9 +1,8 @@
 <div class="header__actions actions">
 
-    <button class="actions__item actions__item--white actions__item--search" type="button" data-fancybox
-        data-src="#search">
+    <a class="actions__item actions__item--white actions__item--search" href="{{ route('search') }}">
         <span class="actions__btn"><i class="icon-search"></i></span>
-    </button>
+    </a>
 
     <a href="{{ route('comparison') }}" class="actions__item">
         <span class="actions__btn"><i class="icon-compare"></i></span>

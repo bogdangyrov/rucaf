@@ -282,7 +282,7 @@ button {
 .wrap {
     position: relative;
     padding: 40px 0;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 .wrap--gray::after {
     content: "";
@@ -4131,6 +4131,9 @@ body {
         left: 0;
         bottom: 0;
         z-index: -1;
+    }
+    .search-page .wrap-main::after {
+        background-color: transparent;
     }
     .wrapper--page .wrap-main::after {
         height: 295px;

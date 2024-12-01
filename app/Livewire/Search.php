@@ -15,11 +15,12 @@ class Search extends Component
         if ($this->search) {
             $this->products = Product::where('name', 'LIKE', "%{$this->search}%")
                 ->with('productType')
-                ->limit(5)
+                ->limit(10)
                 ->get();
         } else {
             $this->products = null;
         }
+
         return view('livewire.search');
     }
 }

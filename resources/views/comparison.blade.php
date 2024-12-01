@@ -168,17 +168,15 @@
     </style>
 
     <div class="wrap">
-        <div class="wrap">
-            <div class="content">
-                <div class="comparison-page">
+        <div class="content">
+            <div class="comparison-page">
 
-                    <div class="comparison-page__header title">
-                        <h1>Сравнение товаров</h1>
-                    </div>
-
-                    <livewire:comparison-component>
-
+                <div class="comparison-page__header title">
+                    <h1>Сравнение товаров</h1>
                 </div>
+
+                <livewire:comparison-component>
+
             </div>
         </div>
     </div>
