@@ -23,7 +23,8 @@
                             В корзину</button>
                     @endisset
                 </form>
-                <button class="good-card__one-click btn btn--gray" type="button">Заказать в 1
+                <button class="good-card__one-click btn btn--gray" type="button" data-fancybox
+                    data-src="#order-one-click{{ $product->id }}">Заказать в 1
                     клик</button>
             </div>
         @else

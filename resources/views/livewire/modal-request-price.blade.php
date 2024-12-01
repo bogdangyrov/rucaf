@@ -18,23 +18,7 @@
                             src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
                             alt="{{ $product->name }}"></div>
                 </div>
-                <div class="order__data order-data">
-                    <div class="order-data__title">{{ $product->name }}</div>
-                    <div class="order-data__product-data product-data">
-                        <div class="product-data__item">
-                            <div class="product-data__title">Артикул:</div>
-                            <div class="product-data__content">9957</div>
-                        </div>
-                        <div class="product-data__item">
-                            <div class="product-data__title">Габариты ШхВхГ, мм:</div>
-                            <div class="product-data__content">600х750х980</div>
-                        </div>
-                        <div class="product-data__item">
-                            <div class="product-data__title">Масса, кг:</div>
-                            <div class="product-data__content">216</div>
-                        </div>
-                    </div>
-                </div>
+                @include('components.order-product-data')
             </div>
             <form wire:submit="sendEmail" class="modal-form">
                 <div class="modal-form__item">

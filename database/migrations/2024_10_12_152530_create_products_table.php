@@ -21,6 +21,9 @@ return new class extends Migration
             $table->integer('price')->nullable();
             $table->integer('discount_price')->nullable();
             $table->text('description');
+            $table->text('article')->nullable();
+            $table->text('dimensions')->nullable();
+            $table->text('mass')->nullable();
             $table->boolean('is_new')->default(true);
             $table->boolean('is_hit_of_sales')->default(false);
             $table->boolean('is_active')->default(true);

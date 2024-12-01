@@ -13,20 +13,19 @@
         </div>
     </div> --}}
     <table class="good-chars">
-        @php
-            $endFor = $product->attributeValues->count() < 5 ? $product->attributeValues->count() : 5;
-        @endphp
-        @for ($i = 0; $i < $endFor; $i++)
+        @foreach ($product->attributeValues->take(5) as $attributeValue)
             <tr>
-                <th><span>{{ $product->attributeValues[$i]->attribute->name }}</span></th>
-                <td><span>{{ $product->attributeValues[$i]->value->value }}</span></td>
+                <th><span>{{ $attributeValue->attribute->name }}</span></th>
+                <td><span>{{ $attributeValue->value->value }}</span></td>
             </tr>
-        @endfor
+        @endforeach
     </table>
     <div class="good-actions">
         <a class="good-actions__btn-all" href="#desc" data-tab-index="0"><i class="icon-arrow3"></i><span>Все
                 характеристики</span></a>
-        <div class="good-actions__article">Артикул: <span>9957</span></div>
+        @isset($product->article)
+            <div class="good-actions__article">Артикул: <span>{{ $product->article }}</span></div>
+        @endisset
     </div>
 
     <livewire:product-actions :product="$product" />

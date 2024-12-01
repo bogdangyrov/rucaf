@@ -55,7 +55,11 @@ class DatabaseSeeder extends Seeder
                 'name' => $productNames[$i],
                 'product_type_id' => $productType->id,
                 'category_id' => $category->id,
-                'description' => $productDescription
+                'description' => $productDescription,
+                'article' => fake()->randomNumber(4),
+                'dimensions' => fake()->randomNumber(3) . 'x' . fake()->randomNumber(3) . 'x' . fake()->randomNumber(3),
+                'mass' => fake()->randomNumber(3),
+                'price' => fake()->randomNumber(4),
             ]);
         }
 
@@ -73,6 +77,9 @@ class DatabaseSeeder extends Seeder
             'name' => $newProductName,
             'slug' => Str::slug($newProductName),
             'product_type_id' => $productType->id,
+            'article' => fake()->randomNumber(4),
+            'dimensions' => fake()->randomNumber(3) . 'x' . fake()->randomNumber(3) . 'x' . fake()->randomNumber(3),
+            'mass' => fake()->randomNumber(3),
             'category_id' => 3,
             'description' => $productDescription
         ]);
