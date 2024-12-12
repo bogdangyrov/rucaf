@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ProductTypeResource\Pages;
 use App\Filament\Resources\ProductTypeResource\RelationManagers;
+use App\Filament\Resources\ProductTypeResource\RelationManagers\CategoriesRelationManager;
+use App\Filament\Resources\ProductTypeResource\RelationManagers\CategoryRelationManager;
 use Filament\Forms\Components\FileUpload;
 
 class ProductTypeResource extends Resource
@@ -106,7 +108,7 @@ class ProductTypeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CategoriesRelationManager::class
         ];
     }
 
