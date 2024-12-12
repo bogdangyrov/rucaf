@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="coop__right">
-            <div class="coop__img"><img src="{{ asset('assets/img/logo-big.svg') }}" alt=""></div>
+            <div class="coop__img"><img src="{{ asset('img/logo-big.svg') }}" alt=""></div>
         </div>
     </div>
 </div>

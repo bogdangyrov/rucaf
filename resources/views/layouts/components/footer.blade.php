@@ -1,7 +1,7 @@
 <footer class="wrap-footer">
     <div class="wrap-footer-top">
         <div class="footer-content footer-top">
-            <a class="footer-top__logo logo" href="{{ route('home') }}"><img src="{{ asset('assets/img/logo.svg') }}"
+            <a class="footer-top__logo logo" href="{{ route('home') }}"><img src="{{ asset('img/logo.svg') }}"
                     alt="ruCaf"></a>
             <div class="footer-top__info info">
                 @foreach ($phoneNumbers as $phoneNumber)

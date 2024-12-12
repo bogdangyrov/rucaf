@@ -66,8 +66,8 @@
         </div>
         <a href="{{ route('home') }}" class="header__logo logo">
             <picture class="logo__picture">
-                <source srcset="{{ asset('assets/img/logo.svg') }}" media="(min-width: 601px)">
-                <img src="{{ asset('assets/img/logo-mini.svg') }}" alt="ruCaf" class="logo__img">
+                <source srcset="{{ asset('img/logo.svg') }}" media="(min-width: 601px)">
+                <img src="{{ asset('img/logo-mini.svg') }}" alt="ruCaf" class="logo__img">
             </picture>
         </a>
         <div class="header__right">

@@ -3,7 +3,7 @@
         <div class="main-slider__item">
             <div class="main-content">
                 <a class="main-content__wrap-img" href="#">
-                    <div class="main-content__img"><img src="assets/img/content/img-1.png" alt=""></div>
+                    <div class="main-content__img"><img src="img/content/img-1.png" alt=""></div>
                     <div class="main-content__title">Автоматические выключатели</div>
                 </a>
                 <div class="main-content__wrap-menus">
@@ -41,8 +41,7 @@
         <div class="main-slider__item">
             <div class="main-content">
                 <a class="main-content__wrap-img" href="#">
-                    <div class="main-content__img"><img src="{{ asset('assets/img/content/img-8.png') }}"
-                            alt=""></div>
+                    <div class="main-content__img"><img src="{{ asset('img/content/img-8.png') }}" alt=""></div>
                     <div class="main-content__title">Автоматические выключатели</div>
                 </a>
                 <div class="main-content__wrap-menus">
@@ -80,7 +79,7 @@
         <div class="main-slider__item">
             <div class="main-content">
                 <a class="main-content__wrap-img" href="#">
-                    <div class="main-content__img"><img src="assets/img/content/img-16.png" alt="">
+                    <div class="main-content__img"><img src="img/content/img-16.png" alt="">
                     </div>
                     <div class="main-content__title">Автоматические выключатели</div>
                 </a>

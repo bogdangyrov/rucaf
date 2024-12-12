@@ -20,7 +20,7 @@
                                 @foreach ($type->products as $product)
                                     <div class="comparison-header-item"
                                         href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}">
-                                        <img src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
+                                        <img src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg') }}"
                                             alt="">
                                         <p>{{ $product->name }}</p>
                                     </div>

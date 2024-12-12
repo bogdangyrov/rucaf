@@ -3,7 +3,7 @@
     <div class="catalog__wrap-img">
         <a class="catalog__img"
             href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}"><img
-                src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'assets/img/content/product-1.jpg') }}"
+                src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg') }}"
                 alt="{{ $product->name }}"></a>
         <div class="catalog__wrap-actions">
 

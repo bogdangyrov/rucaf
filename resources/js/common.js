@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     $(function () {
         var header = $(".wrap-header"),
             scrollPrev = 100;
@@ -251,14 +251,6 @@ $(document).ready(function () {
         },
     });
 
-    /*  $(function () {
-         $('.custom-scroll').jScrollPane({
-             contentWidth: '0px',
-             verticalDragMaxHeight: 200,
-             autoReinitialise: true,
-         });
-     }); */
-
     $(function () {
         const maxRange = $("#slider-range").data("max");
         const minRange = $("#slider-range").data("min");
@@ -423,21 +415,6 @@ $(document).ready(function () {
         ],
     });
 
-    /* $(".tabs-menu__link").on("click", function (e) {
-        $(".compare-list").slick("reinit");
-    });
-
-    $(function () {
-        $(".tabs").tabs({
-            afterLoad: function () {
-                $(".compare-list").slick("setPosition", 0);
-            },
-        });
-        $(".good-actions__btn-all").click(function () {
-            $(".tabs").tabs("option", "active", $(this).data("tab-index"));
-        });
-    }); */
-
     $(function () {
         $(".good-info a[href*='#']").on("click", function (e) {
             var anchor = $(this);
@@ -480,16 +457,9 @@ $(document).ready(function () {
             .toggleClass("is-open")
             .find(".widget--order, .widget--basket .basket-sum")
             .slideToggle(500);
-        // $(this).toggleClass('header__catalog-btn--opened');
-        // $('body').toggleClass('modal-expanded');
-        // $('.overflow-bg, .close-btn, .mm-btn--close').click(function () {
-        //   $('.wrapper').removeClass('wrapper--opened');
-        //   $('body').removeClass('modal-expanded');
-        //   $('.wrap-catalog-menu').slideUp(500);
-        // });
     });
 
-    $(document).ready(function () {
+    $(function () {
         $('.tabs__content').hide();
         $('.tabs__content:first').show();
         $('.tabs-menu__item:first').addClass('active');

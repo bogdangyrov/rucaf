@@ -24,21 +24,21 @@
         <div class="content">
             <div class="wrap-brands-slider">
                 <div class="brands-slider">
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-11.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-11.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-12.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-12.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-13.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-13.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-15.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-15.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-11.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-11.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-12.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-12.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-13.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-13.png') }}" alt="">
                     </div>
-                    <div class="brands-slider__item"><img src="{{ asset('assets/img/content/img-15.png') }}" alt="">
+                    <div class="brands-slider__item"><img src="{{ asset('img/content/img-15.png') }}" alt="">
                     </div>
                 </div>
             </div>

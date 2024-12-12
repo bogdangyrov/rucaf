@@ -9,9 +9,8 @@
             @endforeach
         @else
             <div class="goods-slider__item">
-                <a href="{{ asset('assets/img/content/product-1.jpg') }}" class="goods-slider__link"
-                    data-fancybox="goods"><img src="{{ asset('assets/img/content/product-1.jpg') }}" alt=""
-                        class="goods-slider__img"></a>
+                <a href="{{ asset('img/content/product-1.jpg') }}" class="goods-slider__link" data-fancybox="goods"><img
+                        src="{{ asset('img/content/product-1.jpg') }}" alt="" class="goods-slider__img"></a>
             </div>
         @endif
     </div>
@@ -22,7 +21,7 @@
                         class="thumbs-slider__img"></div>
             @endforeach
         @else
-            <div class="thumbs-slider__item"><img src="{{ asset('assets/img/content/product-1.jpg') }}" alt=""
+            <div class="thumbs-slider__item"><img src="{{ asset('img/content/product-1.jpg') }}" alt=""
                     class="thumbs-slider__img"></div>
         @endif
     </div>
