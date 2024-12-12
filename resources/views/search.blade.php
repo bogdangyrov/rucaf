@@ -1,24 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-    <style>
-        .search-page {
-            font-family: 'Source Sans 3';
-            border-bottom: 1px solid #E4E4E4;
-        }
-
-        .search-page__header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #E4E4E4;
-        }
-
-        .search-empty {
-            text-align: center;
-            padding: 40px;
-            font-size: 30px;
-        }
-    </style>
     <div class="wrap">
         <div class="content">
             <div class="search-page">

@@ -6378,3 +6378,35 @@ body {
     color: #464654;
     margin-top: auto;
 }
+
+.privacy-page {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+        margin-top: 10px;
+    }
+}
+
+.privacy-page__header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.search-page {
+    font-family: "Source Sans 3";
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.search-page__header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.search-empty {
+    text-align: center;
+    padding: 40px;
+    font-size: 30px;
+}

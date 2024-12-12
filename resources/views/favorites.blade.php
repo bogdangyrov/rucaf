@@ -1,34 +1,10 @@
 @extends('layouts.master')
 
+@section('css')
+    @vite('resources/css/pages/favorites.css')
+@endsection
+
 @section('content')
-    <style>
-        .favorites-page {
-            font-family: 'Source Sans 3';
-            border-bottom: 1px solid #E4E4E4;
-
-            .catalog {
-                display: block;
-            }
-
-            @media only screen and (min-width: 601px) {
-                .catalog {
-                    display: flex;
-                }
-            }
-        }
-
-        .favorites-page__header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #E4E4E4;
-        }
-
-        .favorites-empty {
-            text-align: center;
-            padding: 40px;
-            font-size: 30px;
-        }
-    </style>
     <div class="wrap">
         <div class="content">
             <div class="favorites-page">

@@ -35,15 +35,3 @@
     @include('products.components.index.description')
     @include('components.frequent-questions')
 @endsection
-
-@section('js')
-    <script>
-        $(function() {
-            $('form.w-filters').submit(function(e) {
-                if (!$('#slider-range').hasClass('changed')) {
-                    $('input.slider-value').remove();
-                }
-            });
-        })
-    </script>
-@endsection

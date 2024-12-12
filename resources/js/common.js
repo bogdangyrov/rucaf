@@ -475,4 +475,10 @@ $(function () {
             $(activeTab).show();
         });
     });
+
+    $('form.w-filters').on('submit', function (e) {
+        if (!$('#slider-range').hasClass('changed')) {
+            $('input.slider-value').remove();
+        }
+    });
 });

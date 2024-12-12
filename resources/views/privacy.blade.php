@@ -1,24 +1,5 @@
 @extends('layouts.master')
 
-@section('css')
-    <style>
-        .privacy-page {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-
-            h3 {
-                margin-top: 10px;
-            }
-        }
-
-        .privacy-page__header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="wrap">
         <div class="page content">
@@ -119,16 +100,4 @@
     @include('products.components.why-choose-us')
     @include('products.components.recently-watched')
     @include('components.frequent-questions')
-@endsection
-
-@section('js')
-    <script>
-        $(function() {
-            $('form.w-filters').submit(function(e) {
-                if (!$('#slider-range').hasClass('changed')) {
-                    $('input.slider-value').remove();
-                }
-            });
-        })
-    </script>
 @endsection
