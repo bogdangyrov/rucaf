@@ -12,8 +12,11 @@ class Search extends Component
 
     public function render()
     {
+        $search = $this->search;
+
         if ($this->search) {
-            $this->products = Product::where('name', 'LIKE', "%{$this->search}%")
+            $this->products = Product::active()
+                ->fuzzySearch($search)
                 ->with('productType')
                 ->limit(10)
                 ->get();

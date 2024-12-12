@@ -174,4 +174,24 @@ class Product extends Model
     {
         $query->where('is_active', 1);
     }
+
+    public static function scopeFuzzySearch($query, $search)
+    {
+        $query->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            })
+            ->orWhereHas('productType', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            })
+            ->orWhereRaw("SOUNDEX(name) = SOUNDEX('{$search}')")
+            ->orWhereRaw("SOUNDEX(description) = SOUNDEX('{$search}')")
+            ->orWhereHas('category', function ($query) use ($search) {
+                $query->whereRaw("SOUNDEX(name) = SOUNDEX('{$search}')");
+            })
+            ->orWhereHas('productType', function ($query) use ($search) {
+                $query->whereRaw("SOUNDEX(name) = SOUNDEX('{$search}')");
+            });
+    }
 }
