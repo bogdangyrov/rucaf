@@ -2,12 +2,12 @@
 
 use App\Models\Category;
 use App\Models\ProductType;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\SubCategory;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -29,6 +29,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('views')->default(0);
             $table->json('docs')->nullable();
+            $table->foreignIdFor(SubCategory::class);
             $table->json('docs_file_names')->nullable();
             $table->foreignIdFor(ProductType::class);
             $table->foreignIdFor(Category::class);

@@ -14,6 +14,17 @@
                                         class="catalog-menu__link">
                                         {{ $category->name }}
                                     </a>
+                                    @if (!empty($category->subcategories))
+                                        <ul
+                                            class="catalog-menu catalog-menu--sub-menu catalog-menu--sub-menu-lvl2 custom-scroll">
+                                            @foreach ($category->subcategories as $subcategory)
+                                                <li class="catalog-menu__item"><a
+                                                        href="{{ route('products.index', ['productType' => $type['slug'], 'category' => [$category->slug], 'subcategory' => [$subcategory['slug']]]) }}"
+                                                        class="catalog-menu__link">{{ $subcategory->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                 </li>
                             @endforeach
                         </ul>

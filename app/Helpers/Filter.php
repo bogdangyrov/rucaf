@@ -2,13 +2,15 @@
 
 namespace App\Helpers;
 
-use App\Models\Category;
 use App\Models\Attribute;
+use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Collection;
 
 class Filter
 {
     public Collection $categories;
+    public Collection $subcategories;
     public Collection $attributes;
 
     public string $pageSize = '20';
@@ -31,12 +33,22 @@ class Filter
             $this->categories = new Collection();
         }
 
+        if (isset($requestQuery['subcategory'])) {
+            $this->subcategories = SubCategory::whereIn('slug', $requestQuery['subcategory'])->get();
+            unset($requestQuery['subcategory']);
+        } else {
+            $this->subcategories = new Collection();
+        }
+
         if (isset($requestQuery['page-size']) && in_array($requestQuery['page-size'], static::$availablePageSizes)) {
             $this->pageSize = $requestQuery['page-size'];
             unset($requestQuery['page-size']);
         }
 
-        if (isset($requestQuery['show-products']) && in_array($requestQuery['show-products'], static::$availableShowProducts)) {
+        if (isset($requestQuery['show-products']) && in_array(
+            $requestQuery['show-products'],
+            static::$availableShowProducts
+        )) {
             $this->showProducts = $requestQuery['show-products'];
             unset($requestQuery['show-products']);
         }
@@ -65,20 +77,17 @@ class Filter
 
     public function inCategories(string $slug)
     {
-        if ($this->categories) {
-            return $this->categories->contains('slug', $slug);
-        } else {
-            return false;
-        }
+        return $this->categories->contains('slug', $slug);
+    }
+
+    public function inSubCategories(string $slug)
+    {
+        return $this->subcategories->contains('slug', $slug);
     }
 
     public function attributeExists(string $slug)
     {
-        if ($this->attributes) {
-            return $this->attributes->contains('slug', $slug);
-        } else {
-            return false;
-        }
+        return $this->attributes->contains('slug', $slug);
     }
 
     public function inAttributeValues(string $attributeSlug, string $valueSlug)

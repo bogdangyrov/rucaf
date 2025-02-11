@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Category;
 use App\Models\ProductType;
+use App\Models\SubCategory;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,11 @@ class Product extends Model
     public function attributeValues()
     {
         return $this->hasMany(AttributeValue::class);
+    }
+
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class);
     }
 
     public function productType()
@@ -108,6 +114,21 @@ class Product extends Model
         }
     }
 
+    public static function scopeWithSubCategory($query, $subcategories)
+    {
+        if ($subcategories->count() > 0) {
+            $subcategoriesArray = $subcategories->pluck('slug');
+            return $query->withWhereHas(
+                'subcategory',
+                function ($query) use ($subcategoriesArray) {
+                    $query->whereIn('slug', $subcategoriesArray);
+                }
+            );
+        } else {
+            return $query->with('subcategory');
+        }
+    }
+
     public static function scopeFilterByAttributes($query, $attributes)
     {
         foreach ($attributes as $attribute) {
@@ -160,14 +181,20 @@ class Product extends Model
 
     public static function scopeFilterByPriceRange($query, $priceRange)
     {
-        $query->where(DB::raw('IFNULL(discount_price, price)'), '>=', $priceRange[0])->where(DB::raw('IFNULL(discount_price, price)'), '<=', $priceRange[1]);
+        $query->where(DB::raw('IFNULL(discount_price, price)'), '>=', $priceRange[0])->where(
+            DB::raw('IFNULL(discount_price, price)'),
+            '<=',
+            $priceRange[1]
+        );
     }
 
     public static function scopeGetPriceRange($query)
     {
-        return $query->select(DB::raw(
-            'MAX(IFNULL(discount_price, price)) as max_price, MIN(IFNULL(discount_price, price)) as min_price',
-        ))->get();
+        return $query->select(
+            DB::raw(
+                'MAX(IFNULL(discount_price, price)) as max_price, MIN(IFNULL(discount_price, price)) as min_price',
+            )
+        )->get();
     }
 
     public static function scopeActive($query)

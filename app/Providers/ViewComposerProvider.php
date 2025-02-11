@@ -7,8 +7,8 @@ use App\Models\Email;
 use App\Models\Page;
 use App\Models\PhoneNumber;
 use App\Models\ProductType;
-use Illuminate\Support\Facades\View;
 use App\Services\RecentlyViewedService;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ViewComposerProvider extends ServiceProvider
@@ -26,7 +26,6 @@ class ViewComposerProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         View::composer('components.cities', function ($view) {
             $cities = City::orderBy('name')->get();
             $citiesGrouped = City::groupByCapitalLetter($cities);
@@ -34,9 +33,15 @@ class ViewComposerProvider extends ServiceProvider
         });
 
         View::composer('layouts.components.catalog-menu', function ($view) {
-            $types = ProductType::with(['categories' => function ($query) {
-                $query->orderBy('name');
-            }])->orderBy('name')->get();
+            $types = ProductType::with([
+                'categories' => function ($query) {
+                    $query->orderBy('name')->with([
+                        'subcategories' => function ($query) {
+                            $query->orderBy('name');
+                        }
+                    ]);
+                }
+            ])->orderBy('name')->get();
             $view->with('types', $types);
         });
 

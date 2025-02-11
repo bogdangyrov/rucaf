@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Helpers\Filter;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -32,12 +32,21 @@ class Category extends Model
 
     public static function scopeWithProductsCount($query, Filter $filter)
     {
-        $query->withCount(['products' => function ($query) use ($filter) {
-            $query->active();
-            $query->filterByAttributes($filter->attributes);
-            if ($filter->priceRange) {
-                $query->filterByPriceRange($filter->priceRange);
+        $query->withCount([
+            'products' => function ($query) use ($filter) {
+                $query->active();
+                $subcategories = $filter->subcategories->pluck('id');
+                //$query->whereIn('sub_category_id', $subcategories);
+                $query->filterByAttributes($filter->attributes);
+                if ($filter->priceRange) {
+                    $query->filterByPriceRange($filter->priceRange);
+                }
             }
-        }]);
+        ]);
+    }
+
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class);
     }
 }

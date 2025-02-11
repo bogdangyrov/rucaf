@@ -15,10 +15,22 @@
                                 <input type="checkbox" class="category-list__checkbox" name="category[]"
                                     value="{{ $category->slug }}" @checked($filter->inCategories($category->slug))
                                     @disabled($category->products_count === 0)>
-                                <span class="category-list__txt">{{ $category->name }} <span
-                                        class="category-list__numbs">({{ $category->products_count }})</span></span>
+                                <span class="category-list__txt">{{ $category->name }}
+                                    <span class="category-list__numbs">({{ $category->products_count }})</span>
+                                </span>
                             </label>
+                            @foreach ($category->subcategories as $subcategory)
+                                <label class="category-list__item">
+                                    <input type="checkbox" class="category-list__checkbox" name="subcategory[]"
+                                        value="{{ $subcategory->slug }}" @checked($filter->inSubCategories($subcategory->slug))
+                                        @disabled($subcategory->products_count === 0)>
+                                    <span class="category-list__txt subcategory">{{ $subcategory->name }}
+                                        <span class="category-list__numbs">({{ $subcategory->products_count }})</span>
+                                    </span>
+                                </label>
+                            @endforeach
                         @endforeach
+
                     </div>
                     <div class="filter-category__wrap-list wrap-category-list">
                         <div class="filter-category__list category-list closed">
