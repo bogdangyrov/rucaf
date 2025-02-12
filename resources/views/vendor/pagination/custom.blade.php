@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
     <nav class="wrap-pagination">
-        <button class="pagination-btn-more btn btn--white" type="button">Показать еще</button>
+        <div></div>
         <ul class="pagination">
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
@@ -10,8 +10,7 @@
                 </li>
             @else
                 <li class="pagination__item">
-                    <a href="{{ $paginator->previousPageUrl() }}"
-                        class="pagination__link pagination__link--prev pagination__link--disabled"><i
+                    <a href="{{ $paginator->previousPageUrl() }}" class="pagination__link pagination__link--prev"><i
                             class="icon-arrow1"></i></a>
                 </li>
             @endif

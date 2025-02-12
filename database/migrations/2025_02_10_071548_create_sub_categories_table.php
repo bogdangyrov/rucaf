@@ -16,6 +16,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->json('images')->nullable();
+            $table->text('description');
+            $table->json('docs')->nullable();
+            $table->json('docs_file_names')->nullable();
             $table->foreignIdFor(ProductType::class);
             $table->foreignIdFor(Category::class);
             $table->timestamps();

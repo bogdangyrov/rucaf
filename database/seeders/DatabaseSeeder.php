@@ -16,6 +16,48 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
+    public function readCsv($filePath)
+    {
+        $rows = [];
+        if (($handle = fopen($filePath, 'r')) !== false) {
+            $headers = fgetcsv($handle, 1000, ',');  // Чтение заголовков
+            while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+                $rows[] = array_combine($headers, $data);
+            }
+            fclose($handle);
+        }
+        return $rows;
+    }
+
+    public function extractParams($modificationName, $charData)
+    {
+        // Пример: "Редуктор В-400-28-Т2"
+        preg_match('/Редуктор (\w)-(\d+)-(\d+)-(\w+)(\d+)/u', $modificationName, $matches);
+
+        if (!$matches) {
+            return null; // Неправильный формат
+        }
+
+        list(, $series, $distance, $ratio, $climate, $placement) = $matches;
+
+        // Проверка, что параметры существуют в основном файле
+        $validRatios = array_map('trim', explode(',', $charData['Передаточное отношение (число)']));
+        $validClimates = array_map('trim', explode(',', $charData['Климатическое исполнение']));
+        $validPlacements = array_map('trim', explode(',', $charData['Категория размещения']));
+
+        if (!in_array($ratio, $validRatios) || !in_array($climate, $validClimates) || !in_array($placement, $validPlacements)) {
+            return null; // Параметры не соответствуют основным данным
+        }
+
+        return [
+            'series' => $series,
+            'distance' => $distance,
+            'ratio' => $ratio,
+            'climate' => $climate,
+            'placement' => $placement,
+        ];
+    }
+
     /**
      * Seed the application's database.
      */
@@ -26,110 +68,104 @@ class DatabaseSeeder extends Seeder
             ProductTypeSeeder::class,
             PageSeeder::class,
             PhoneNumberSeeder::class,
-            EmailSeeder::class
-        ]);
-
-        User::factory()->create([
-            'name' => 'Admin',
-            'login' => 'admin',
-            'password' => 'admin'
+            EmailSeeder::class,
+            UserSeeder::class
         ]);
 
         $productType = ProductType::where('name', 'Редукторы')->first();
 
-        $categoryNames = ['Редукторы 1ЦУ', 'Редукторы 1Ц2У', 'Редукторы РМ'];
-        $subcategoryNames = ['Редукторы 1ЦУ-200', 'Редукторы 1Ц2У-300', 'Редукторы 1Ц2У-160'];
-        $productNames = [
-            'Редуктор 1Ц2У-200-8-11-К-Т-2',
-            'Редуктор 1Ц2У-200-8-11-К-Т-1',
-            'Редуктор 1Ц2У-200-8-11-К-Т-3'
-        ];
+        $charsCsv = $this->readCsv(storage_path('app/chars.csv'));
+        $modsCsv = $this->readCsv(storage_path('app/modifications.csv'));
+        $subcategoryCsv = $this->readCsv(storage_path('app/products.csv'))[0];
 
-        foreach ($categoryNames as $categoryName) {
-            Category::create([
-                'name' => $categoryName,
-                'product_type_id' => $productType->id
-            ]);
+        // Обрабатываем характеристики
+        $charsData = [];
+        foreach ($charsCsv as $record) {
+            $charsData[$record['Id']] = $record;
         }
 
-        $category = Category::get()->first();
+        // Обрабатываем модификации
+        foreach ($modsCsv as $record) {
+            $productId = $record['Id Продукта'];
+            $productName = $record['Название'];
 
-        foreach ($subcategoryNames as $subcategoryName) {
-            SubCategory::create([
-                'name' => $subcategoryName,
-                'category_id' => $category->id,
-                'product_type_id' => $productType->id
-            ]);
-        }
+            if (!isset($charsData[$productId])) {
+                continue; // Пропускаем, если нет характеристик
+            }
 
-        $subcategory = SubCategory::get()->first();
+            $parentData = $charsData[$productId];
 
-        $products = [];
-        $productDescription = '<b>Этот великолепный товар.</b> Предварительные выводы неутешительны: повышение уровня гражданского сознания говорит о возможностях модели развития. <i>Внезапно</i>, сделанные на базе интернет-аналитики выводы преданы социально-демократической анафеме.';
-        for ($i = 0; $i < count($productNames); $i++) {
-            $products[] = Product::create([
-                'name' => $productNames[$i],
-                'product_type_id' => $productType->id,
-                'category_id' => $category->id,
-                'sub_category_id' => $subcategory->id,
-                'description' => $productDescription,
-                'article' => fake()->randomNumber(4),
-                'dimensions' => fake()->randomNumber(3) . 'x' . fake()->randomNumber(3) . 'x' . fake()->randomNumber(3),
-                'mass' => fake()->randomNumber(3),
-                'price' => fake()->randomNumber(4),
-            ]);
-        }
+            // Извлекаем параметры из названия
+            if (preg_match('/([А-Я]+)-(\d+)-(\d+)-([А-Я]+[\d]*)/', $productName, $matches)) {
+                list(, $series, $size, $ratio, $climate) = $matches;
 
-        $newProducts = [
-            'Редуктор 1Ц2У-160-20-32-К-У-3',
-            'Редуктор 1Ц2У-160-20-32-К-У-4',
-            'Редуктор 1Ц2У-160-20-32-К-У-2 '
-        ];
+                // Создаем категорию, если не существует
+                $categoryName = "$series";
+                $category = Category::firstOrCreate([
+                    'name' => $categoryName,
+                    'slug' => Str::slug($categoryName),
+                    'product_type_id' => $productType->id,
+                ]);
 
-        for ($i = 0; $i < count($newProducts); $i++) {
-            $products[] = Product::create([
-                'name' => $newProducts[$i],
-                'product_type_id' => $productType->id,
-                'category_id' => $category->id,
-                'sub_category_id' => 3,
-                'description' => $productDescription,
-                'article' => fake()->randomNumber(4),
-                'dimensions' => fake()->randomNumber(3) . 'x' . fake()->randomNumber(3) . 'x' . fake()->randomNumber(3),
-                'mass' => fake()->randomNumber(3),
-                'price' => fake()->randomNumber(4),
-            ]);
-        }
+                // Создаем подкатегорию, если не существует
+                $subcategoryName = "$series-$size";
+                $subcategory = SubCategory::firstOrCreate([
+                    'name' => $subcategoryName,
+                    'slug' => Str::slug($subcategoryName),
+                    'product_type_id' => $productType->id,
+                    'category_id' => $category->id,
+                    'description' => $subcategoryCsv['Описание'] . " " . $subcategoryCsv['Подр. описание']
+                ]);
 
-        $attributeNames = ['Страна' => 'Россия', 'Тип передачи' => 'цилиндрический', 'Межосевое расстояние, мм' => 160];
-        foreach ($attributeNames as $name => $value) {
-            $attribute = Attribute::create(
-                ['name' => $name, 'product_type_id' => $productType->id, 'slug' => Str::slug($name)]
-            );
-            $value = Value::create(['value' => $value, 'slug' => Str::slug($value), 'attribute_id' => $attribute->id]);
-            foreach ($products as $product) {
-                AttributeValue::create(
-                    ['attribute_id' => $attribute->id, 'value_id' => $value->id, 'product_id' => $product->id]
-                );
+                // Создаем продукт
+                $product = Product::create([
+                    'name' => $productName,
+                    'product_type_id' => $productType->id,
+                    'category_id' => $category->id,
+                    'sub_category_id' => $subcategory->id,
+                    // TODO цена берется из $record
+                    'price' => $parentData['Цена'] ?? 0,
+                    'mass' => $parentData['Масса'] ?? 0,
+                    'dimensions' => $parentData['Длина'] . 'x' . $parentData['Ширина'] . 'x' . $parentData['Высота']
+                ]);
+
+                // Добавляем атрибуты
+                $attributes = [
+                    'Серия' => $series,
+                    'Типоразмер (межосевое расстояние)' => $size,
+                    'Передаточное отношение (число)' => $ratio,
+                    'Климатическое исполнение' => $climate,
+                ];
+
+                // Удаляем уже использованные атрибуты
+                $modificationParams = ['Цена', 'Масса', 'Длина', 'Ширина', 'Высота', 'Id', ...array_keys($attributes)];
+                foreach ($modificationParams as $param) {
+                    unset($parentData[$param]);
+                }
+
+                // Добавляем атрибуты родителя
+                $parentAttributes = $parentData;
+
+                foreach (array_merge($attributes, $parentAttributes) as $attrName => $attrValue) {
+                    $attr = Attribute::firstOrCreate([
+                        'name' => $attrName,
+                        'slug' => Str::slug($attrName),
+                        'product_type_id' => $productType->id,
+                    ]);
+
+                    $value = Value::firstOrCreate([
+                        'value' => $attrValue,
+                        'slug' => Str::slug($attrValue),
+                        'attribute_id' => $attr->id,
+                    ]);
+
+                    AttributeValue::create([
+                        'attribute_id' => $attr->id,
+                        'value_id' => $value->id,
+                        'product_id' => $product->id,
+                    ]);
+                }
             }
         }
-
-        $newValue = 'Китай';
-        $value = Value::create(['value' => $newValue, 'slug' => Str::slug($newValue), 'attribute_id' => 1]);
-
-        AttributeValue::create(['attribute_id' => 1, 'value_id' => $value->id, 'product_id' => $product->id]);
-        AttributeValue::create(['attribute_id' => 2, 'value_id' => 2, 'product_id' => $product->id]);
-        AttributeValue::create(['attribute_id' => 3, 'value_id' => 3, 'product_id' => $product->id]);
-
-        QuickFilter::create(
-            ['attribute_id' => 1, 'value_id' => 1, 'product_type_id' => $productType->id, 'name' => 'Россия']
-        );
-        QuickFilter::create(
-            [
-                'attribute_id' => 2,
-                'value_id' => 2,
-                'product_type_id' => $productType->id,
-                'name' => 'Цилиндрическая передача'
-            ]
-        );
     }
 }

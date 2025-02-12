@@ -120,6 +120,8 @@ class ProductController extends Controller
             ->limit(5)
             ->get();
 
+        $subCategory = $product->subCategory()->first();
+
         $seo = new Seo(
             "{$product->name} — Купить промышленное оборудование в Rucaf",
             "{$product->name} от компании Rucaf. Высокое качество и надежность для промышленных нужд. Доставка по всей России.",
@@ -135,6 +137,7 @@ class ProductController extends Controller
         return view('products.show')
             ->with([
                 'type' => $productType,
+                'subCategory' => $subCategory,
                 'product' => $product,
                 'relatedProducts' => $relatedProducts,
                 'seo' => $seo

@@ -10,7 +10,7 @@
         </ul>
         <div id="desc" class="tabs__content tabs-content">
             <div class="tabs-txt">
-                <p>{!! $product->description !!}</p>
+                <p>{!! str_replace('{NAME}', $product->name, $subCategory->description) !!}</p>
             </div>
             <div class="tabs-info">
                 @if (isset($product->docs) && count($product->docs) > 0)

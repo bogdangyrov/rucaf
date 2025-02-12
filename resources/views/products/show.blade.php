@@ -6,11 +6,18 @@
             <div class="bread">
                 <a href="{{ route('home') }}" class="bread__link">Главная</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
                 <a href="{{ route('catalog') }}" class="bread__link">Каталог</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
                 <a href="{{ route('products.index', ['productType' => $type->slug]) }}"
                     class="bread__link">{{ $type->name }}</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
+                <a href="{{ route('products.index', ['productType' => $type->slug, 'subcategory' => [$subCategory->slug]]) }}"
+                    class="bread__link">{{ $subCategory->name }}</a>
+                <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
                 <a class="bread__link active">{{ $product->name }}</a>
             </div>
             <div class="title title--inline">
