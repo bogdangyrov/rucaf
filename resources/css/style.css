@@ -4799,9 +4799,23 @@ body {
     .catalog-catalog__item {
         width: calc(50% - 16px);
     }
+
+    .title__sale {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .title--inline {
+        align-items: start !important;
+        flex-direction: column;
+    }
 }
 
 @media only screen and (min-width: 601px) {
+    .title__sum {
+        margin: 8px 0 0 24px;
+    }
+
     .cities-wrap {
         column-count: 3 !important;
     }
@@ -5410,10 +5424,6 @@ body {
 
     .title--inline {
         display: flex;
-    }
-
-    .title__sum {
-        margin: 8px 0 0 24px;
     }
 
     .filter-btn {
@@ -7174,7 +7184,6 @@ body {
         background: #fff;
         z-index: 8;
         transform: translate3d(0, 100%, 0);
-        visibility: hidden;
         transition: all 0.3s;
         overflow: hidden;
     }
@@ -7239,6 +7248,9 @@ body {
     }
 
     .catalog-menu__item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 260px;
         max-width: 100%;
     }
@@ -7273,8 +7285,6 @@ body {
         top: 0;
         bottom: 0;
         left: 260px;
-        opacity: 0;
-        visibility: hidden;
         margin: 0;
         height: 100%;
         transition: all 0.1s;
@@ -7289,6 +7299,21 @@ body {
 
     .catalog-menu--parent .jspContainer {
         background: white;
+    }
+
+    .submenu-toggle {
+        display: inline-block;
+        padding-right: 25px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .catalog-menu--sub-menu {
+        display: none;
+    }
+
+    .catalog-menu__item.open > .catalog-menu--sub-menu {
+        display: block;
     }
 
     .wrap-catalog-menu::after {
@@ -7326,9 +7351,7 @@ body {
         background: none;
     }
 
-    .catalog-menu--parent
-        .catalog-menu__item:hover
-        .catalog-menu--sub-menu-lvl1 {
+    .catalog-menu--parent .catalog-menu--sub-menu-lvl1 {
         opacity: 1;
         visibility: visible;
     }
@@ -7345,7 +7368,6 @@ body {
 
     .catalog-menu--parent
         .catalog-menu--sub-menu-lvl1
-        .catalog-menu__item:hover
         .catalog-menu--sub-menu-lvl2 {
         opacity: 1;
         visibility: visible;
@@ -7576,4 +7598,9 @@ body {
     text-align: center;
     padding: 40px;
     font-size: 30px;
+}
+
+#catalog-menu .mm-listitem__text {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
 }

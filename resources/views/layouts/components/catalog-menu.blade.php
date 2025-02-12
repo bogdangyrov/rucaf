@@ -6,6 +6,7 @@
                     <a href="{{ route('products.index', ['productType' => $type->slug]) }}" class="catalog-menu__link">
                         {{ $type->name }}
                     </a>
+                    <span class="submenu-toggle icon-arrow1"></span>
                     @if (!empty($type->categories))
                         <ul class="catalog-menu catalog-menu--sub-menu catalog-menu--sub-menu-lvl1 custom-scroll">
                             @foreach ($type->categories as $category)
@@ -14,13 +15,16 @@
                                         class="catalog-menu__link">
                                         {{ $category->name }}
                                     </a>
+                                    <span class="submenu-toggle  icon-arrow1"></span>
                                     @if (!empty($category->subcategories))
                                         <ul
                                             class="catalog-menu catalog-menu--sub-menu catalog-menu--sub-menu-lvl2 custom-scroll">
                                             @foreach ($category->subcategories as $subcategory)
-                                                <li class="catalog-menu__item"><a
-                                                        href="{{ route('products.index', ['productType' => $type['slug'], 'category' => [$category->slug], 'subcategory' => [$subcategory['slug']]]) }}"
-                                                        class="catalog-menu__link">{{ $subcategory->name }}</a>
+                                                <li class="catalog-menu__item">
+                                                    <a href="{{ route('products.index', ['productType' => $type['slug'], 'category' => [$category->slug], 'subcategory' => [$subcategory['slug']]]) }}"
+                                                        class="catalog-menu__link">
+                                                        {{ $subcategory->name }}
+                                                    </a>
                                                 </li>
                                             @endforeach
                                         </ul>

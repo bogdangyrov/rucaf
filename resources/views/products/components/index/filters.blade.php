@@ -43,7 +43,9 @@
                                             class="category-list__numbs">({{ $category->products_count }})</span></span>
                                 </label>
                             @endforeach
-                            <button class="filter-category__btn-more" type="button">Показать все</button>
+                            @if (count($categories) > 5)
+                                <button class="filter-category__btn-more" type="button">Показать все</button>
+                            @endif
                         </div>
                     </div>
                 </div>
