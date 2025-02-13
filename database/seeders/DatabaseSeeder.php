@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
 
         $productType = ProductType::where('name', 'Редукторы')->first();
 
-        $categoryName = "Червячные редукторы";
+        $categoryName = "Цилиндрические редукторы";
         $category = Category::firstOrCreate([
             'name' => $categoryName,
             'slug' => Str::slug($categoryName),

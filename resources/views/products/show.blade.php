@@ -14,6 +14,10 @@
                     class="bread__link">{{ $type->name }}</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
 
+                <a href="{{ route('products.index', ['productType' => $type->slug, 'category' => [$product->category->slug]]) }}"
+                    class="bread__link">{{ $product->category->name }}</a>
+                <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
                 <a href="{{ route('products.index', ['productType' => $type->slug, 'subcategory' => [$subCategory->slug]]) }}"
                     class="bread__link">{{ $subCategory->name }}</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
