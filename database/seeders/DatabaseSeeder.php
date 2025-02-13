@@ -78,28 +78,24 @@ class DatabaseSeeder extends Seeder
         $modsCsv = $this->readCsv(storage_path('app/modifications.csv'));
         $subcategoryCsv = $this->readCsv(storage_path('app/products.csv'))[0];
 
-        // Обрабатываем характеристики
         $charsData = [];
         foreach ($charsCsv as $record) {
             $charsData[$record['Id']] = $record;
         }
 
-        // Обрабатываем модификации
         foreach ($modsCsv as $record) {
             $productId = $record['Id Продукта'];
             $productName = $record['Название'];
 
             if (!isset($charsData[$productId])) {
-                continue; // Пропускаем, если нет характеристик
+                continue;
             }
 
             $parentData = $charsData[$productId];
 
-            // Извлекаем параметры из названия
-            if (preg_match('/([А-Я]+)-(\d+)-(\d+)-([А-Я]+[\d]*)/', $productName, $matches)) {
-                list(, $series, $size, $ratio, $climate) = $matches;
+            if (preg_match('/([А-Я]+)-(\d+)-(\d+)-([А-Я]+)([\d])/', $productName, $matches)) {
+                list(, $series, $size, $ratio, $climate, $placement) = $matches;
 
-                // Создаем категорию, если не существует
                 $categoryName = "$series";
                 $category = Category::firstOrCreate([
                     'name' => $categoryName,
@@ -107,7 +103,6 @@ class DatabaseSeeder extends Seeder
                     'product_type_id' => $productType->id,
                 ]);
 
-                // Создаем подкатегорию, если не существует
                 $subcategoryName = "$series-$size";
                 $subcategory = SubCategory::firstOrCreate([
                     'name' => $subcategoryName,
@@ -117,33 +112,29 @@ class DatabaseSeeder extends Seeder
                     'description' => $subcategoryCsv['Описание'] . " " . $subcategoryCsv['Подр. описание']
                 ]);
 
-                // Создаем продукт
                 $product = Product::create([
                     'name' => $productName,
                     'product_type_id' => $productType->id,
                     'category_id' => $category->id,
                     'sub_category_id' => $subcategory->id,
-                    // TODO цена берется из $record
-                    'price' => $parentData['Цена'] ?? 0,
+                    'price' => $record['Цена'] ?? 0,
                     'mass' => $parentData['Масса'] ?? 0,
                     'dimensions' => $parentData['Длина'] . 'x' . $parentData['Ширина'] . 'x' . $parentData['Высота']
                 ]);
 
-                // Добавляем атрибуты
                 $attributes = [
                     'Серия' => $series,
                     'Типоразмер (межосевое расстояние)' => $size,
                     'Передаточное отношение (число)' => $ratio,
                     'Климатическое исполнение' => $climate,
+                    'Категория размещения' => $placement,
                 ];
 
-                // Удаляем уже использованные атрибуты
-                $modificationParams = ['Цена', 'Масса', 'Длина', 'Ширина', 'Высота', 'Id', ...array_keys($attributes)];
+                $modificationParams = ['Масса', 'Длина', 'Ширина', 'Высота', 'Id', ...array_keys($attributes)];
                 foreach ($modificationParams as $param) {
                     unset($parentData[$param]);
                 }
 
-                // Добавляем атрибуты родителя
                 $parentAttributes = $parentData;
 
                 foreach (array_merge($attributes, $parentAttributes) as $attrName => $attrValue) {
