@@ -6660,6 +6660,10 @@ body {
     }
 }
 
+.submenu-toggle {
+    display: none;
+}
+
 @media only screen and (min-width: 1300px) {
     #catalog-menu,
     .w-catalog-menu {
@@ -7222,7 +7226,10 @@ body {
     }
 
     .catalog-menu__link {
-        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
         font-size: 14px;
         line-height: 20px;
         color: #5d5d74;
@@ -7303,7 +7310,7 @@ body {
 
     .submenu-toggle {
         display: inline-block;
-        padding-right: 25px;
+        padding-left: 25px;
         cursor: pointer;
         transition: transform 0.3s ease;
     }

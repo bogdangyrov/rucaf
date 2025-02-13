@@ -74,6 +74,13 @@ class DatabaseSeeder extends Seeder
 
         $productType = ProductType::where('name', 'Редукторы')->first();
 
+        $categoryName = "Червячные редукторы";
+        $category = Category::firstOrCreate([
+            'name' => $categoryName,
+            'slug' => Str::slug($categoryName),
+            'product_type_id' => $productType->id,
+        ]);
+
         $charsCsv = $this->readCsv(storage_path('app/chars.csv'));
         $modsCsv = $this->readCsv(storage_path('app/modifications.csv'));
         $subcategoryCsv = $this->readCsv(storage_path('app/products.csv'))[0];
@@ -95,13 +102,6 @@ class DatabaseSeeder extends Seeder
 
             if (preg_match('/([А-Я]+)-(\d+)-(\d+)-([А-Я]+)([\d])/', $productName, $matches)) {
                 list(, $series, $size, $ratio, $climate, $placement) = $matches;
-
-                $categoryName = "$series";
-                $category = Category::firstOrCreate([
-                    'name' => $categoryName,
-                    'slug' => Str::slug($categoryName),
-                    'product_type_id' => $productType->id,
-                ]);
 
                 $subcategoryName = "$series-$size";
                 $subcategory = SubCategory::firstOrCreate([
@@ -130,7 +130,7 @@ class DatabaseSeeder extends Seeder
                     'Категория размещения' => $placement,
                 ];
 
-                $modificationParams = ['Масса', 'Длина', 'Ширина', 'Высота', 'Id', ...array_keys($attributes)];
+                $modificationParams = ['Масса', 'Длина', 'Ширина', 'Высота', 'Цена', 'Id', ...array_keys($attributes)];
                 foreach ($modificationParams as $param) {
                     unset($parentData[$param]);
                 }

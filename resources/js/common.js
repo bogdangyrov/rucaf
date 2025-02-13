@@ -212,6 +212,7 @@ $(function () {
             navbars: [
                 {
                     content: ["prev", "title", "close"],
+                    parent: true,
                 },
             ],
             classNames: {
@@ -240,12 +241,12 @@ $(function () {
             }
         });
 
-        $(document).on("click", ".submenu-toggle", function (e) {
+        $(document).on("click", ".catalog-menu__item", function (e) {
             e.stopPropagation();
             let $parentItem = $(this).closest(".catalog-menu__item");
 
             $parentItem.siblings().removeClass("open").find(".catalog-menu--sub-menu").hide();
-            $parentItem.siblings().find(".submenu-toggle").removeClass("rotated");
+            $parentItem.siblings().find(".catalog-menu__item").removeClass("rotated");
 
             $parentItem.toggleClass("open");
             $parentItem.children(".catalog-menu--sub-menu").show();

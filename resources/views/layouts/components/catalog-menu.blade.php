@@ -3,19 +3,18 @@
         <ul class="catalog-menu catalog-menu--parent custom-scroll">
             @foreach ($types as $type)
                 <li class="catalog-menu__item">
-                    <a href="{{ route('products.index', ['productType' => $type->slug]) }}" class="catalog-menu__link">
+                    <span class="catalog-menu__link">
                         {{ $type->name }}
-                    </a>
-                    <span class="submenu-toggle icon-arrow1"></span>
+                        <span class="submenu-toggle icon-arrow1"></span>
+                    </span>
                     @if (!empty($type->categories))
                         <ul class="catalog-menu catalog-menu--sub-menu catalog-menu--sub-menu-lvl1 custom-scroll">
                             @foreach ($type->categories as $category)
                                 <li class="catalog-menu__item">
-                                    <a href="{{ route('products.index', ['productType' => $type->slug, 'category' => [$category->slug]]) }}"
-                                        class="catalog-menu__link">
+                                    <span class="catalog-menu__link">
                                         {{ $category->name }}
-                                    </a>
-                                    <span class="submenu-toggle  icon-arrow1"></span>
+                                        <span class="submenu-toggle  icon-arrow1"></span>
+                                    </span>
                                     @if (!empty($category->subcategories))
                                         <ul
                                             class="catalog-menu catalog-menu--sub-menu catalog-menu--sub-menu-lvl2 custom-scroll">
