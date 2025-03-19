@@ -24,6 +24,15 @@ class PageResource extends Resource
 
     protected static ?string $navigationGroup = 'Сайт';
 
+    public static function getModelLabel(): string
+    {
+        return 'Страницы';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Страницы';
+    }
 
     public static function form(Form $form): Form
     {

@@ -25,7 +25,7 @@ class FavoritesService
             return collect();
         }
         $products = Product::whereIn('id', $sessionFavorites)
-            ->with('productType')
+            ->with('category.productType', 'subcategory')
             ->get();
 
         return $products;

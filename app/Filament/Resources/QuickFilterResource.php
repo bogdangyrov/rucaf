@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\QuickFilterResource\Pages;
+use App\Models\Category;
+use App\Models\Subcategory;
 
 class QuickFilterResource extends Resource
 {
@@ -24,6 +26,16 @@ class QuickFilterResource extends Resource
 
     protected static ?string $navigationGroup = 'Каталог';
 
+    public static function getModelLabel(): string
+    {
+        return 'Быстрый фильтр';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Быстрые фильтры';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -31,18 +43,60 @@ class QuickFilterResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
                 Select::make('product_type_id')
                     ->label('Тип оборудования')
                     ->relationship('productType', 'name')
+                    ->reactive()
+                    ->required()
+                    ->columnSpanFull(),
+                Select::make('category_id')
+                    ->label('Подкатегория')
+                    ->options(function ($get) {
+                        $productTypeId = $get('product_type_id');
+                        if ($productTypeId) {
+                            $values = ProductType::find($productTypeId)
+                                ->categories()
+                                ->get()
+                                ->pluck('name', 'id')
+                                ->sortBy('name');
+                            return $values;
+                        } else {
+                            return [];
+                        }
+                    })
+                    ->searchable()
+                    ->reactive()
+                    ->required(),
+                Select::make('subcategory_id')
+                    ->label('Подкатегория')
+                    ->options(function ($get) {
+                        $categoryId = $get('category_id');
+                        if ($categoryId) {
+                            $values = Category::find($categoryId)
+                                ->subcategories()
+                                ->get()
+                                ->sortBy('name')
+                                ->pluck('name', 'id');
+                            return $values;
+                        } else {
+                            return [];
+                        }
+                    })
+                    ->searchable()
                     ->reactive()
                     ->required(),
                 Select::make('attribute_id')
                     ->label('Характеристика')
                     ->options(function ($get) {
-                        $productTypeId = $get('product_type_id');
-                        if ($productTypeId) {
-                            $values = ProductType::find($productTypeId)->attributes()->get()->pluck('name', 'id');
+                        $subcategoryId = $get('subcategory_id');
+                        if ($subcategoryId) {
+                            $values = Subcategory::find($subcategoryId)
+                                ->attributes()
+                                ->get()
+                                ->sortBy('name')
+                                ->pluck('name', 'id');
                             return $values;
                         } else {
                             return [];
@@ -56,7 +110,11 @@ class QuickFilterResource extends Resource
                     ->options(function ($get) {
                         $attributeId = $get('attribute_id');
                         if ($attributeId) {
-                            $values = Attribute::find($attributeId)->values()->get()->pluck('value', 'id');
+                            $values = Attribute::find($attributeId)
+                                ->values()
+                                ->get()
+                                ->sortBy('value')
+                                ->pluck('value', 'id');
                             return $values;
                         } else {
                             return [];
@@ -75,6 +133,10 @@ class QuickFilterResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('productType.name')
                     ->label("Тип оборудования")
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subcategory.name')
+                    ->label("Подкатегория")
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('attribute.name')

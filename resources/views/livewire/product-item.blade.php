@@ -2,8 +2,8 @@
 
     <div class="catalog__wrap-img">
         <a class="catalog__img"
-            href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}"><img
-                src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg') }}"
+            href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}"><img
+                src="{{ asset(isset($product->subcategory->images[0]) ? "storage/{$product->subcategory->images[0]}" : 'img/content/product-1.jpg') }}"
                 alt="{{ $product->name }}"></a>
         <div class="catalog__wrap-actions">
 
@@ -47,7 +47,7 @@
     </div>
 
     <a class="catalog__content"
-        href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
+        href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}">
         <div class="catalog__price">
             @isset($product->price)
                 @isset($product->discount_price)

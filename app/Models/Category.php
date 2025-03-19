@@ -25,28 +25,8 @@ class Category extends Model
         return $this->belongsTo(ProductType::class);
     }
 
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
-
-    public static function scopeWithProductsCount($query, Filter $filter)
-    {
-        $query->withCount([
-            'products' => function ($query) use ($filter) {
-                $query->active();
-                $subcategories = $filter->subcategories->pluck('id');
-                //$query->whereIn('sub_category_id', $subcategories);
-                $query->filterByAttributes($filter->attributes);
-                if ($filter->priceRange) {
-                    $query->filterByPriceRange($filter->priceRange);
-                }
-            }
-        ]);
-    }
-
     public function subCategories()
     {
-        return $this->hasMany(SubCategory::class);
+        return $this->hasMany(Subcategory::class);
     }
 }

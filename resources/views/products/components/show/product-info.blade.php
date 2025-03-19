@@ -11,12 +11,12 @@
         </ul>
         <div id="desc" class="tabs__content tabs-content">
             <div class="tabs-txt">
-                <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $subCategory->description) !!}</p>
+                <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $subcategory->description) !!}</p>
             </div>
             <div class="tabs-info">
-                @if (isset($product->docs) && count($product->docs) > 0)
+                @if (isset($subcategory->docs) && count($subcategory->docs) > 0)
                     <div class="docs">
-                        @foreach ($product->docs_file_names as $doc => $name)
+                        @foreach ($subcategory->docs_file_names as $doc => $name)
                             <a href="{{ Storage::url($doc) }}" class="docs__item">
                                 <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                                 <div class="docs__content">

@@ -12,12 +12,12 @@ class Search extends Component
 
     public function render()
     {
-        $search = $this->search;
+        $search = trim($this->search);
 
         if ($this->search) {
             $this->products = Product::active()
                 ->fuzzySearch($search)
-                ->with('productType')
+                ->with('category.productType', 'subcategory')
                 ->limit(10)
                 ->get();
         } else {

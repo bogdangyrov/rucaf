@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->foreignIdFor(ProductType::class);
+            $table->foreignIdFor(ProductType::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

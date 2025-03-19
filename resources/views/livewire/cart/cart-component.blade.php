@@ -4,13 +4,13 @@
             @foreach ($products as $product)
                 <div class="cart-item">
                     <a class="cart-item__image"
-                        href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
-                        <img src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg') }}"
+                        href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}">
+                        <img src="{{ asset(isset($product->subcategory->images[0]) ? "storage/{$product->subcategory->images[0]}" : 'img/content/product-1.jpg') }}"
                             alt="{{ $product->name }}">
                     </a>
                     <div class="cart-item__details">
                         <a class="cart-item__title"
-                            href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
+                            href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}">
                             {{ $product->name }}</a>
                         <div class="cart-item__price">
                             Цена:

@@ -15,7 +15,7 @@
             <div class="order">
                 <div class="order__wrap-order-img wrap-order-img">
                     <div class="order__img"><img
-                            src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg') }}"
+                            src="{{ asset(isset($product->subcategory->images[0]) ? "storage/{$product->subcategory->images[0]}" : 'img/content/product-1.jpg') }}"
                             alt="{{ $product->name }}"></div>
                 </div>
                 @include('components.order-product-data')

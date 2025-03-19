@@ -27,6 +27,16 @@ class ProductTypeResource extends Resource
 
     protected static ?string $navigationGroup = 'Каталог';
 
+    public static function getModelLabel(): string
+    {
+        return 'Типы оборудования';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Типы оборудования';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -87,6 +97,7 @@ class ProductTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Название')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()

@@ -5,7 +5,7 @@
 
     @include('products.components.index.sort-list', [
         'sortTitle' => 'Сортировка по',
-        'sortList' => ['Популярности' => 'popular', 'Цене' => 'price', 'Категории' => 'category'],
+        'sortList' => ['Популярности' => 'popular', 'Цене' => 'price', 'Названию' => 'name'],
         'sortSlug' => 'sort-by',
         'attr' => 'sortBy',
     ])

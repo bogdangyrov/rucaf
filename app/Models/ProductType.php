@@ -34,9 +34,4 @@ class ProductType extends Model
     {
         return $this->hasMany(Category::class);
     }
-
-    public function quickFilters()
-    {
-        return $this->hasMany(QuickFilter::class);
-    }
 }

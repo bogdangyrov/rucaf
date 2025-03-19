@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ProductType;
+use App\Models\Subcategory;
 
 class ComparisonService
 {
@@ -16,7 +17,7 @@ class ComparisonService
         return true;
     }
 
-    public static function getProductTypes()
+    public static function getSubcategories()
     {
         $sessionComparison = session('comparison');
 
@@ -24,13 +25,13 @@ class ComparisonService
             return collect();
         }
 
-        $productTypes = ProductType::withWhereHas('products', function ($query) use ($sessionComparison) {
+        $subcategories = Subcategory::withWhereHas('products', function ($query) use ($sessionComparison) {
             $query->whereIn('id', $sessionComparison)->with('attributeValues.attribute', 'attributeValues.value');
         })
-            ->with('attributes')
+            ->with('attributes', 'category.productType')
             ->get();
 
-        return $productTypes;
+        return $subcategories;
     }
 
     public static function inComparison($productId)

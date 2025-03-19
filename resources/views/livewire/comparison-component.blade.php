@@ -1,37 +1,42 @@
 <div class="tabs">
-    @if (count($productTypes))
+    @if (count($subcategories))
         <ul class="tabs__menu tabs-menu scroll">
-            @foreach ($productTypes as $type)
+            @foreach ($subcategories as $subcategory)
                 <li class="tabs-menu__item category-btn">
-                    <a href="#type-{{ $type->slug }}" class="tabs-menu__link">{{ $type->name }}</a>
+                    <a href="#subcategory-{{ $subcategory->slug }}" class="tabs-menu__link">{{ $subcategory->name }}</a>
                 </li>
             @endforeach
         </ul>
 
-        @foreach ($productTypes as $type)
-            <div id="type-{{ $type->slug }}" class="tabs__content tabs-content">
+        @foreach ($subcategories as $subcategory)
+            <div id="subcategory-{{ $subcategory->slug }}" class="tabs__content tabs-content">
                 <div class="tabs-info">
 
                     <div class="comparison-table-wrapper" id="comparison-table-1">
                         <div class="comparison-table">
 
                             <div class="comparison-header">
-                                <div class="comparison-header-item">{{ $type->name }}</div>
-                                @foreach ($type->products as $product)
+                                <div class="comparison-header-item">{{ $subcategory->name }}</div>
+                                @foreach ($subcategory->products as $product)
                                     <div class="comparison-header-item"
-                                        href="{{ route('products.show', ['productType' => $type->slug, 'product' => $product->slug]) }}">
-                                        <img src="{{ asset(isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg') }}"
+                                        href="{{ route('products.show', [
+                                            'productType' => $subcategory->category->productType,
+                                            'category' => $subcategory->category,
+                                            'subcategory' => $subcategory,
+                                            'product' => $product,
+                                        ]) }}">
+                                        <img src="{{ asset(isset($product->subcategory->images[0]) ? "storage/{$product->subcategory->images[0]}" : 'img/content/product-1.jpg') }}"
                                             alt="">
                                         <p>{{ $product->name }}</p>
                                     </div>
                                 @endforeach
                             </div>
 
-                            @foreach ($type->attributes as $attribute)
+                            @foreach ($subcategory->attributes as $attribute)
                                 <div class="comparison-row">
                                     <div class="comparison-cell characteristic">{{ $attribute->name }}</div>
 
-                                    @foreach ($type->products as $product)
+                                    @foreach ($subcategory->products as $product)
                                         <div class="comparison-cell">
                                             {{ $product->attributeValues->where('attribute.id', $attribute->id)->first()->value->value ?? '-' }}
                                         </div>
@@ -42,7 +47,7 @@
                             <div class="comparison-row">
                                 <div class="comparison-cell characteristic">Цена</div>
 
-                                @foreach ($type->products as $product)
+                                @foreach ($subcategory->products as $product)
                                     <div class="comparison-cell">
                                         @isset($product->price)
                                             @isset($product->discount_price)
@@ -63,7 +68,7 @@
                             <div class="comparison-row">
                                 <div class="comparison-cell characteristic">-</div>
 
-                                @foreach ($type->products as $product)
+                                @foreach ($subcategory->products as $product)
                                     <div class="comparison-cell">
                                         <button class="btn" wire:click="delete({{ $product->id }})">Удалить</button>
                                     </div>

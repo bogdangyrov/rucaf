@@ -2,15 +2,17 @@
 
 namespace App\Helpers;
 
-use App\Models\Attribute;
 use App\Models\Category;
-use App\Models\SubCategory;
+use App\Models\Attribute;
+use App\Models\ProductType;
+use App\Models\Subcategory;
 use Illuminate\Database\Eloquent\Collection;
 
 class Filter
 {
-    public Collection $categories;
-    public Collection $subcategories;
+    public ProductType $productType;
+    public Category $category;
+    public Subcategory $subcategory;
     public Collection $attributes;
 
     public string $pageSize = '20';
@@ -20,35 +22,21 @@ class Filter
     public array $priceRange = [];
 
     private static array $availablePageSizes = [20, 60, 100];
-    private static array $availableSortBy = ['popular', 'price', 'category'];
+    private static array $availableSortBy = ['popular', 'price', 'name'];
     private static array $availableShowProducts = ['all', 'new', 'hits', 'discounts'];
 
-
-    public function __construct(array $requestQuery)
+    public function __construct(ProductType $productType, Category $category, Subcategory $subcategory, array $requestQuery)
     {
-        if (isset($requestQuery['category'])) {
-            $this->categories = Category::whereIn('slug', $requestQuery['category'])->get();
-            unset($requestQuery['category']);
-        } else {
-            $this->categories = new Collection();
-        }
-
-        if (isset($requestQuery['subcategory'])) {
-            $this->subcategories = SubCategory::whereIn('slug', $requestQuery['subcategory'])->get();
-            unset($requestQuery['subcategory']);
-        } else {
-            $this->subcategories = new Collection();
-        }
+        $this->productType = $productType;
+        $this->category = $category;
+        $this->subcategory = $subcategory;
 
         if (isset($requestQuery['page-size']) && in_array($requestQuery['page-size'], static::$availablePageSizes)) {
             $this->pageSize = $requestQuery['page-size'];
             unset($requestQuery['page-size']);
         }
 
-        if (isset($requestQuery['show-products']) && in_array(
-            $requestQuery['show-products'],
-            static::$availableShowProducts
-        )) {
+        if (isset($requestQuery['show-products']) && in_array($requestQuery['show-products'], static::$availableShowProducts)) {
             $this->showProducts = $requestQuery['show-products'];
             unset($requestQuery['show-products']);
         }
@@ -58,98 +46,74 @@ class Filter
             unset($requestQuery['sort-by']);
         }
 
-        if (isset($requestQuery['page']) && ($requestQuery > 0)) {
-            $this->page = $requestQuery['page'];
+        if (isset($requestQuery['page']) && is_numeric($requestQuery['page']) && $requestQuery['page'] > 0) {
+            $this->page = (int) $requestQuery['page'];
             unset($requestQuery['page']);
         }
 
-        if (isset($requestQuery['min-price']) && isset($requestQuery['max-price']) && $requestQuery['min-price'] > 0 && $requestQuery['max-price'] > 0) {
-            $this->priceRange = [$requestQuery['min-price'], $requestQuery['max-price']];
+        if (isset($requestQuery['min-price'], $requestQuery['max-price']) && is_numeric($requestQuery['min-price']) && is_numeric($requestQuery['max-price']) && $requestQuery['min-price'] > 0 && $requestQuery['max-price'] > 0) {
+            $this->priceRange = [(int) $requestQuery['min-price'], (int) $requestQuery['max-price']];
             unset($requestQuery['min-price'], $requestQuery['max-price']);
         }
 
-        if ($requestQuery) {
-            $this->attributes = Attribute::withAttributesValuesFromQuery($requestQuery)->get();
-        } else {
-            $this->attributes = new Collection();
-        }
+        $this->attributes = Attribute::where('subcategory_id', $this->subcategory->id)
+            ->whereIn('slug', array_keys($requestQuery))
+            ->withWhereHas(
+                'values',
+                function ($query) use ($requestQuery) {
+                    $query->where(function ($query) use ($requestQuery) {
+                        foreach ($requestQuery as $name => $values) {
+                            if (!is_array($values)) {
+                                continue;
+                            }
+
+                            $query->orWhere(function ($query) use ($name, $values) {
+                                $query->whereHas('attribute', function ($query) use ($name) {
+                                    $query->where('slug', $name);
+                                })->whereIn('slug', $values);
+                            });
+                        }
+                    });
+                }
+            )->get();
+        // $this->attributes = $requestQuery ? Attribute::withAttributesValuesFromQuery($requestQuery)->get() : new Collection();
     }
 
-    public function inCategories(string $slug)
-    {
-        return $this->categories->contains('slug', $slug);
-    }
-
-    public function inSubCategories(string $slug)
-    {
-        return $this->subcategories->contains('slug', $slug);
-    }
-
-    public function attributeExists(string $slug)
+    public function attributeExists(string $slug): bool
     {
         return $this->attributes->contains('slug', $slug);
     }
 
-    public function inAttributeValues(string $attributeSlug, string $valueSlug)
+    public function inAttributeValues(string $attributeSlug, string $valueSlug): bool
     {
-        return $this->attributes->filter(function ($attribute) use ($attributeSlug, $valueSlug) {
-            return $attribute->slug === $attributeSlug && $attribute->values->contains('slug', $valueSlug);
-        })->isNotEmpty();
+        return $this->attributes->where('slug', $attributeSlug)->pluck('values')->flatten()->contains('slug', $valueSlug);
     }
 
-    public function filtersExists()
+    public function filtersExists(): bool
     {
-        return $this->attributes->count() > 0 || $this->categories->count() > 0;
+        return $this->attributes->isNotEmpty();
     }
 
-    public function queryWithoutCategory(string $slug)
+    public function queryAttributes(): array
     {
-        $categories = $this->categories->where('slug', '!==', $slug)->pluck('slug')->toArray();
-        return $categories;
+        return $this->attributes->mapWithKeys(fn($attribute) => [$attribute->slug => $attribute->values->pluck('slug')->toArray()])->toArray();
     }
 
-    public function queryCategories()
+    public function getQuery(): array
     {
-        return $this->categories->pluck('slug')->toArray();
-    }
-
-    public function queryAttributes()
-    {
-        $query = [];
-        foreach ($this->attributes as $attribute) {
-            $query[$attribute->slug] = $attribute->values->pluck('slug')->toArray();
-        }
-        return $query;
-    }
-
-    public function queryWithoutAttributeValue(string $attributeSlug, string $valueSlug)
-    {
-        $query = [];
-        foreach ($this->attributes as $attribute) {
-            if ($attribute->slug == $attributeSlug) {
-                $query[$attribute->slug] = $attribute->values->where('slug', '!==', $valueSlug)->pluck('slug')->toArray();
-            } else {
-                $query[$attribute->slug] = $attribute->values->pluck('slug')->toArray();
-            }
-        }
-        return $query;
-    }
-
-    public function getQuery()
-    {
-        $query = [
-            'category[]' => $this->categories->pluck('slug')->toArray(),
-            ...$this->queryAttributes(),
+        $query = array_merge([
+            'category' => $this->category->slug,
             'page-size' => $this->pageSize,
             'show-products' => $this->showProducts,
             'page' => $this->page,
-            'sort-by' => $this->sortBy
-        ];
+            'sort-by' => $this->sortBy,
+        ], $this->queryAttributes());
 
-        if ($this->priceRange) {
+        if (!empty($this->priceRange)) {
             $query['min-price'] = $this->priceRange[0];
             $query['max-price'] = $this->priceRange[1];
         }
+
         return $query;
     }
 }

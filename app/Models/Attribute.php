@@ -26,24 +26,24 @@ class Attribute extends Model
         return $this->hasMany(Value::class);
     }
 
-    public function productType()
-    {
-        return $this->belongsTo(ProductType::class);
-    }
-
     public function products()
     {
         return $this->belongsToMany(Product::class, 'attribute_values');
     }
 
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
+
     public static function scopeWithUniqueValues($query, Filter $filter)
     {
         $attributes = $query->with(['values' => function ($query) {
-            $query->orderBy('value');
+            $query->orderBy('value')->distinct();
         }])->get();
 
         foreach ($attributes as $attribute) {
-            $attribute->values = $attribute->values->unique('value');
+            $attribute->values = $attribute->values->sortBy('value');
             /*
                 Код ниже нужен для функции выбора нескольких значений у одного атрибута.
                 Например: пользователь выбрал страну Россия,
@@ -52,7 +52,7 @@ class Attribute extends Model
             */
             $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
                 $productQuery->active();
-                $productQuery->withCategory($filter->categories);
+                $productQuery->withSubcategory($filter->subcategory);
                 if ($filter->priceRange) {
                     $productQuery->filterByPriceRange($filter->priceRange);
                 }

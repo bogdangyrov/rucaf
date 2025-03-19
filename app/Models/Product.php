@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Category;
 use App\Models\ProductType;
-use App\Models\SubCategory;
+use App\Models\Subcategory;
 use Illuminate\Support\Str;
 use App\Models\AttributeValue;
 use Illuminate\Support\Facades\DB;
@@ -19,10 +19,7 @@ class Product extends Model
     protected $casts = [
         'is_new' => 'boolean',
         'is_hit_of_sales' => 'boolean',
-        'is_active' => 'boolean',
-        'images' => 'array',
-        'docs' => 'array',
-        'docs_file_names' => 'array'
+        'is_active' => 'boolean'
     ];
 
     protected static function boot()
@@ -36,7 +33,14 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasOneThrough(
+            Category::class,
+            Subcategory::class,
+            'id',
+            'id',
+            'subcategory_id',
+            'category_id'
+        );
     }
 
     public function attributeValues()
@@ -44,14 +48,9 @@ class Product extends Model
         return $this->hasMany(AttributeValue::class);
     }
 
-    public function subCategory()
+    public function subcategory()
     {
-        return $this->belongsTo(SubCategory::class);
-    }
-
-    public function productType()
-    {
-        return $this->belongsTo(ProductType::class);
+        return $this->belongsTo(Subcategory::class);
     }
 
     public function discountPercentage()
@@ -99,34 +98,9 @@ class Product extends Model
         return $query->with('attributeValues.attribute', 'attributeValues.value');
     }
 
-    public static function scopeWithCategory($query, $categories)
+    public static function scopeWithSubcategory($query)
     {
-        if ($categories->count() > 0) {
-            $categoriesArray = $categories->pluck('slug');
-            return $query->withWhereHas(
-                'category',
-                function ($query) use ($categoriesArray) {
-                    $query->whereIn('slug', $categoriesArray);
-                }
-            );
-        } else {
-            return $query->with('category');
-        }
-    }
-
-    public static function scopeWithSubCategory($query, $subcategories)
-    {
-        if ($subcategories->count() > 0) {
-            $subcategoriesArray = $subcategories->pluck('slug');
-            return $query->withWhereHas(
-                'subcategory',
-                function ($query) use ($subcategoriesArray) {
-                    $query->whereIn('slug', $subcategoriesArray);
-                }
-            );
-        } else {
-            return $query->with('subcategory');
-        }
+        return $query->with('subcategory');
     }
 
     public static function scopeFilterByAttributes($query, $attributes)
@@ -157,7 +131,7 @@ class Product extends Model
                 $query->whereNotNull('price')->orderByRaw('IFNULL(discount_price, price)');
                 break;
             case 'category':
-                $query->orderBy('category_id');
+                $query->orderBy('name');
                 break;
         }
     }
@@ -204,21 +178,17 @@ class Product extends Model
 
     public static function scopeFuzzySearch($query, $search)
     {
-        $query->where('name', 'LIKE', "%{$search}%")
-            ->orWhere('description', 'LIKE', "%{$search}%")
+        return $query
+            ->where('products.name', 'like', "%$search%")
+            ->orWhereHas('subcategory', function ($query) use ($search) {
+                $query->where('subcategories.name', 'like', "%$search%");
+            })
             ->orWhereHas('category', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%");
+                $query->where('categories.name', 'like', "%$search%");
             })
-            ->orWhereHas('productType', function ($query) use ($search) {
-                $query->where('name', 'LIKE', "%{$search}%");
+            ->orWhereHas('category.productType', function ($query) use ($search) {
+                $query->where('product_types.name', 'like', "%$search%");
             })
-            ->orWhereRaw("SOUNDEX(name) = SOUNDEX('{$search}')")
-            ->orWhereRaw("SOUNDEX(description) = SOUNDEX('{$search}')")
-            ->orWhereHas('category', function ($query) use ($search) {
-                $query->whereRaw("SOUNDEX(name) = SOUNDEX('{$search}')");
-            })
-            ->orWhereHas('productType', function ($query) use ($search) {
-                $query->whereRaw("SOUNDEX(name) = SOUNDEX('{$search}')");
-            });
+            ->distinct();
     }
 }

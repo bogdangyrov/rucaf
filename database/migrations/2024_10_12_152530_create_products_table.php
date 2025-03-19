@@ -2,7 +2,7 @@
 
 use App\Models\Category;
 use App\Models\ProductType;
-use App\Models\SubCategory;
+use App\Models\Subcategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,9 +25,7 @@ return new class extends Migration {
             $table->boolean('is_hit_of_sales')->default(false);
             $table->boolean('is_active')->default(true);
             $table->integer('views')->default(0);
-            $table->foreignIdFor(SubCategory::class);
-            $table->foreignIdFor(ProductType::class);
-            $table->foreignIdFor(Category::class);
+            $table->foreignIdFor(Subcategory::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

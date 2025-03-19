@@ -10,6 +10,8 @@
             <a class="sort-list__item {{ $filter->$attr == $slug ? 'sort-list__item--active' : '' }}"
                 href="{{ route('products.index', [
                     'productType' => $type,
+                    'category' => $category,
+                    'subcategory' => $subcategory,
                     ...$query,
                 ]) }}">
                 <span class="sort-list__txt">{{ $name }}</span>

@@ -22,4 +22,14 @@ class QuickFilter extends Model
     {
         return $this->belongsTo(ProductType::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
 }

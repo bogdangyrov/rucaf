@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('value');
             $table->string('slug');
-            $table->foreignIdFor(Attribute::class);
+            $table->foreignIdFor(Attribute::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ use App\Services\ComparisonService;
 
 class ComparisonComponent extends Component
 {
-    public $productTypes;
+    public $subcategories;
 
     public function render()
     {
@@ -16,7 +16,7 @@ class ComparisonComponent extends Component
 
     public function mount()
     {
-        $this->productTypes = ComparisonService::getProductTypes();
+        $this->subcategories = ComparisonService::getSubcategories();
         $this->dispatch('comparisonUpdated');
     }
 

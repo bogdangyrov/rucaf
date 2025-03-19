@@ -21,6 +21,16 @@ class PhoneNumberResource extends Resource
 
     protected static ?string $navigationGroup = 'Сайт';
 
+    public static function getModelLabel(): string
+    {
+        return 'Номера';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Номера';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

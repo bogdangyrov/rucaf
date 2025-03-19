@@ -58,7 +58,12 @@ class ViewComposerProvider extends ServiceProvider
             if (!$sharedData) {
                 $sharedData = [
                     'pages' => Page::orderBy('title')->get(),
-                    'productTypes' => ProductType::orderBy('name')->get(),
+                    'productTypes' => ProductType::withWhereHas('categories', function ($query) {
+                        $query->orderBy('name')->limit(1);
+                        $query->withWhereHas('subcategories', function ($query) {
+                            $query->orderBy('name')->limit(1);
+                        });
+                    })->get(),
                     'phoneNumbers' => PhoneNumber::get(),
                     'emails' => Email::get()
                 ];

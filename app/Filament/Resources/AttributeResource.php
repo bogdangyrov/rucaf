@@ -14,6 +14,7 @@ use App\Filament\Resources\AttributeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AttributeResource\RelationManagers;
 use App\Filament\Resources\AttributeResource\RelationManagers\ValuesRelationManager;
+use Filament\Forms\Components\Select;
 
 class AttributeResource extends Resource
 {
@@ -25,6 +26,15 @@ class AttributeResource extends Resource
 
     protected static ?string $navigationGroup = 'Каталог';
 
+    public static function getModelLabel(): string
+    {
+        return 'Характеристики';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Характеристики';
+    }
 
     public static function form(Form $form): Form
     {
@@ -34,6 +44,11 @@ class AttributeResource extends Resource
                     ->label('Название характеристики')
                     ->required()
                     ->maxLength(255),
+                Select::make('subcategory_id')
+                    ->label('Подкатегория')
+                    ->required()
+                    ->searchable()
+                    ->relationship('subcategory', 'name')
             ]);
     }
 
@@ -47,8 +62,8 @@ class AttributeResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('productType.name')
-                    ->label('Тип оборудования')
+                Tables\Columns\TextColumn::make('subcategory.name')
+                    ->label('Подкатегория')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -60,10 +75,9 @@ class AttributeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('productType')
-                    ->label('Тип оборудования')
-                    ->relationship('productType', 'name')
-                    ->multiple()
+                SelectFilter::make('subcategory')
+                    ->label('Подкатегория')
+                    ->relationship('subcategory', 'name')
                     ->searchable()
                     ->preload(),
             ])

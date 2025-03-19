@@ -71,7 +71,7 @@ class CartService
 
         $products = Product::whereIn('id', $products_ids)
             ->active()
-            ->with('productType')
+            ->with('category.productType', 'subcategory')
             ->get();
 
         foreach ($products as $product) {

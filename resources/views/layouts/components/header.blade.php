@@ -87,7 +87,8 @@
     <div class="header-bottom">
         <ul class="header-bottom__menu category-menu">
             @foreach ($productTypes->take(5) as $type)
-                <li class="category-menu__item"><a href="{{ route('products.index', ['productType' => $type->slug]) }}"
+                <li class="category-menu__item"><a
+                        href="{{ route('products.index', ['productType' => $type, 'category' => $type->categories[0], 'subcategory' => $type->categories[0]->subcategories[0]]) }}"
                         class="category-menu__link">{{ $type['name'] }}</a>
                 </li>
             @endforeach

@@ -15,7 +15,9 @@
                 @endforeach
             @else
                 <p>Нечего не найдено. Возможно вы выбрали слишком много фильтров.
-                    <a href="{{ route('products.index', ['productType' => $type]) }}">Очистить фильтры.</a>
+                    <a
+                        href="{{ route('products.index', ['productType' => $type, 'category' => $filter->category, 'subcategory' => $filter->subcategory]) }}">Очистить
+                        фильтры.</a>
                 </p>
             @endif
         </div>

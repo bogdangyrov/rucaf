@@ -28,6 +28,7 @@ class ValuesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->defaultSort('value', 'desc')
             ->recordTitleAttribute('value')
             ->columns([
                 Tables\Columns\TextColumn::make('value'),

@@ -9,7 +9,7 @@
                     @if (count($products))
                         @foreach ($products as $product)
                             <li class="search-results__item">
-                                <a href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}"
+                                <a href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product->slug]) }}"
                                     class="search-results__link">{{ $product->name }}</a>
                             </li>
                         @endforeach
