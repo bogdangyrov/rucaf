@@ -3031,6 +3031,7 @@ body {
 }
 
 .pagination__item {
+    width: 100%;
     margin-right: 8px;
 }
 
@@ -3044,7 +3045,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
     flex: 36px 0 0;
     height: 36px;
     font-weight: 600;
