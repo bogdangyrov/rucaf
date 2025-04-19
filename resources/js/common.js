@@ -327,6 +327,16 @@ $(function () {
         });
 
         $(".filters > .filters__item.active > .filters__title").click();
+
+        $(".category-list .filters__title").on("click", function () {
+            const $item = $(this).closest(".filters__item");
+
+            $(".filters__item").not($item).removeClass("active").find(".category-list__subcategories").slideUp();
+
+            $item.toggleClass("active").find(".category-list__subcategories").slideDown();
+        });
+
+        $(".filters__item.active .category-list__subcategories").show();
     });
 
     $(function () {

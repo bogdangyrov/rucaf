@@ -17,7 +17,7 @@
             </div>
 
             <div class="title title--inline">
-                <h1>{{ $type->name }}</h1>
+                <h1>{{ $subcategory->name }}</h1>
                 <span class="title__sum">{{ $products->total() }} товаров</span>
             </div>
 

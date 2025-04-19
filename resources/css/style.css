@@ -3217,7 +3217,7 @@ body {
 
 .category-list__subcategories {
     overflow-y: auto;
-    height: 150px;
+    height: 250px;
 }
 
 .category-list__checkbox:disabled ~ .category-list__txt,
