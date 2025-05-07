@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Order;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\Log;
+use Filament\Forms\Components\Select;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -23,18 +24,22 @@ class ForecastChartWidget extends ChartWidget
         $filePath = storage_path('app/forecast_data.json');
         file_put_contents($filePath, $jsonData);
 
-        $process = new Process(['python3', base_path('forecast.py'), $filePath]);
+        $process = new Process([base_path('.venv/bin/python3'), base_path('forecast.py'), $filePath]);
         $process->run();
 
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
-        $forecast = json_decode($process->getOutput(), true);
-
-        $labels = array_map(fn($i) => "Day $i", range(1, count($ordersData)));
-
+        $forecastRaw = json_decode($process->getOutput(), true);
         $realData = $ordersData->pluck('quantity')->toArray();
+
+        // добавляем null перед прогнозом, чтобы он шел после реальных данных
+        $forecast = array_merge(array_fill(0, count($realData), null), $forecastRaw);
+
+        $labels = array_map(fn($date) => $date['date'], $ordersData->toArray());
+        $forecastLabels = array_map(fn($i) => 'Прогноз ' . ($i + 1), range(0, count($forecastRaw) - 1));
+        $labels = array_merge($labels, $forecastLabels);
 
         return [
             'labels' => $labels,
@@ -60,5 +65,19 @@ class ForecastChartWidget extends ChartWidget
     protected function getType(): string
     {
         return 'line';
+    }
+
+    public static function getFormSchema(): array
+    {
+        return [
+            Select::make('period')
+                ->label('Период прогноза')
+                ->options([
+                    '30' => '1 месяц',
+                    '90' => '3 месяца',
+                    '180' => '6 месяцев',
+                ])
+                ->default('30'),
+        ];
     }
 }
