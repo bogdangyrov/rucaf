@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    <IfModule mod_headers.c>
+        Header set X-Robots-Tag "noindex, nofollow"
+    </IfModule>
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
