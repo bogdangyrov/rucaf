@@ -9,9 +9,11 @@
         "awcodes/filament-tiptap-editor": "^3.0",
         "fedeisas/laravel-mail-css-inliner": "^5.3",
         "filament/filament": "^3.2",
+        "flowframe/laravel-trend": "^0.4.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "leandrocfe/filament-apex-charts": "^3.2",
         "livewire/livewire": "^3.5",
         "propaganistas/laravel-phone": "^5.3",
         "spatie/laravel-backup": "^9.1"

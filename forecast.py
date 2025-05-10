@@ -1,33 +1,63 @@
 import sys
 import json
+from typing import List
 import pandas as pd
-from statsmodels.tsa.arima.model import ARIMA
+from pmdarima import auto_arima
 
 
-def forecast_orders(file_path):
+def load_data(file_path: str) -> pd.DataFrame:
     with open(file_path, "r") as file:
         data = json.load(file)
 
-    dates = [item["date"] for item in data]
+    months = [item["month"] for item in data]
     quantities = [item["quantity"] for item in data]
 
-    df = pd.DataFrame({"date": pd.to_datetime(dates), "quantity": quantities})
-    df.set_index("date", inplace=True)
+    df = pd.DataFrame({"month": pd.to_datetime(months), "quantity": quantities})
+    df.set_index("month", inplace=True)
+    df = df.asfreq("MS")
+    df["quantity"] = pd.to_numeric(df["quantity"], errors="coerce").fillna(0)
 
-    df["quantity"] = pd.to_numeric(df["quantity"], errors="coerce")
+    return df
 
-    df = df.dropna()
 
-    model = ARIMA(df["quantity"], order=(5, 1, 0))
-    model_fit = model.fit()
+def is_valid_series(df: pd.DataFrame) -> bool:
+    return len(df.dropna()) >= 12  # хотя бы 1 год для сезонности
 
-    forecast = model_fit.forecast(steps=10)
 
-    forecast_result = forecast.tolist()
+def generate_forecast(series: pd.Series, steps: int) -> List[float]:
+    """SARIMA с автоматическим подбором параметров и сезонностью (год = 12 месяцев)."""
+    model = auto_arima(
+        series,
+        seasonal=True,
+        m=12,  # сезонность годовая
+        stepwise=True,
+        suppress_warnings=True,
+        error_action="ignore"
+    )
+    forecast = model.predict(n_periods=steps)
+    return forecast.tolist()
 
-    print(json.dumps(forecast_result))
+
+def forecast_orders(file_path: str, steps: int) -> None:
+    try:
+        df = load_data(file_path)
+
+        if not is_valid_series(df):
+            print(json.dumps([]))
+            return
+
+        result = generate_forecast(df["quantity"], steps)
+        print(json.dumps(result))
+
+    except Exception:
+        print(json.dumps([]))
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print(json.dumps([]))
+        sys.exit(1)
+
     file_path = sys.argv[1]
-    forecast_orders(file_path)
+    steps = int(sys.argv[2])
+    forecast_orders(file_path, steps)

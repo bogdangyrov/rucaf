@@ -3,35 +3,39 @@
 namespace Database\Seeders;
 
 use App\Models\Order;
-use App\Models\Subcategory;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Carbon;
 
 class OrdersSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $subcategories = Subcategory::all();
+        $subcategoryId = 25;
+        $startDate = Carbon::create(2020, 1, 1);
 
-        if ($subcategories->isEmpty()) {
-            $this->command->info('Нет подкатегорий для генерации заказов!');
-            return;
-        }
+        for ($i = 0; $i < 48; $i++) {
+            $month = (clone $startDate)->addMonths($i);
+            $monthNumber = (int)$month->format('n');
 
-        foreach (range(1, 50) as $index) {
+            // Базовое значение + тренд
+            $baseQuantity = 10 + intdiv($i, 12) * 5;
+
+            // Сезонность: пик в декабре-феврале
+            $seasonBoost = in_array($monthNumber, [12, 1, 2]) ? 10 : 0;
+
+            $quantity = fake()->numberBetween(
+                $baseQuantity + $seasonBoost - 2,
+                $baseQuantity + $seasonBoost + 2
+            );
+
             Order::create([
-                'subcategory_id' => $subcategories->random()->id,
-                'quantity' => fake()->numberBetween(1, 100),
-                'created_at' => fake()->dateTimeThisYear(),
-                'updated_at' => now(),
+                'subcategory_id' => $subcategoryId,
+                'quantity' => $quantity,
+                'created_at' => $month,
+                'updated_at' => $month,
             ]);
         }
 
-        $this->command->info('Сидирование заказов завершено!');
+        $this->command->info('Сгенерированы заказы с сезонностью!');
     }
 }
