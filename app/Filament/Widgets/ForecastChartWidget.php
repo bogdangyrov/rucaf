@@ -2,13 +2,12 @@
 
 namespace App\Filament\Widgets;
 
+use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Subcategory;
 use Filament\Forms\Components\Select;
-use Symfony\Component\Process\Process;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Carbon\Carbon;
+use App\Services\ForecastService;
 
 class ForecastChartWidget extends ApexChartWidget
 {
@@ -16,9 +15,21 @@ class ForecastChartWidget extends ApexChartWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    private ForecastService $forecastService;
+
+    public function __construct()
+    {
+        $this->forecastService = new ForecastService();
+    }
+
+    protected function getPollingInterval(): ?string
+    {
+        return null;
+    }
+
     protected function getOptions(): array
     {
-        $period = $this->filterFormData['period'] ?? '1';
+        $period = $this->filterFormData['period'];
         $displayMonths = $this->filterFormData['display_months'];
 
         $ordersData = $this->getOrdersData();
@@ -53,7 +64,13 @@ class ForecastChartWidget extends ApexChartWidget
             $query->where('subcategory_id', $selectedProduct);
         }
 
-        return $query->get();
+        $ordersData = $query->get();
+
+        if ($ordersData->isEmpty()) {
+            return collect([['month' => now()->format('Y-m'), 'quantity' => 0]]);
+        }
+
+        return $ordersData;
     }
 
     private function getRealData($ordersData)
@@ -63,18 +80,7 @@ class ForecastChartWidget extends ApexChartWidget
 
     private function getForecastData($ordersData, $period)
     {
-        $filePath = storage_path('app/forecast_data.json');
-        file_put_contents($filePath, json_encode($ordersData));
-
-        $process = new Process(['python3', base_path('forecast.py'), $filePath, $period]);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        $forecastRaw = json_decode($process->getOutput(), true);
-        return array_map('intval', $forecastRaw);
+        return $this->forecastService->getForecastData($ordersData, $period);
     }
 
     private function generateLabels($ordersData, $forecastData)
@@ -129,8 +135,7 @@ class ForecastChartWidget extends ApexChartWidget
                     '3' => '3 Месяца',
                     '6' => '6 Месяцев',
                 ])
-                ->default('1')
-                ->reactive(),
+                ->default('1'),
             Select::make('display_months')
                 ->label('Количество отображаемых месяцев')
                 ->options([
@@ -138,14 +143,16 @@ class ForecastChartWidget extends ApexChartWidget
                     '24' => '24 месяца',
                     'all' => 'Все'
                 ])
-                ->default('12')
-                ->reactive(),
+                ->default('12'),
             Select::make('subcategory')
                 ->label('Товар')
-                ->getSearchResultsUsing(fn(string $search): array => Subcategory::where('name', 'like', "%{$search}%")->limit(10)->pluck('name', 'id')->toArray())
+                ->getSearchResultsUsing(
+                    fn(string $search): array => Subcategory::where('name', 'like', "%{$search}%")
+                        ->limit(10)->pluck('name', 'id')->toArray()
+                )
                 ->getOptionLabelUsing(fn($value): ?string => Subcategory::find($value)?->name)
-                ->searchable()
                 ->default(Subcategory::first()->id)
+                ->searchable()
                 ->reactive(),
         ];
     }
