@@ -34,7 +34,7 @@ class ProductController extends Controller
                 $query->with('productType');
             }])
             ->active()
-            ->withAttributes()
+            ->with('attributeValues.attribute', 'attributeValues.value')
             ->filterByAttributes($filter->attributes)
             ->sortBy($filter->sortBy)
             ->showProducts($filter->showProducts);
