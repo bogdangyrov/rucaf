@@ -24,6 +24,20 @@ def is_valid_series(df: pd.DataFrame) -> bool:
     return len(df.dropna()) >= 12  # хотя бы 1 год для сезонности
 
 
+def smooth_series(df: pd.DataFrame, window: int = 3) -> pd.DataFrame:
+    df["quantity"] = df["quantity"].rolling(window=window, center=True, min_periods=1).mean()
+    return df
+
+def remove_outliers_iqr(df: pd.DataFrame) -> pd.DataFrame:
+    q1 = df["quantity"].quantile(0.25)
+    q3 = df["quantity"].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    df["quantity"] = df["quantity"].clip(lower=lower_bound, upper=upper_bound)
+    return df
+
+
 def generate_forecast(series: pd.Series, steps: int) -> List[float]:
     """SARIMA с автоматическим подбором параметров и сезонностью (год = 12 месяцев)."""
     model = auto_arima(
@@ -37,7 +51,6 @@ def generate_forecast(series: pd.Series, steps: int) -> List[float]:
     forecast = model.predict(n_periods=steps)
     return forecast.tolist()
 
-
 def forecast_orders(file_path: str, steps: int) -> None:
     try:
         df = load_data(file_path)
@@ -45,6 +58,8 @@ def forecast_orders(file_path: str, steps: int) -> None:
         if not is_valid_series(df):
             print(json.dumps([]))
             return
+
+        df = remove_outliers_iqr(df)
 
         result = generate_forecast(df["quantity"], steps)
         print(json.dumps(result))

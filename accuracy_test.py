@@ -1,10 +1,10 @@
-# accuracy_check.py
 import json
 import sys
 import pandas as pd
 import numpy as np
 from pmdarima import auto_arima
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+
 
 def load_data(file_path):
     with open(file_path, 'r') as file:
@@ -19,6 +19,17 @@ def load_data(file_path):
     df['quantity'] = pd.to_numeric(df['quantity'], errors='coerce').fillna(0)
 
     return df
+
+
+def remove_outliers_iqr(df: pd.DataFrame) -> pd.DataFrame:
+    q1 = df["quantity"].quantile(0.25)
+    q3 = df["quantity"].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    df["quantity"] = df["quantity"].clip(lower=lower_bound, upper=upper_bound)
+    return df
+
 
 def rolling_forecast_evaluation(series, initial_train_size, forecast_horizon):
     actuals = []
@@ -38,6 +49,7 @@ def rolling_forecast_evaluation(series, initial_train_size, forecast_horizon):
 
     return np.array(actuals), np.array(forecasts)
 
+
 def calculate_metrics(actual, forecast):
     mae = mean_absolute_error(actual, forecast)
     rmse = np.sqrt(mean_squared_error(actual, forecast))
@@ -48,8 +60,10 @@ def calculate_metrics(actual, forecast):
         'MAPE': round(mape, 2)
     }
 
+
 def main(file_path):
     df = load_data(file_path)
+    df = remove_outliers_iqr(df)
     series = df['quantity']
 
     if len(series.dropna()) < 24:
@@ -63,6 +77,7 @@ def main(file_path):
     metrics = calculate_metrics(actual, forecast)
 
     print(json.dumps(metrics, indent=4))
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
