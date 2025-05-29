@@ -90,10 +90,10 @@ class ForecastChartWidget extends ApexChartWidget
             $ordersData->toArray()
         );
 
-        $lastMonth = Carbon::createFromFormat('Y-m', $ordersData->last()['month']);
+        $currentMonth = Carbon::now()->startOfMonth();
         $forecastLabels = [];
-        for ($i = 1; $i <= count($forecastData); $i++) {
-            $forecastLabels[] = $lastMonth->addMonth()->locale('ru')->translatedFormat('F Y');
+        for ($i = 0; $i < count($forecastData); $i++) {
+            $forecastLabels[] = $currentMonth->copy()->addMonths($i)->locale('ru')->translatedFormat('F Y');
         }
 
         return array_merge($labels, $forecastLabels);
