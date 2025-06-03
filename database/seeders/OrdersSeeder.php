@@ -3,14 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\Order;
-use Illuminate\Database\Seeder;
+use App\Models\Product;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Seeder;
 
 class OrdersSeeder extends Seeder
 {
     public function run()
     {
-        $subcategoryId = 25;
+        $productId = Product::first()->id;
         $startDate = Carbon::create(2020, 1, 1);
 
         for ($i = 0; $i < 48; $i++) {
@@ -29,7 +30,7 @@ class OrdersSeeder extends Seeder
             );
 
             Order::create([
-                'subcategory_id' => $subcategoryId,
+                'product_id' => $productId,
                 'quantity' => $quantity,
                 'created_at' => $month,
                 'updated_at' => $month,

@@ -4,10 +4,10 @@ namespace App\Filament\Widgets;
 
 use Carbon\Carbon;
 use App\Models\Order;
-use App\Models\Subcategory;
+use App\Models\Product;
+use App\Services\ForecastService;
 use Filament\Forms\Components\Select;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
-use App\Services\ForecastService;
 
 class ForecastChartWidget extends ApexChartWidget
 {
@@ -54,14 +54,14 @@ class ForecastChartWidget extends ApexChartWidget
 
     private function getOrdersData()
     {
-        $selectedProduct = $this->filterFormData['subcategory'];
+        $selectedProduct = $this->filterFormData['product'];
 
         $query = Order::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, SUM(quantity) as quantity')
             ->groupBy('month')
             ->orderBy('month');
 
         if ($selectedProduct) {
-            $query->where('subcategory_id', $selectedProduct);
+            $query->where('product_id', $selectedProduct);
         }
 
         $ordersData = $query->get();
@@ -144,14 +144,14 @@ class ForecastChartWidget extends ApexChartWidget
                     'all' => 'Все'
                 ])
                 ->default('12'),
-            Select::make('subcategory')
+            Select::make('product')
                 ->label('Товар')
                 ->getSearchResultsUsing(
-                    fn(string $search): array => Subcategory::where('name', 'like', "%{$search}%")
+                    fn(string $search): array => Product::where('name', 'like', "%{$search}%")
                         ->limit(10)->pluck('name', 'id')->toArray()
                 )
-                ->getOptionLabelUsing(fn($value): ?string => Subcategory::find($value)?->name)
-                ->default(Subcategory::first()->id)
+                ->getOptionLabelUsing(fn($value): ?string => Product::find($value)?->name)
+                ->default(Product::first()->id)
                 ->searchable()
                 ->reactive(),
         ];
