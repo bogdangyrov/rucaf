@@ -52,7 +52,7 @@ class QuickFilterResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Select::make('category_id')
-                    ->label('Подкатегория')
+                    ->label('Категория')
                     ->options(function ($get) {
                         $productTypeId = $get('product_type_id');
                         if ($productTypeId) {

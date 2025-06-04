@@ -6,7 +6,7 @@
                     'productType' => $type->slug,
                     'category' => $filter->category,
                     'subcategory' => $filter->subcategory,
-                    /*  ...$filter->queryWithoutAttributeValue($attribute->slug, $value->slug) */
+                    ...$filter->queryWithoutAttributeValue($attribute->slug, $value->slug),
                 ]) }}"
                     class="filters-result__btn" type="button"><span>{{ $attribute->name }}: {{ $value->value }}
                     </span><i class="icon-close1"></i></a>
