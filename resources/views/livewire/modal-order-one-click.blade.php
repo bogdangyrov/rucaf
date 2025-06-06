@@ -1,5 +1,5 @@
 <div>
-    <div class="modal-content custom-scroll">
+    <div class="modal-content">
         @if ($emailSended)
             <div class="msg-ok">
                 <div class="msg-ok__icon"><i class="icon-check1"></i></div>
