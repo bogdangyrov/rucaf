@@ -159,4 +159,10 @@ class DatabaseSeeder extends Seeder
             }
         }
     }
+
+    public static function readJSON($filePath)
+    {
+        $json = file_get_contents($filePath);
+        return json_decode($json, true);
+    }
 }
