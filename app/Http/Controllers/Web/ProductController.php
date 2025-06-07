@@ -25,7 +25,7 @@ class ProductController extends Controller
 
         $attributes = $subcategory
             ->attributes()
-            ->withUniqueValues($filter);
+            ->withUniqueValues(/* $filter */);
 
         $products = $subcategory
             ->products()

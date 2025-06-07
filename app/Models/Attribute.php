@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use App\Helpers\Filter;
 use App\Models\Value;
+use App\Helpers\Filter;
+use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -36,7 +40,30 @@ class Attribute extends Model
         return $this->belongsTo(Subcategory::class);
     }
 
-    public static function scopeWithUniqueValues($query, Filter $filter)
+    public static function scopeWithUniqueValues($query)
+    {
+        $attributes = $query->with(['values' => function ($query) {
+            $query->orderBy('value');
+        }])->get();
+
+        $valueIds = $attributes->pluck('values')->flatten()->pluck('id')->unique();
+
+        $counts = DB::table('attribute_values as av')
+            ->whereIn('av.value_id', $valueIds)
+            ->groupBy('av.value_id')
+            ->select('av.value_id', DB::raw('COUNT(*) as products_count'))
+            ->pluck('products_count', 'av.value_id');
+
+        foreach ($attributes as $attribute) {
+            foreach ($attribute->values as $value) {
+                $value->products_count = $counts[$value->id] ?? 0;
+            }
+        }
+
+        return $attributes;
+    }
+
+    /*   public static function scopeWithUniqueValues($query, Filter $filter)
     {
         $attributes = $query->with(['values' => function ($query) {
             $query->orderBy('value')->distinct();
@@ -49,7 +76,7 @@ class Attribute extends Model
                 Например: пользователь выбрал страну Россия,
                     в выборе фильтров мы должны дать возможность выбрать ему другую страну(Китай) и корректно отобразить
                     кол-во для России и для Китая.
-            */
+
             $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
                 $productQuery->active();
                 $productQuery->withSubcategory($filter->subcategory);
@@ -92,6 +119,7 @@ class Attribute extends Model
         }
         return $attributes;
     }
+ */
 
     public function scopeWithAttributesValuesFromQuery($query, array $requestQuery)
     {
