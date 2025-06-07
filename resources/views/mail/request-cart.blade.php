@@ -21,34 +21,35 @@
                 @foreach ($products as $product)
                     <tr>
                         <th><a
-                                href="{{ route('products.show', ['productType' => $product->productType->slug, 'product' => $product->slug]) }}">
+                                href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}">
                                 {{ $product->name }}</a>
                         </th>
                         <td>{{ $product->quantity }}</td>
                         <td>
-                            @isset($product->discount_price)
+                            @if (isset($product->discount_price))
                                 {{ \App\Models\Product::formatPrice($product->discount_price, ' ') }}₽
-                            @else
+                            @elseif (isset($product->price))
                                 {{ \App\Models\Product::formatPrice($product->price, ' ') }}₽
-                            @endisset
-                        </td>
-                        <td>
-                            @isset($product->discount_price)
-                                {{ \App\Models\Product::formatPrice($product->discount_price * $product->quantity, ' ') }}₽
                             @else
-                                {{ \App\Models\Product::formatPrice($product->price * $product->quantity, ' ') }}₽
+                                По запросу
                             @endisset
-                        </td>
-                    </tr>
-                @endforeach
-
-                <tr>
-                    <th>Общее кол-во:</th>
-                    <th>{{ $totalQuantity }}</th>
-                    <th>Сумма:</th>
-                    <th>{{ \App\Models\Product::formatPrice($totalSum, ' ') }}₽</th>
+                    </td>
+                    <td>
+                        @isset($product->discount_price)
+                            {{ \App\Models\Product::formatPrice($product->discount_price * $product->quantity, ' ') }}₽
+                        @else
+                            {{ \App\Models\Product::formatPrice($product->price * $product->quantity, ' ') }}₽
+                        @endisset
+                    </td>
                 </tr>
-            </table>
-        </div>
+            @endforeach
+
+            <tr>
+                <th>Общее кол-во:</th>
+                <th>{{ $totalQuantity }}</th>
+                <th>Сумма:</th>
+                <th>{{ \App\Models\Product::formatPrice($totalSum, ' ') }}₽</th>
+            </tr>
+        </table>
     </div>
 @endsection

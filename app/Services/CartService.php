@@ -74,15 +74,17 @@ class CartService
             ->with('category.productType', 'subcategory')
             ->get();
 
-        foreach ($products as $product) {
-            $product->quantity = current(array_filter(
-                $sessionCart,
-                function ($el) use ($product) {
-                    return $el['product_id'] == $product->id;
-                }
-            ))['quantity'];
+        $result = collect();
+        foreach ($sessionCart as $item) {
+            $product = $products->firstWhere('id', $item['product_id']);
+            if ($product) {
+                $clone = clone $product;
+                $clone->quantity = $item['quantity'];
+                $clone->unit = $item['unit'] ?? 'piece';
+                $result->push($clone);
+            }
         }
-        return $products;
+        return $result;
     }
 
     public static function getQuantity($productId)
@@ -114,5 +116,13 @@ class CartService
         } else {
             return array_sum(array_column($sessionCart, 'quantity'));
         }
+    }
+
+    public static function getTotalSum()
+    {
+        $products = static::get();
+        return $products->sum(function ($product) {
+            return $product->price * $product->quantity;
+        });
     }
 }
