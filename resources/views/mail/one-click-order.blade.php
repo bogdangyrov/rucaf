@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <th>Тип товара:</th>
-                    <td>{{ $product->productType->name }}</td>
+                    <td>{{ $product->category->productType->name }}</td>
                 </tr>
                 <tr>
                     <th>Категория:</th>

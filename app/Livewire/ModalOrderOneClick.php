@@ -41,10 +41,10 @@ class ModalOrderOneClick extends Component
         $this->validate();
 
         $product = Product::with(
-            'productType',
+            'subcategory',
             'attributeValues.attribute',
             'attributeValues.value',
-            'category'
+            'category.productType'
         )->findOrFail($this->product->id);
 
         Mail::to(env('MAIL_TO_ADDRESS'))->queue(new OneClickOrder(
