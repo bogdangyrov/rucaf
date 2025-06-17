@@ -15,6 +15,8 @@ class ForecastChartWidget extends ApexChartWidget
 
     protected int | string | array $columnSpan = 'full';
 
+    protected static ?int $sort = 1;
+
     private ForecastService $forecastService;
 
     public function __construct()

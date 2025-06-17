@@ -13,8 +13,11 @@ class OrdersSeeder extends Seeder
     {
         $productId = Product::first()->id;
         $startDate = Carbon::create(2020, 1, 1);
+        $endDate = Carbon::now()->subMonth()->startOfMonth(); // предыдущий месяц
 
-        for ($i = 0; $i < 48; $i++) {
+        $monthsCount = $startDate->diffInMonths($endDate);
+
+        for ($i = 0; $i <= $monthsCount; $i++) {
             $month = (clone $startDate)->addMonths($i);
             $monthNumber = (int)$month->format('n');
 
@@ -37,6 +40,6 @@ class OrdersSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('Сгенерированы заказы с сезонностью!');
+        $this->command->info('Сгенерированы заказы с сезонностью до предыдущего месяца!');
     }
 }
