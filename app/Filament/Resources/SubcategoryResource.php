@@ -85,7 +85,6 @@ class SubcategoryResource extends Resource
                                     ->label('Изображения')
                                     ->multiple()
                                     ->image()
-                                    ->imageCropAspectRatio('1:1')
                                     ->reorderable()
                                     ->directory('products')
                                     ->columnSpanFull(),
