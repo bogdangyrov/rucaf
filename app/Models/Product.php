@@ -19,7 +19,10 @@ class Product extends Model
     protected $casts = [
         'is_new' => 'boolean',
         'is_hit_of_sales' => 'boolean',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'images' => 'array',
+        'docs' => 'array',
+        'docs_file_names' => 'array',
     ];
 
     protected static function boot()

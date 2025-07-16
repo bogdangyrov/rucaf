@@ -3,7 +3,11 @@
     <div class="catalog__wrap-img">
         <a class="catalog__img"
             href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}"><img
-                src="{{ asset(isset($product->subcategory->images[0]) ? "storage/{$product->subcategory->images[0]}" : 'img/content/product-1.jpg') }}"
+                src="
+                @if (isset($product->images[0])) {{ asset("storage/{$product->images[0]}") }}
+                @elseif (isset($product->subcategory->images[0]))
+                {{ asset("storage/{$product->subcategory->images[0]}") }}
+                @else {{ asset('img/content/product-1.jpg') }} @endif"
                 alt="{{ $product->name }}"></a>
         <div class="catalog__wrap-actions">
 

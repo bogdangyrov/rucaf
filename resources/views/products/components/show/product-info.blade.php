@@ -12,11 +12,33 @@
         <div id="desc" class="tabs__content tabs-content">
             <div class="tabs-txt">
                 <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $subcategory->description) !!}</p>
+                <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $product->description) !!}</p>
             </div>
             <div class="tabs-info">
                 @if (isset($subcategory->docs) && count($subcategory->docs) > 0)
                     <div class="docs">
                         @foreach ($subcategory->docs_file_names as $doc => $name)
+                            <a href="{{ Storage::url($doc) }}" class="docs__item">
+                                <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
+                                <div class="docs__content">
+                                    <div class="docs__title">{{ $name }}</div>
+                                    <div class="docs__format">
+                                        <span>
+                                            @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
+                                                {{ round(Storage::disk('public')->size($doc) / 1024) }}
+                                                Kб
+                                            @else
+                                                {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
+                                                Мб
+                                            @endif
+                                        </span>
+                                        <span>{{ $product::getDocExtension($doc) }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+
+                        @foreach ($product->docs_file_names ?? [] as $doc => $name)
                             <a href="{{ Storage::url($doc) }}" class="docs__item">
                                 <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                                 <div class="docs__content">

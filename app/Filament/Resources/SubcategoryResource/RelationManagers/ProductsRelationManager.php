@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use FilamentTiptapEditor\TiptapEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Tables\Columns\TextColumn;
@@ -39,6 +40,11 @@ class ProductsRelationManager extends RelationManager
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
+                                TiptapEditor::make('description')
+                                    ->label('Описание')
+                                    ->required()
+                                    ->columnSpanFull()
+                                    ->profile('default'),
                                 Forms\Components\TextInput::make('dimensions')
                                     ->label('Габариты ШхВхГ, мм')
                                     ->required()
@@ -75,6 +81,23 @@ class ProductsRelationManager extends RelationManager
                                                 ->required()
                                         ]);
                                     }),
+                            ]),
+                        Tab::make('Файлы')
+                            ->schema([
+                                FileUpload::make('images')
+                                    ->label('Изображения')
+                                    ->multiple()
+                                    ->image()
+                                    ->reorderable()
+                                    ->directory('products')
+                                    ->columnSpanFull(),
+                                FileUpload::make('docs')
+                                    ->label('Документы')
+                                    ->multiple()
+                                    ->reorderable()
+                                    ->directory('products')
+                                    ->storeFileNamesIn('docs_file_names')
+                                    ->columnSpanFull(),
                             ]),
                         Tab::make('Цена')
                             ->schema([
