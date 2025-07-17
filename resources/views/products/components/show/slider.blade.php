@@ -3,13 +3,13 @@
         @if (
             (isset($subcategory->images) && count($subcategory->images)) ||
                 (isset($product->images) && count($product->images)))
-            @foreach ($product->images ?? [] as $image)
+            @foreach ($subcategory->images as $image)
                 <div class="goods-slider__item">
                     <a href="{{ asset('storage/' . $image) }}" class="goods-slider__link" data-fancybox="goods"><img
                             src="{{ asset('storage/' . $image) }}" alt="" class="goods-slider__img"></a>
                 </div>
             @endforeach
-            @foreach ($subcategory->images ?? [] as $image)
+            @foreach ($product->images as $image)
                 <div class="goods-slider__item">
                     <a href="{{ asset('storage/' . $image) }}" class="goods-slider__link" data-fancybox="goods"><img
                             src="{{ asset('storage/' . $image) }}" alt="" class="goods-slider__img"></a>
@@ -23,8 +23,14 @@
         @endif
     </div>
     <div class="thumbs-slider">
-        @if (isset($subcategory->images) && count($subcategory->images))
-            @foreach ($subcategory->images as $image)
+        @if (
+            (isset($subcategory->images) && count($subcategory->images)) ||
+                (isset($product->images) && count($product->images)))
+            @foreach ($subcategory->images ?? [] as $image)
+                <div class="thumbs-slider__item"><img src="{{ asset('storage/' . $image) }}" alt=""
+                        class="thumbs-slider__img"></div>
+            @endforeach
+            @foreach ($product->images ?? [] as $image)
                 <div class="thumbs-slider__item"><img src="{{ asset('storage/' . $image) }}" alt=""
                         class="thumbs-slider__img"></div>
             @endforeach

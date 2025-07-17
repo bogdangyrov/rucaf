@@ -1735,6 +1735,7 @@ body {
     transform: translate(-50%, -50%);
     object-fit: cover;
     margin-top: 25px;
+    max-height: 180px;
 }
 
 .catalog__wrap-actions {
