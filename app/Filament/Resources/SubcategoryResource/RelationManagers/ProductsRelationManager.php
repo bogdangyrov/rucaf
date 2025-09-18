@@ -47,12 +47,10 @@ class ProductsRelationManager extends RelationManager
                                     ->profile('default'),
                                 Forms\Components\TextInput::make('dimensions')
                                     ->label('Габариты ШхВхГ, мм')
-                                    ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
                                 Forms\Components\TextInput::make('mass')
                                     ->label('Масса, кг')
-                                    ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
                                 Select::make('subcategory_id')
