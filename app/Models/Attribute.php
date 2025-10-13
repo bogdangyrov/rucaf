@@ -100,6 +100,10 @@ class Attribute extends Model
                     $productQuery->filterByAttributes($filter->attributes);
                 }
             }]);
+
+            $attribute->values = $attribute->values->filter(function ($value) {
+                return $value->products_count > 0;
+            })->values();
         }
         return $attributes;
     }
