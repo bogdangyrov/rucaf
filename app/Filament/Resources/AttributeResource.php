@@ -14,6 +14,7 @@ use App\Filament\Resources\AttributeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AttributeResource\RelationManagers;
 use App\Filament\Resources\AttributeResource\RelationManagers\ValuesRelationManager;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 
 class AttributeResource extends Resource
@@ -48,7 +49,10 @@ class AttributeResource extends Resource
                     ->label('Подкатегория')
                     ->required()
                     ->searchable()
-                    ->relationship('subcategory', 'name')
+                    ->relationship('subcategory', 'name'),
+                Checkbox::make('show_in_filters')
+                    ->label('Показывать в фильтрах')
+                    ->default(true),
             ]);
     }
 
@@ -64,6 +68,10 @@ class AttributeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('subcategory.name')
                     ->label('Подкатегория')
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('show_in_filters')
+                    ->label('Показывать в фильтрах')
+                    ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

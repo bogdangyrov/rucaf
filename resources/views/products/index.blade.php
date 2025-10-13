@@ -38,3 +38,7 @@
     @include('products.components.index.description')
     @include('components.frequent-questions')
 @endsection
+
+@push('js')
+    @vite('/resources/js/pages/products.js')
+@endpush

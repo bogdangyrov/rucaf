@@ -23,18 +23,14 @@ class ProductController extends Controller
             $query->withCount('products');
         }])->get();
 
-        $attributes = $subcategory
-            ->attributes()
-            ->withUniqueValues(/* $filter */);
+        $attributes = Attribute::getWithValuesAndCounts($filter);
 
         $products = $subcategory
             ->products()
             ->with('subcategory')
-            ->with(['category' => function ($query) {
-                $query->with('productType');
-            }])
-            ->active()
+            ->with(['category.productType'])
             ->with('attributeValues.attribute', 'attributeValues.value')
+            ->active()
             ->filterByAttributes($filter->attributes)
             ->sortBy($filter->sortBy)
             ->showProducts($filter->showProducts);

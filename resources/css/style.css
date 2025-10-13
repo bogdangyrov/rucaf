@@ -3218,7 +3218,7 @@ body {
 
 .category-list__subcategories {
     overflow-y: auto;
-    height: 250px;
+    height: auto;
 }
 
 .category-list__checkbox:disabled ~ .category-list__txt,
@@ -7626,4 +7626,16 @@ body {
 #catalog-menu .mm-listitem__text {
     overflow: visible !important;
     text-overflow: ellipsis !important;
+}
+
+.toggle-values {
+    font-size: 14px !important;
+    text-decoration: underline;
+    color: #464654;
+    margin-left: 32px;
+}
+
+.toggle-values:hover {
+    color: #e4b900;
+    cursor: pointer;
 }

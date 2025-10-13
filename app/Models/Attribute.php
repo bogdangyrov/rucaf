@@ -7,14 +7,16 @@ use App\Helpers\Filter;
 use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attribute extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'show_in_filters' => 'boolean',
+    ];
 
     protected static function boot()
     {
@@ -40,46 +42,28 @@ class Attribute extends Model
         return $this->belongsTo(Subcategory::class);
     }
 
-    public static function scopeWithUniqueValues($query)
+    /**
+     * Получить коллекцию атрибутов с уникальными значениями и подсчетом продуктов для фильтрации.
+     */
+    public static function getWithValuesAndCounts(Filter $filter)
     {
-        $attributes = $query->with(['values' => function ($query) {
-            $query->orderBy('value');
-        }])->get();
-
-        $valueIds = $attributes->pluck('values')->flatten()->pluck('id')->unique();
-
-        $counts = DB::table('attribute_values as av')
-            ->whereIn('av.value_id', $valueIds)
-            ->groupBy('av.value_id')
-            ->select('av.value_id', DB::raw('COUNT(*) as products_count'))
-            ->pluck('products_count', 'av.value_id');
-
-        foreach ($attributes as $attribute) {
-            foreach ($attribute->values as $value) {
-                $value->products_count = $counts[$value->id] ?? 0;
-            }
-        }
-
-        return $attributes;
-    }
-
-    /*   public static function scopeWithUniqueValues($query, Filter $filter)
-    {
-        $attributes = $query->with(['values' => function ($query) {
-            $query->orderBy('value')->distinct();
-        }])->get();
+        $attributes = $filter
+            ->subcategory
+            ->attributes()
+            ->where('show_in_filters', true)
+            ->with(['values' => function ($query) use ($filter) {
+                $query->orderBy('value')->distinct();
+                $query->whereHas('products', function ($query) use ($filter) {
+                    $query->where('products.subcategory_id', $filter->subcategory->id);
+                });
+            }])->get();
 
         foreach ($attributes as $attribute) {
             $attribute->values = $attribute->values->sortBy('value');
-            /*
-                Код ниже нужен для функции выбора нескольких значений у одного атрибута.
-                Например: пользователь выбрал страну Россия,
-                    в выборе фильтров мы должны дать возможность выбрать ему другую страну(Китай) и корректно отобразить
-                    кол-во для России и для Китая.
-
             $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
                 $productQuery->active();
                 $productQuery->withSubcategory($filter->subcategory);
+                $productQuery->where('products.subcategory_id', $filter->subcategory->id);
                 if ($filter->priceRange) {
                     $productQuery->filterByPriceRange($filter->priceRange);
                 }
@@ -119,7 +103,6 @@ class Attribute extends Model
         }
         return $attributes;
     }
- */
 
     public function scopeWithAttributesValuesFromQuery($query, array $requestQuery)
     {

@@ -30,7 +30,7 @@
 
     <div class="overflow-bg"></div>
 
-    @yield('js')
+    @stack('js')
     @livewireScripts
 </body>
 
