@@ -4,7 +4,7 @@
             @foreach ($types as $type)
                 <li class="catalog-menu__item">
                     <span class="catalog-menu__link">
-                        {{ $type->name }}
+                        <a href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
                         <span class="submenu-toggle icon-arrow1"></span>
                     </span>
                     @if (!empty($type->categories))
@@ -12,7 +12,8 @@
                             @foreach ($type->categories as $category)
                                 <li class="catalog-menu__item">
                                     <span class="catalog-menu__link">
-                                        {{ $category->name }}
+                                        <a
+                                            href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">{{ $category->name }}</a>
                                         <span class="submenu-toggle  icon-arrow1"></span>
                                     </span>
                                     @if (!empty($category->subcategories))

@@ -14,6 +14,7 @@ use FilamentTiptapEditor\TiptapEditor;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use App\Filament\Resources\SubcategoryResource\Pages;
 use App\Filament\Resources\SubcategoryResource\RelationManagers\ProductsRelationManager;
 
@@ -101,7 +102,47 @@ class SubcategoryResource extends Resource
                                 ->label('Описание')
                                 ->required()
                                 ->columnSpanFull()
-                                ->profile('default')
+                                ->profile('default'),
+                            RichEditor::make('short_text')
+                                ->label('Короткое описание')
+                                ->columnSpanFull()
+                                ->toolbarButtons([
+                                    'attachFiles',
+                                    'blockquote',
+                                    'bold',
+                                    'bulletList',
+                                    'codeBlock',
+                                    'h1',
+                                    'h2',
+                                    'h3',
+                                    'italic',
+                                    'link',
+                                    'orderedList',
+                                    'redo',
+                                    'strike',
+                                    'underline',
+                                    'undo',
+                                ]),
+                            RichEditor::make('long_text')
+                                ->label('Длинное описание')
+                                ->columnSpanFull()
+                                ->toolbarButtons([
+                                    'attachFiles',
+                                    'blockquote',
+                                    'bold',
+                                    'bulletList',
+                                    'codeBlock',
+                                    'h1',
+                                    'h2',
+                                    'h3',
+                                    'italic',
+                                    'link',
+                                    'orderedList',
+                                    'redo',
+                                    'strike',
+                                    'underline',
+                                    'undo',
+                                ]),
                         ])
                     ])->persistTabInQueryString()
             ]);

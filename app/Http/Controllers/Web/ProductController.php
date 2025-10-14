@@ -53,13 +53,13 @@ class ProductController extends Controller
             ->get();
 
         $seo = new Seo(
-            "{$productType->name} — Промышленное оборудование от Rucaf | rucaf.com",
+            "{$subcategory->name} — Промышленное оборудование от Rucaf | rucaf.com",
             'Купить ' . mb_strtolower(
-                $productType->name
+                $subcategory->name
             ) . ' для промышленных нужд от компании Rucaf. Надежное оборудование с доставкой по всей России.',
-            "{$productType->name} — Промышленное оборудование от Rucaf",
+            "{$subcategory->name} — Промышленное оборудование от Rucaf",
             'Посмотрите наш ассортимент — ' . mb_strtolower(
-                $productType->name
+                $subcategory->name
             ) . ' для различных промышленных нужд. Выбор качественного оборудования от Rucaf с доставкой по всей России.',
             asset('storage/' . $productType->image),
             route('products.index', ['productType' => $productType->slug, 'category' => $category, 'subcategory' => $subcategory]),

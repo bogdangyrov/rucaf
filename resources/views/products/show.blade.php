@@ -10,10 +10,11 @@
                 <a href="{{ route('catalog') }}" class="bread__link">Каталог</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
 
-                <a class="bread__link">{{ $type->name }}</a>
+                <a class="bread__link"
+                    href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
-
-                <a class="bread__link">{{ $product->category->name }}</a>
+                <a class="bread__link"
+                    href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">{{ $category->name }}</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
 
                 <a href="{{ route('products.index', ['productType' => $type, 'category' => $category, 'subcategory' => $subcategory]) }}"

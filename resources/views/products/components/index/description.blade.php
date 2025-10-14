@@ -1,22 +1,22 @@
-<div class="wrap">
-    <div class="content">
-        <div class="text-block">
-            <div class="title">Описание</div>
-            <div class="text-block__content wrap-collapse-content">
-                @isset($type->short_text)
+@isset($shortText)
+    <div class="wrap">
+        <div class="content">
+            <div class="text-block">
+                <div class="title">Описание</div>
+                <div class="text-block__content wrap-collapse-content">
                     <div class="collapse-content">
-                        {!! $type->short_text !!}
+                        {!! $shortText !!}
                     </div>
-                @endisset
-                @isset($type->long_text)
-                    <div class="collapse-content collapse-content--hidden">
-                        {!! $type->long_text !!}
-                    </div>
-                    <div class="collapse-actions">
-                        <button class="collapse-actions__btn-open" type="button">Показать больше</button>
-                    </div>
-                @endisset
+                    @isset($longText)
+                        <div class="collapse-content collapse-content--hidden">
+                            {!! $longText !!}
+                        </div>
+                        <div class="collapse-actions">
+                            <button class="collapse-actions__btn-open" type="button">Показать больше</button>
+                        </div>
+                    @endisset
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endisset

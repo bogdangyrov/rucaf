@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\PageController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ComparisonController;
+use App\Http\Controllers\ProductTypeController;
 use App\Http\Controllers\Web\ProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -17,6 +19,9 @@ Route::get('/comparison', [ComparisonController::class, 'index'])->name('compari
 Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites');
 
 Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog');
+Route::get('/catalog/{productType:slug}', [ProductTypeController::class, 'index'])->name('product-types.index');
+Route::get('/catalog/{productType:slug}/{category:slug}', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/catalog/{productType:slug}/{category:slug}/{subcategory:slug}', [ProductController::class, 'index'])->name('products.index');
 Route::get('/catalog/{productType:slug}/{category:slug}/{subcategory:slug}/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
 Route::get('/{page:slug}', [PageController::class, 'index'])->name('page');

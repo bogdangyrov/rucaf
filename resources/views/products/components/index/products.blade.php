@@ -15,9 +15,32 @@
                 @endforeach
             @else
                 <p>Нечего не найдено. Возможно вы выбрали слишком много фильтров.
-                    <a
-                        href="{{ route('products.index', ['productType' => $type, 'category' => $filter->category, 'subcategory' => $filter->subcategory]) }}">Очистить
-                        фильтры.</a>
+                    @php
+                        switch (Route::currentRouteName()) {
+                            case 'product-types.index':
+                                $clearFiltersRoute = route(Route::currentRouteName(), [
+                                    'productType' => $filter->productType,
+                                ]);
+                                break;
+                            case 'categories.index':
+                                $clearFiltersRoute = route(Route::currentRouteName(), [
+                                    'productType' => $filter->productType,
+                                    'category' => $filter->category,
+                                ]);
+                                break;
+                            case 'products.index':
+                                $clearFiltersRoute = route(Route::currentRouteName(), [
+                                    'productType' => $filter->productType,
+                                    'category' => $filter->category,
+                                    'subcategory' => $filter->subcategory,
+                                ]);
+                                break;
+                            default:
+                                $clearFiltersRoute = '#';
+                                break;
+                        }
+                    @endphp
+                    <a href="{{ $clearFiltersRoute }}">Очистить фильтры.</a>
                 </p>
             @endif
         </div>

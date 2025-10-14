@@ -24,12 +24,14 @@
                                     <div class="docs__title">{{ $name }}</div>
                                     <div class="docs__format">
                                         <span>
-                                            @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
-                                                {{ round(Storage::disk('public')->size($doc) / 1024) }}
-                                                Kб
-                                            @else
-                                                {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
-                                                Мб
+                                            @if (Storage::disk('public')->exists($doc))
+                                                @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
+                                                    {{ round(Storage::disk('public')->size($doc) / 1024) }}
+                                                    Kб
+                                                @else
+                                                    {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
+                                                    Мб
+                                                @endif
                                             @endif
                                         </span>
                                         <span>{{ $product::getDocExtension($doc) }}</span>
@@ -45,12 +47,14 @@
                                     <div class="docs__title">{{ $name }}</div>
                                     <div class="docs__format">
                                         <span>
-                                            @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
-                                                {{ round(Storage::disk('public')->size($doc) / 1024) }}
-                                                Kб
-                                            @else
-                                                {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
-                                                Мб
+                                            @if (Storage::disk('public')->exists($doc))
+                                                @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
+                                                    {{ round(Storage::disk('public')->size($doc) / 1024) }}
+                                                    Kб
+                                                @else
+                                                    {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
+                                                    Мб
+                                                @endif
                                             @endif
                                         </span>
                                         <span>{{ $product::getDocExtension($doc) }}</span>

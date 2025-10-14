@@ -3257,6 +3257,17 @@ body {
     transform: rotate(270deg);
 }
 
+.category-list__link {
+    color: #333 !important;
+    max-width: 160px;
+    display: block;
+}
+
+.category-list__link:hover {
+    color: #e4b900 !important;
+    text-decoration: underline !important;
+}
+
 .filters {
     margin-bottom: 30px;
 }
@@ -7248,6 +7259,15 @@ body {
         padding: 12px 20px 12px 0;
     }
 
+    .catalog-menu__link a {
+        color: #5d5d74;
+    }
+
+    .catalog-menu__link a:hover {
+        color: #e4b900;
+        text-decoration: underline;
+    }
+
     .catalog-menu__link:hover {
         color: #000;
     }
@@ -7387,6 +7407,7 @@ body {
 
     .catalog-menu--sub-menu-lvl2 {
         overflow-y: auto;
+        top: 0px !important;
         height: 90% !important;
     }
 
@@ -7639,4 +7660,9 @@ body {
 .toggle-values:hover {
     color: #e4b900;
     cursor: pointer;
+}
+
+.mm-btn--prev::before {
+    width: 15px;
+    height: 15px;
 }

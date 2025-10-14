@@ -9,8 +9,7 @@
             <div class="wrap-main-catalog">
                 <div class="catalog-catalog">
                     @foreach ($productTypes as $type)
-                        <a href="{{ route('products.index', ['productType' => $type, 'category' => $type->categories[0], 'subcategory' => $type->categories[0]->subcategories[0]]) }}"
-                            class="catalog-catalog__item">
+                        <a href="{{ route('product-types.index', ['productType' => $type]) }}" class="catalog-catalog__item">
                             <div class="catalog-catalog__img"><img src="{{ asset('storage/' . $type->image) }}"
                                     alt="Фото {{ $type->name }}">
                             </div>

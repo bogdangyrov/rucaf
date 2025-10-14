@@ -9,18 +9,11 @@
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
                 <a href="{{ route('catalog') }}" class="bread__link">Каталог</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a class="bread__link"
-                    href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a class="bread__link"
-                    href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">{{ $category->name }}</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a class="bread__link">{{ $subcategory->name }}</a>
+                <a class="bread__link">{{ $type->name }}</a>
             </div>
 
             <div class="title title--inline">
-                <h1>{{ $subcategory->name }}</h1>
-                <span class="title__sum">{{ $products->total() }} товаров</span>
+                <h1>{{ $type->name }}</h1>
             </div>
 
         </div>
@@ -29,7 +22,7 @@
     <div class="wrap">
         <div class="page content">
             <div class="wrap-products">
-                @include('products.components.index.filters')
+                @include('product-types.components.index.filters')
                 @include('products.components.index.products')
             </div>
         </div>
@@ -38,8 +31,8 @@
     @include('products.components.why-choose-us')
     @include('products.components.recently-watched')
     @include('products.components.index.description', [
-        'shortText' => $subcategory->short_text,
-        'longText' => $subcategory->long_text,
+        'shortText' => $type->short_text,
+        'longText' => $type->long_text,
     ])
     @include('components.frequent-questions')
 @endsection

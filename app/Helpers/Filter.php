@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 class Filter
 {
     public ProductType $productType;
-    public Category $category;
-    public Subcategory $subcategory;
+    public Category|null $category;
+    public Subcategory|null $subcategory;
     public Collection $attributes;
 
     public string $pageSize = '20';
@@ -25,7 +25,7 @@ class Filter
     private static array $availableSortBy = ['popular', 'price', 'name'];
     private static array $availableShowProducts = ['all', 'new', 'hits', 'discounts'];
 
-    public function __construct(ProductType $productType, Category $category, Subcategory $subcategory, array $requestQuery)
+    public function __construct(ProductType $productType, Category|null $category = null, Subcategory|null $subcategory = null, array $requestQuery = [])
     {
         $this->productType = $productType;
         $this->category = $category;
@@ -56,6 +56,10 @@ class Filter
             unset($requestQuery['min-price'], $requestQuery['max-price']);
         }
 
+        if (!$this->subcategory) {
+            $this->attributes = new Collection();
+            return;
+        }
         $this->attributes = Attribute::where('subcategory_id', $this->subcategory->id)
             ->whereIn('slug', array_keys($requestQuery))
             ->withWhereHas(
@@ -76,7 +80,6 @@ class Filter
                     });
                 }
             )->get();
-        // $this->attributes = $requestQuery ? Attribute::withAttributesValuesFromQuery($requestQuery)->get() : new Collection();
     }
 
     public function attributeExists(string $slug): bool
@@ -102,7 +105,7 @@ class Filter
     public function getQuery(): array
     {
         $query = array_merge([
-            'category' => $this->category->slug,
+            'category' => $this->category?->slug ?? null,
             'page-size' => $this->pageSize,
             'show-products' => $this->showProducts,
             'page' => $this->page,

@@ -46,9 +46,11 @@
             <nav class="footer-bottom__wrap-footer-bottom-menu">
                 <ul class="footer-bottom-menu">
                     @foreach ($productTypes as $type)
-                        <li class="footer-bottom-menu__item"><a
-                                href="{{ route('products.index', ['productType' => $type, 'category' => $type->categories[0], 'subcategory' => $type->categories[0]->subcategories[0]]) }}"
-                                class="footer-bottom-menu__link">{{ $type->name }}</a></li>
+                        <li class="footer-bottom-menu__item">
+                            <a href="{{ route('product-types.index', ['productType' => $type]) }}"
+                                class="footer-bottom-menu__link">
+                                {{ $type->name }}</a>
+                        </li>
                     @endforeach
                 </ul>
             </nav>
