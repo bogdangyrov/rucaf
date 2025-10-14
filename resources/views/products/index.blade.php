@@ -45,5 +45,5 @@
 @endsection
 
 @push('js')
-    @vite('/resources/js/pages/products.js')
+    @vite('resources/js/pages/products.js')
 @endpush
