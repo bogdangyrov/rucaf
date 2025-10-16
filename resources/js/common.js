@@ -331,27 +331,47 @@ $(function () {
             active: false,
         });
 
-        $(".filters > .filters__item.active > .filters__title").click();
-
-        $(".category-list .filters__title").on("click", function () {
+        $(".filters.scroll .filters__title").on("click", async function () {
             const $item = $(this).closest(".filters__item");
             const isActive = $item.hasClass("active");
 
-            $(".filters__item")
-                .not($item)
-                .removeClass("active")
-                .find(".category-list__subcategories")
-                .slideUp();
+            if (!isActive) {
+                if (!$item.data("loaded")) {
+                    const checkbox = $item.find("input[type=checkbox]").first();
+                    if (!checkbox.length) return;
 
-            if (isActive) {
-                $item.removeClass("active").find(".category-list__subcategories").slideUp();
-            } else {
-                $item.addClass("active").find(".category-list__subcategories").slideDown();
+                    const attributeId = checkbox.attr("id").replace("filter-", "");
+                    const params = new URLSearchParams(window.location.search);
+
+                    params.set('product_type_id', window.currentProductTypeId);
+                    params.set('category_id', window.currentCategoryId);
+                    params.set('subcategory_id', window.currentSubcategoryId);
+
+                    try {
+                        const res = await fetch(`/filters/${attributeId}/counts?${params.toString()}`);
+                        const data = await res.json();
+
+                        data.values.forEach(v => {
+                            const input = $item.find(`input[data-filter-id="${v.slug}"]`);
+                            if (input.length) {
+                                if (v.count == 0) {
+                                    input.closest('.filters-list__item').hide();
+                                }
+                                const num = input.closest("label").find(".filters-list__numbs");
+                                num.text(`(${v.count})`);
+                                input.prop("disabled", v.count === 0);
+                            }
+                        });
+
+                        $item.data("loaded", 1);
+                    } catch (err) {
+                        console.error("Ошибка подгрузки фильтра:", err);
+                    }
+                }
+
             }
+
         });
-
-        $(".filters__item.active .category-list__subcategories").show();
-
         $(".filters__title a").on("click", function (e) {
             e.stopPropagation();
         });

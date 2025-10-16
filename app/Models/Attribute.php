@@ -45,7 +45,7 @@ class Attribute extends Model
     /**
      * Получить коллекцию атрибутов с уникальными значениями и подсчетом продуктов для фильтрации.
      */
-    public static function getWithValuesAndCounts(Filter $filter)
+    public static function getWithValues(Filter $filter)
     {
         $attributes = $filter
             ->subcategory
@@ -58,54 +58,55 @@ class Attribute extends Model
                 });
             }])->get();
 
-        foreach ($attributes as $attribute) {
-            $attribute->values = $attribute->values->sortBy('value');
-            $attribute->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
-                $productQuery->active();
-                $productQuery->withSubcategory($filter->subcategory);
-                $productQuery->where('products.subcategory_id', $filter->subcategory->id);
-                if ($filter->priceRange) {
-                    $productQuery->filterByPriceRange($filter->priceRange);
-                }
-
-                if (in_array($attribute->id, $filter->attributes->pluck('id')->toArray())) {
-                    foreach ($filter->attributes as $filterAttribute) {
-                        if ($filterAttribute->id == $attribute->id) {
-                            $productQuery->whereHas('attributeValues', function ($query) use ($filterAttribute) {
-                                $name = $filterAttribute->slug;
-                                $values = $filterAttribute->values->pluck('slug');
-                                $query
-                                    ->whereHas('attribute', function ($query) use ($name) {
-                                        $query->where('slug', $name);
-                                    })
-                                    ->orWhereHas('value', function ($query) use ($values) {
-                                        $query->whereIn('slug', $values);
-                                    });
-                            });
-                        } else {
-                            $productQuery->whereHas('attributeValues', function ($query) use ($filterAttribute) {
-                                $name = $filterAttribute->slug;
-                                $values = $filterAttribute->values->pluck('slug');
-                                $query
-                                    ->whereHas('attribute', function ($query) use ($name) {
-                                        $query->where('slug', $name);
-                                    })
-                                    ->whereHas('value', function ($query) use ($values) {
-                                        $query->whereIn('slug', $values);
-                                    });
-                            });
-                        }
-                    }
-                } else {
-                    $productQuery->filterByAttributes($filter->attributes);
-                }
-            }]);
-
-            $attribute->values = $attribute->values->filter(function ($value) {
-                return $value->products_count > 0;
-            })->values();
-        }
         return $attributes;
+    }
+
+    public function loadProductsCount($filter)
+    {
+        $this->values = $this->values->sortBy('value');
+        $attribute = $this;
+        $this->values->loadCount(['products' => function ($productQuery) use ($filter, $attribute) {
+            $productQuery->active();
+            $productQuery->withSubcategory($filter->subcategory);
+            $productQuery->where('products.subcategory_id', $filter->subcategory->id);
+            if ($filter->priceRange) {
+                $productQuery->filterByPriceRange($filter->priceRange);
+            }
+
+            if (in_array($attribute->id, $filter->attributes->pluck('id')->toArray())) {
+                foreach ($filter->attributes as $filterAttribute) {
+                    if ($filterAttribute->id == $attribute->id) {
+                        $productQuery->whereHas('attributeValues', function ($query) use ($filterAttribute) {
+                            $name = $filterAttribute->slug;
+                            $values = $filterAttribute->values->pluck('slug');
+                            $query
+                                ->whereHas('attribute', function ($query) use ($name) {
+                                    $query->where('slug', $name);
+                                })
+                                ->orWhereHas('value', function ($query) use ($values) {
+                                    $query->whereIn('slug', $values);
+                                });
+                        });
+                    } else {
+                        $productQuery->whereHas('attributeValues', function ($query) use ($filterAttribute) {
+                            $name = $filterAttribute->slug;
+                            $values = $filterAttribute->values->pluck('slug');
+                            $query
+                                ->whereHas('attribute', function ($query) use ($name) {
+                                    $query->where('slug', $name);
+                                })
+                                ->whereHas('value', function ($query) use ($values) {
+                                    $query->whereIn('slug', $values);
+                                });
+                        });
+                    }
+                }
+            } else {
+                $productQuery->filterByAttributes($filter->attributes);
+            }
+        }]);
+
+        $attribute->values = $attribute->values->values();
     }
 
     public function scopeWithAttributesValuesFromQuery($query, array $requestQuery)

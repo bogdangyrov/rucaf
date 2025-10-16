@@ -44,14 +44,13 @@
             <div class="filters scroll">
                 @foreach ($attributes as $attribute)
                     @if (count($attribute->values) > 1)
-                        <div class="filters__item {{ $filter->attributeExists($attribute->slug) ? 'active' : '' }}">
+                        <div class="filters__item" id="filter-item-{{ $attribute->id }}" data-loaded="0">
                             <div class="filters__title">
                                 <div style="width:90%">{{ $attribute->name }}</div>
                             </div>
                             <div class="filters__list filters-list">
                                 @foreach ($attribute->values as $index => $value)
-                                    <label class="filters-list__item {{ $index >= 10 ? 'extra-value' : '' }}"
-                                        @if ($index >= 10) style="display:none" @endif>
+                                    <label class="filters-list__item">
                                         <input type="checkbox" class="filters-list__checkbox"
                                             name="{{ $attribute->slug }}[]" value="{{ $value->slug }}"
                                             id="filter-{{ $attribute->id }}" data-filter-id="{{ $value->slug }}"
@@ -61,11 +60,6 @@
                                         </span>
                                     </label>
                                 @endforeach
-
-                                @if (count($attribute->values) > 10)
-                                    <button type="button" class="toggle-values">Показать
-                                        еще({{ count($attribute->values) - 10 }})</button>
-                                @endif
                             </div>
                         </div>
                     @endif
@@ -103,3 +97,8 @@
         @endisset
     </form>
 </div>
+<script>
+    window.currentProductTypeId = {{ $filter->productType->id }};
+    window.currentCategoryId = {{ $filter->category?->id ?? 'null' }};
+    window.currentSubcategoryId = {{ $filter->subcategory?->id ?? 'null' }};
+</script>

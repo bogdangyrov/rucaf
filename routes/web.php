@@ -1,5 +1,11 @@
 <?php
 
+use App\Helpers\Filter;
+use App\Models\Category;
+use App\Models\Attribute;
+use App\Models\ProductType;
+use App\Models\Subcategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Web\CartController;
@@ -23,5 +29,27 @@ Route::get('/catalog/{productType:slug}', [ProductTypeController::class, 'index'
 Route::get('/catalog/{productType:slug}/{category:slug}', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/catalog/{productType:slug}/{category:slug}/{subcategory:slug}', [ProductController::class, 'index'])->name('products.index');
 Route::get('/catalog/{productType:slug}/{category:slug}/{subcategory:slug}/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+
+Route::get('/filters/{id}/counts', function (Request $request, $id) {
+    $attribute = Attribute::findOrFail($id);
+    $filter = new Filter(
+        ProductType::findOrFail($request->input('product_type_id')),
+        $request->input('category_id') ? Category::find($request->input('category_id')) : null,
+        $request->input('subcategory_id') ? Subcategory::find($request->input('subcategory_id')) : null,
+        $request->query()
+    );
+
+    $attribute->load('values');
+    $attribute->loadProductsCount($filter);
+
+    return response()->json([
+        'values' => $attribute->values->map(fn($v) => [
+            'slug' => $v->slug,
+            'count' => $v->products_count,
+        ]),
+    ]);
+})
+    ->name('filters.load-products-count');
+
 
 Route::get('/{page:slug}', [PageController::class, 'index'])->name('page');

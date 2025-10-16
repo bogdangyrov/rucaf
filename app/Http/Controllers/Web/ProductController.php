@@ -23,7 +23,7 @@ class ProductController extends Controller
             $query->withCount('products');
         }])->get();
 
-        $attributes = Attribute::getWithValuesAndCounts($filter);
+        $attributes = Attribute::getWithValues($filter);
 
         $products = $subcategory
             ->products()

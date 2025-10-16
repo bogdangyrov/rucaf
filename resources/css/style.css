@@ -3222,6 +3222,10 @@ body {
     max-height: 350px;
 }
 
+.filters-list {
+    max-height: 350px;
+}
+
 .category-list__checkbox:disabled ~ .category-list__txt,
 .category-list__checkbox:disabled ~ .category-list__txt .category-list__numbs {
     color: #dadada;
