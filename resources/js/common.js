@@ -331,7 +331,9 @@ $(function () {
             active: false,
         });
 
-        $(".filters.scroll .filters__title").on("click", async function () {
+        $('.filters__item.active.active').accordion("option", "active", 0);
+
+        $(".filters__title").on("click", async function () {
             const $item = $(this).closest(".filters__item");
             const isActive = $item.hasClass("active");
 
@@ -368,7 +370,6 @@ $(function () {
                         console.error("Ошибка подгрузки фильтра:", err);
                     }
                 }
-
             }
 
         });
