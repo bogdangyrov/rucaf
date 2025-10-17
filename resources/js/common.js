@@ -331,51 +331,119 @@ $(function () {
             active: false,
         });
 
-        $('.filters__item.active.active').accordion("option", "active", 0);
+        $('.filters__item.active').accordion("option", "active", 0);
 
-        $(".filters__title").on("click", async function () {
-            const $item = $(this).closest(".filters__item");
-            const isActive = $item.hasClass("active");
+        async function loadFilterData($item) {
+            if ($item.data("loaded")) return;
 
-            if (!isActive) {
-                if (!$item.data("loaded")) {
-                    const checkbox = $item.find("input[type=checkbox]").first();
-                    if (!checkbox.length) return;
+            const checkbox = $item.find("input[type=checkbox]").first();
+            if (!checkbox.length) return;
 
-                    const attributeId = checkbox.attr("id").replace("filter-", "");
-                    const params = new URLSearchParams(window.location.search);
+            const attributeId = checkbox.attr("id").replace("filter-", "");
+            const params = new URLSearchParams(window.location.search);
 
-                    params.set('product_type_id', window.currentProductTypeId);
-                    params.set('category_id', window.currentCategoryId);
-                    params.set('subcategory_id', window.currentSubcategoryId);
+            params.set('product_type_id', window.currentProductTypeId);
+            params.set('category_id', window.currentCategoryId);
+            params.set('subcategory_id', window.currentSubcategoryId);
 
-                    try {
-                        const res = await fetch(`/filters/${attributeId}/counts?${params.toString()}`);
-                        const data = await res.json();
+            try {
+                const res = await fetch(`/filters/${attributeId}/counts?${params.toString()}`);
+                const data = await res.json();
 
-                        data.values.forEach(v => {
-                            const input = $item.find(`input[data-filter-id="${v.slug}"]`);
-                            if (input.length) {
-                                if (v.count == 0) {
-                                    input.closest('.filters-list__item').hide();
-                                }
-                                const num = input.closest("label").find(".filters-list__numbs");
-                                num.text(`(${v.count})`);
-                                input.prop("disabled", v.count === 0);
-                            }
-                        });
+                let allZero = true;
 
-                        $item.data("loaded", 1);
-                    } catch (err) {
-                        console.error("Ошибка подгрузки фильтра:", err);
+                data.values.forEach(v => {
+                    const input = $item.find(`input[data-filter-id="${v.slug}"]`);
+                    if (input.length) {
+                        const num = input.closest("label").find(".filters-list__numbs");
+                        num.text(`(${v.count})`);
+                        input.prop("disabled", v.count === 0);
+
+                        if (v.count === 0) {
+                            input.closest('.filters-list__item').hide();
+                        } else {
+                            allZero = false;
+                        }
                     }
-                }
-            }
+                });
 
+                if (allZero) {
+                    $item.remove();
+                    return;
+                }
+
+                $item.data("loaded", 1);
+            } catch (err) {
+                console.error("Ошибка подгрузки фильтра:", err);
+            }
+        }
+
+        // сначала активные
+        $(".attribute-filters .filters__item.active").each(function () {
+            loadFilterData($(this));
         });
-        $(".filters__title a").on("click", function (e) {
-            e.stopPropagation();
+
+        // потом все остальные
+        $(".attribute-filters .filters__item").not(".active").each(function () {
+            loadFilterData($(this));
         });
+
+        $(".attribute-filters .filters__title").on("click", async function () {
+            const $item = $(this).closest(".filters__item");
+            if (!$item.hasClass("active")) {
+                await loadFilterData($item);
+            }
+        });
+
+        $(".filters__title a").on("click", e => e.stopPropagation());
+    });
+
+    $(function () {
+        const FILTER_KEY = 'lastFilterId';
+        const VALUE_KEY = 'lastFilterValue';
+
+        // Сохраняем выбранный фильтр и значение
+        $(document).on('change', '.filters-list__checkbox', function () {
+            const $item = $(this).closest('.filters__item');
+            localStorage.setItem(FILTER_KEY, $item.attr('id'));
+            localStorage.setItem(VALUE_KEY, $(this).data('filter-id'));
+        });
+
+        const lastFilterId = localStorage.getItem(FILTER_KEY);
+        const lastValueSlug = localStorage.getItem(VALUE_KEY);
+
+        if (lastFilterId) {
+            const $filterItem = $('#' + lastFilterId);
+
+            if ($filterItem.length) {
+                // раскрываем фильтр, если он закрыт
+                if (!$filterItem.hasClass('active')) {
+                    $filterItem.addClass('active');
+                    $filterItem.find('.filters__list').slideDown(0);
+                }
+
+                $('html, body').animate({
+                    scrollTop: $filterItem.offset().top - 100
+                }, 400, function () {
+                    if (lastValueSlug) {
+                        const $valueItem = $filterItem.find(`input[data-filter-id="${lastValueSlug}"]`).closest('.filters-list__item');
+                        if ($valueItem.length) {
+                            const $list = $filterItem.find('.filters__list');
+
+                            const listTop = $list.offset().top;
+                            const itemTop = $valueItem.offset().top;
+
+                            const relativeTop = itemTop - listTop;
+
+                            $list.animate({ scrollTop: relativeTop - 20 }, 300);
+                        }
+                    }
+                });
+
+                localStorage.removeItem(FILTER_KEY);
+                localStorage.removeItem(VALUE_KEY);
+            }
+        }
     });
 
     $(function () {

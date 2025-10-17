@@ -41,10 +41,11 @@
         @endif
 
         @isset($attributes)
-            <div class="filters scroll">
+            <div class="attribute-filters filters scroll">
                 @foreach ($attributes as $attribute)
                     @if (count($attribute->values) > 1)
-                        <div class="filters__item" id="filter-item-{{ $attribute->id }}" data-loaded="0">
+                        <div class="filters__item {{ $filter->attributeExists($attribute->slug) ? 'active' : '' }}"
+                            id="filter-item-{{ $attribute->id }}" data-loaded="0">
                             <div class="filters__title">
                                 <div style="width:90%">{{ $attribute->name }}</div>
                             </div>
@@ -56,7 +57,8 @@
                                             id="filter-{{ $attribute->id }}" data-filter-id="{{ $value->slug }}"
                                             @checked($filter->inAttributeValues($attribute->slug, $value->slug)) @disabled($value->products_count === 0)>
                                         <span class="filters-list__txt">{{ $value->value }}
-                                            <span class="filters-list__numbs">({{ $value->products_count }})</span>
+                                            <span class="filters-list__numbs">(<img style="height: 9px; display: inline;"
+                                                    src="{{ asset('img/icons/loading.gif') }}">)</span>
                                         </span>
                                     </label>
                                 @endforeach
