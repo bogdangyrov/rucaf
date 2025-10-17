@@ -100,7 +100,6 @@ class SubcategoryResource extends Resource
                         Tab::make('Описание')->schema([
                             TiptapEditor::make('description')
                                 ->label('Описание')
-                                ->required()
                                 ->columnSpanFull()
                                 ->profile('default'),
                             RichEditor::make('short_text')
