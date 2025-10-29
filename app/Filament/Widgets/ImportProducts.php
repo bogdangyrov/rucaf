@@ -78,7 +78,7 @@ class ImportProducts extends Widget
                 }
 
                 // 4. Создание товара
-                $price = $item['price'] === 'Цена не указана' ? null : (int)preg_replace('/\s+/u', '', $item['price']);
+                $price = ($item['price'] === 'Цена не указана' || $item['price'] === 0 || $item['price'] === null) ? null : (int)preg_replace('/\s+/u', '', $item['price']);
                 $product = Product::create([
                     'name' => $item['name'],
                     'price' => $price,
