@@ -555,15 +555,23 @@ $(function () {
 
     $(function () {
         $(".good-info a[href*='#']").on("click", function (e) {
+
             var anchor = $(this);
             $("html, body")
-                .stop()
-                .animate(
-                    {
-                        scrollTop: $(anchor.attr("href")).offset().top - 200,
-                    },
-                    777
-                );
+            .stop()
+            .animate(
+                {
+                    scrollTop: $(anchor.attr("href")).offset().top - 200,
+                },
+                777
+            );
+
+            $('.tabs-menu__item').removeClass('active');
+            $(this).parent().addClass('active');
+
+            $('.tabs__content').hide();
+            var activeTab = '#chars';
+            $(activeTab).show();
         });
     });
 

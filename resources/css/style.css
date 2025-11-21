@@ -2035,7 +2035,7 @@ body {
 }
 
 .q-a__content {
-    padding: 30px 30px 5px 30px;
+    padding: 10px 30px 5px 30px;
 }
 
 .wrap-footer {
@@ -3474,6 +3474,7 @@ body {
 
 .thumbs-slider {
     display: none;
+    height: 400px;
 }
 
 .goods-slider .slick-arrow {
@@ -3616,7 +3617,7 @@ body {
 }
 
 .tabs-txt p {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     line-height: 24px;
     font-size: 16px;
 }
@@ -3846,7 +3847,7 @@ body {
 
 .tabs-txt ul li,
 .tabs-txt ol li {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .tabs-txt ul li:last-child,
@@ -5097,7 +5098,7 @@ body {
     .title h2,
     .title h3,
     .title h4 {
-        font-size: 36px;
+        font-size: 30px;
         line-height: 44px;
     }
 
@@ -5703,10 +5704,7 @@ body {
     }
 
     .thumbs-slider__item img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        position: relative;
         object-fit: cover;
     }
 
@@ -6282,7 +6280,7 @@ body {
     .goods-slider__link {
         display: block;
         width: 100%;
-        height: 630px;
+        height: 300px;
         border-radius: 16px;
         overflow: hidden;
         position: relative;
@@ -6290,6 +6288,7 @@ body {
     }
 
     .goods-slider__link img {
+        height: 100%;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -6314,6 +6313,7 @@ body {
         margin-left: 70px;
         margin-top: -25px;
         float: right;
+        height: 400px;
     }
 
     .thumbs-slider__item,
@@ -6321,7 +6321,7 @@ body {
         max-height: 120px;
         border-radius: 8px;
         overflow: hidden;
-        margin: 25px 0;
+        margin: 5px 0;
     }
 
     .thumbs-slider .slick-arrow {
@@ -6935,8 +6935,7 @@ body {
         background: rgb(70 70 84 / 90%);
     }
 
-    .wrap-header--fixed .header .faq-actions__item:nth-child(1),
-    .wrap-header--fixed .header .faq-actions__item:nth-child(3) {
+    .wrap-header--fixed .header .faq-actions__item:nth-child(1) {
         width: 0;
         flex: 0 0 0;
         height: 0;
@@ -7127,7 +7126,7 @@ body {
     }
 
     .wrap {
-        padding: 70px 0;
+        padding: 40px 0;
     }
 
     .wrap--light-gray {
@@ -7669,4 +7668,11 @@ body {
 .mm-btn--prev::before {
     width: 15px;
     height: 15px;
+}
+.thumbs-slider .slick-list {
+    height: 400px !important;
+}
+
+.thumbs-slider .slick-track {
+    height: auto !important;
 }

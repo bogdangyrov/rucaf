@@ -160,7 +160,7 @@ class ProductsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
             ])
             ->filters([
                 //
