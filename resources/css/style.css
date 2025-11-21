@@ -3830,14 +3830,14 @@ body {
 }
 
 .tabs-txt h4 {
-    margin-bottom: 24px;
+    margin-bottom: 15px;
     font-weight: 600;
     line-height: 24px;
 }
 
 .tabs-txt ul,
 .tabs-txt ol {
-    margin-bottom: 24px;
+    margin-bottom: 15px;
     margin-left: 20px;
 }
 
