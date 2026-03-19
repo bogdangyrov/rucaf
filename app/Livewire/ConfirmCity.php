@@ -9,6 +9,10 @@ class ConfirmCity extends Component
 {
     public $city;
 
+    public $listeners = [
+        'cityUpdated' => 'render',
+    ];
+
     public function render()
     {
         $this->city = CustomerService::getCity();

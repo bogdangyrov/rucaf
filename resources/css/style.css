@@ -1948,6 +1948,7 @@ body {
     cursor: pointer;
 }
 
+
 .faq-actions__item:nth-child(2n) {
     margin-right: 0;
 }
@@ -2871,6 +2872,7 @@ body {
 .header__right .header__menu,
 .header-bottom {
     display: none;
+    max-width: 518px;
 }
 
 .mm-menu .jspVerticalBar {
@@ -6795,6 +6797,7 @@ body {
 
     .wrap-msg-city {
         top: -25px;
+        left: -150px;
     }
 
     .header {
@@ -7878,4 +7881,12 @@ body {
     border: none;
     box-shadow: none;
     background: transparent;
+}
+
+.faq-actions__item:first-child {
+    margin-right: 5px!important;
+}
+
+.faq-info__title {
+    font-size: 16px;
 }
