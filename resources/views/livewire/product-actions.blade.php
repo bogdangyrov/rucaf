@@ -72,4 +72,54 @@
                 <span>Сравнение</span></button>
         @endif
     </div>
+
+    @if ((isset($subcategory->docs) && count($subcategory->docs) > 0 ) || (isset($product->docs) && count($product->docs) > 0 ))
+        <div class="docs">
+            @foreach ($subcategory->docs_file_names as $doc => $name)
+                <a href="{{ Storage::url($doc) }}" class="docs__item">
+                    <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
+                    <div class="docs__content">
+                        <div class="docs__title">{{ $name }}</div>
+                        <div class="docs__format">
+                            <span>
+                                @if (Storage::disk('public')->exists($doc))
+                                    @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
+                                        {{ round(Storage::disk('public')->size($doc) / 1024) }}
+                                        Kб
+                                    @else
+                                        {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
+                                        Мб
+                                    @endif
+                                @endif
+                            </span>
+                            <span>{{ $product::getDocExtension($doc) }}</span>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+
+            @foreach ($product->docs_file_names ?? [] as $doc => $name)
+                <a href="{{ Storage::url($doc) }}" class="docs__item">
+                    <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
+                    <div class="docs__content">
+                        <div class="docs__title">{{ $name }}</div>
+                        <div class="docs__format">
+                            <span>
+                                @if (Storage::disk('public')->exists($doc))
+                                    @if (Storage::disk('public')->size($doc) / 1024 / 1024 < 1)
+                                        {{ round(Storage::disk('public')->size($doc) / 1024) }}
+                                        Kб
+                                    @else
+                                        {{ round(Storage::disk('public')->size($doc) / 1024 / 1024, 1) }}
+                                        Мб
+                                    @endif
+                                @endif
+                            </span>
+                            <span>{{ $product::getDocExtension($doc) }}</span>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    @endif
 </div>

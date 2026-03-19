@@ -2,7 +2,6 @@
     <div class="tabs">
         <ul class="tabs__menu tabs-menu scroll">
             <li class="tabs-menu__item"><a href="#desc" class="tabs-menu__link">Описание</a></li>
-            <li class="tabs-menu__item"><a href="#chars" class="tabs-menu__link">Характеристики</a></li>
             <li class="tabs-menu__item"><a href="#how-buy" class="tabs-menu__link">Как заказать</a></li>
             <li class="tabs-menu__item"><a href="#pay" class="tabs-menu__link">Оплата</a></li>
             <li class="tabs-menu__item"><a href="#delivery" class="tabs-menu__link">Доставка</a></li>
@@ -64,34 +63,6 @@
                         @endforeach
                     </div>
                 @endif
-            </div>
-        </div>
-
-        <div id="chars" class="tabs__content tabs-content">
-            <div class="tabs-txt">
-                <h2>Технические характеристики</h2>
-            </div>
-            <div class="tabs-info">
-                <table class="good-chars">
-                    @foreach ($product->attributeValues as $attributeValue)
-                        <tr>
-                            <th><span>{{ $attributeValue->attribute->name }}</span></th>
-                            <td><span>{{ $attributeValue->value->value }}</span></td>
-                        </tr>
-                    @endforeach
-                    @isset($product->dimensions)
-                        <tr>
-                            <th><span>Габариты ШхВхГ, мм</span></th>
-                            <td><span>{{ $product->dimensions }}</span></td>
-                        </tr>
-                    @endisset
-                    @isset($product->dimensions)
-                        <tr>
-                            <th><span>Масса, кг</span></th>
-                            <td><span>{{ $product->mass }}</span></td>
-                        </tr>
-                    @endisset
-                </table>
             </div>
         </div>
 

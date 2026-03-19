@@ -13,6 +13,7 @@ class ProductActions extends Component
     public $quantity;
     public $inComparison;
     public $inFavorites;
+    public $subcategory;
 
     public function render()
     {
@@ -20,6 +21,7 @@ class ProductActions extends Component
         if ($quantity) {
             $this->quantity = $quantity;
         }
+        $this->subcategory = $this->product->subcategory;
 
         $this->inComparison = ComparisonService::inComparison($this->product->id);
         $this->inFavorites = FavoritesService::inFavorites($this->product->id);

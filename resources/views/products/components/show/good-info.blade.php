@@ -12,16 +12,17 @@
             </label>
         </div>
     </div> --}}
-    <table class="good-chars">
+    <div class="specs-grid">
         @foreach ($product->attributeValues->take(5) as $attributeValue)
-            <tr>
-                <th><span>{{ $attributeValue->attribute->name }}</span></th>
-                <td><span>{{ $attributeValue->value->value }}</span></td>
-            </tr>
+            <div class="spec-item">
+                <span class="spec-name">{{ $attributeValue->attribute->name }}</span>
+                <span class="spec-dots"></span>
+                <span class="spec-value">{{ $attributeValue->value->value }}</span>
+            </div>
         @endforeach
-    </table>
+    </div>
     <div class="good-actions">
-        <a class="good-actions__btn-all" href="#desc" data-tab-index="0"><i class="icon-arrow3"></i><span>Все
+        <a class="good-actions__btn-all" href="#chars" data-tab-index="0"><i class="icon-arrow3"></i><span>Все
                 характеристики</span></a>
         @isset($product->article)
             <div class="good-actions__article">Артикул: <span>{{ $product->article }}</span></div>
