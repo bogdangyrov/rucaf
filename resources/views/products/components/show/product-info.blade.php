@@ -16,7 +16,7 @@
             <div class="tabs-info">
                 @if (isset($subcategory->docs) && count($subcategory->docs) > 0)
                     <div class="docs">
-                        @foreach ($subcategory->docs_file_names as $doc => $name)
+                        @foreach ($subcategory->docs_file_names ?? [] as $doc => $name)
                             <a href="{{ Storage::url($doc) }}" class="docs__item">
                                 <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                                 <div class="docs__content">

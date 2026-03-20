@@ -1,8 +1,7 @@
 <header class="wrap-header">
     <div class="header">
         <div class="header__left">
-            <a class="header__catalog-btn btn btn--white js-open-menu" href="#catalog-menu"
-                data-menu="#catalog-menu">Каталог товаров</a>
+            <a class="header__catalog-btn btn btn--white js-open-menu" href="#catalog-menu" data-menu="#catalog-menu">Каталог товаров</a>
             <div class="header__faq-actions faq-actions">
                 <div class="faq-actions__item">
                     <div class="faq-actions__icon"><i class="icon-geo"></i></div>
@@ -122,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <a class="header-catalog-btn btn" href="#catalog-menu">Каталог</a>
+        <a class="header-catalog-btn btn js-catalog-mobile-open" href="#">Каталог</a>
         <nav class="wrap-header-menu">
             <ul class="header-menu">
                 @foreach ($pages as $page)
