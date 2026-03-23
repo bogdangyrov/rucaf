@@ -3741,7 +3741,7 @@ body {
 .goods-slider__img {
     border-radius: 16px;
     aspect-ratio: 1/1;
-    object-fit: cover;
+    object-fit: contain;
     width: 100%;
 }
 
@@ -8331,5 +8331,9 @@ body {
 
     .w-catalog-menu {
         padding: 0;
+    }
+
+    .product-info {
+        margin-top: 315px;
     }
 }
