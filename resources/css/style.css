@@ -2648,11 +2648,6 @@ body {
     transition: background 0.2s ease;
 }
 
-.catalog-mobile-subcategory:hover {
-    background: #e4b900;
-    color: #1a1a1a;
-}
-
 @media (min-width: 1025px) {
     .catalog-menu__desktop {
         display: flex;
@@ -7051,7 +7046,7 @@ body {
     .header .faq-actions__item,
     .header .faq-actions__item:nth-child(2n) {
         margin-bottom: 0;
-        width: calc(33.3333% - 20px);
+        width: calc(38.3333% - 20px);
         flex: calc(33.3333% - 20px) 0 0;
         display: flex;
         align-items: flex-start;
@@ -8062,7 +8057,7 @@ body {
 .spec-name {
     font-weight: 600;
     color: #495057;
-    font-size: 16px;
+    font-size: 14px;
     max-width: 75%;
     flex-shrink: 1;
 }
@@ -8070,15 +8065,17 @@ body {
 .spec-dots {
     flex: 1;
     margin: 0 10px;
-    border-bottom: 3px dotted #adb5bd;
+    border-bottom: 2px dotted #adb5bd;
     height: 10px;
 }
 
 .spec-value {
     color: #212529;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    flex-shrink: 0;
+    flex-shrink: 0.5;
+    max-width: 75%;
+    text-align: end;
 }
 
 .good-info .spec-item {
