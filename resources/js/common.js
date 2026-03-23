@@ -618,7 +618,9 @@ $(function () {
         $(document).on('click', '.js-catalog-mobile-toggle', function (e) {
             e.preventDefault();
             $(this).toggleClass('open');
-            $(this).next().slideToggle(300);
+            $(this).closest('.catalog-mobile-type__row, .catalog-mobile-category__row')
+                .siblings('.catalog-mobile-type__body, .catalog-mobile-category__body')
+                .slideToggle(300);
         });
 
         $(document).on('click', '.js-catalog-mobile-open', function (e) {
