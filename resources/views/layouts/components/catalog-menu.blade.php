@@ -46,7 +46,7 @@
                 <span class="icon-arrow1"></span>
                 <span>Назад</span>
             </button>
-            <ul class="catalog-mobile-menu custom-scroll">
+            <ul class="catalog-mobile-menu">
                 @foreach ($types as $type)
                     <li class="catalog-mobile-type">
                         <div class="catalog-mobile-type__row">
