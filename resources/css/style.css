@@ -8337,3 +8337,20 @@ body {
         margin-top: 315px;
     }
 }
+/* .attribute-filters {
+    border-top: 1px solid #bbbbbb;
+} */
+.attributes-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.single-filter .ui-accordion-header-icon {
+    display: none !important;
+}
+
+.filters__item.active .single-filter .category-list__link {
+    text-decoration: underline;
+}

@@ -7,14 +7,26 @@
             <div class="bread">
                 <a href="{{ route('home') }}" class="bread__link">Главная</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
                 <a href="{{ route('catalog') }}" class="bread__link">Каталог</a>
                 <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a class="bread__link"
-                    href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a class="bread__link"
-                    href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">{{ $category->name }}</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
+                @if ($showProductTypeAndCategoryInBreadcrumbs)
+                    <a class="bread__link"
+                        href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
+                    <span class="bread__sep"><i class="icon-arrow1"></i></span>
+
+                    <a class="bread__link"
+                        href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">{{ $category->name }}</a>
+                    <span class="bread__sep"><i class="icon-arrow1"></i></span>
+                @endif
+
+                @if ($showProductTypeInBreadcrumbs)
+                    <a class="bread__link"
+                        href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
+                    <span class="bread__sep"><i class="icon-arrow1"></i></span>
+                @endif
+
                 <a class="bread__link">{{ $subcategory->name }}</a>
             </div>
 

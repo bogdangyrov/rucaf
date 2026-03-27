@@ -73,6 +73,9 @@
         @endif
     </div>
 
+    {{ debugbar()->info($product->docs_file_names)}}
+    {{ debugbar()->info($product->docs)}}
+
     @if ((isset($subcategory->docs) && count($subcategory->docs) > 0 ) || (isset($product->docs) && count($product->docs) > 0 ))
         <div class="docs">
             @foreach ($subcategory->docs_file_names ?? [] as $doc => $name)

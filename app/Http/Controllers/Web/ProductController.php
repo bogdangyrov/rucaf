@@ -66,6 +66,9 @@ class ProductController extends Controller
             'website',
         );
 
+        $showProductTypeAndCategoryInBreadcrumbs = $categories->count() > 1 && $category->subcategories->count() > 1;
+        $showProductTypeInBreadcrumbs = $categories->count() > 1 && $category->subcategories->count() == 1;
+
         return view('products.index')
             ->with([
                 'type' => $productType,
@@ -78,6 +81,8 @@ class ProductController extends Controller
                 'quickFilters' => $quickFilters,
                 'minPrice' => $minPrice,
                 'maxPrice' => $maxPrice,
+                'showProductTypeAndCategoryInBreadcrumbs' => $showProductTypeAndCategoryInBreadcrumbs,
+                'showProductTypeInBreadcrumbs' => $showProductTypeInBreadcrumbs,
                 'seo' => $seo
             ]);
     }
@@ -116,6 +121,11 @@ class ProductController extends Controller
             'product',
         );
 
+        $productType->load('categories.subcategories');
+
+        $showProductTypeAndCategoryInBreadcrumbs = $productType->categories->count() > 1 && $category->subcategories->count() > 1;
+        $showProductTypeInBreadcrumbs = $productType->categories->count() > 1 && $category->subcategories->count() == 1;
+
         return view('products.show')
             ->with([
                 'type' => $productType,
@@ -123,7 +133,9 @@ class ProductController extends Controller
                 'subcategory' => $subcategory,
                 'product' => $product,
                 'relatedProducts' => $relatedProducts,
-                'seo' => $seo
+                'showProductTypeAndCategoryInBreadcrumbs' => $showProductTypeAndCategoryInBreadcrumbs,
+                'showProductTypeInBreadcrumbs' => $showProductTypeInBreadcrumbs,
+                'seo' => $seo,
             ]);
     }
 }

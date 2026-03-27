@@ -18,6 +18,16 @@ class ProductTypeController extends Controller
 
         $subcategoriesIds = $categories->pluck('subcategories.*.id')->flatten()->toArray();
 
+        if ($categories->count() == 1 && $categories[0]->subcategories->count() == 1) {
+            $category = $categories[0];
+            $subcategory = $categories[0]->subcategories[0];
+            return redirect()->route('products.index', [
+                'productType' => $productType,
+                'category' => $category,
+                'subcategory' => $subcategory
+            ]);
+        }
+
         $products = Product::whereIn('subcategory_id', $subcategoriesIds)
             ->with('subcategory')
             ->with(['category.productType'])

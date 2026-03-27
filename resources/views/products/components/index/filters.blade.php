@@ -11,37 +11,51 @@
                 <div class="filter-category__wrap-list wrap-category-list">
                     <div class="filter-category__list category-list open filters">
                         @foreach ($categories as $category)
-                            <div class="filters__item {{ $filter->category->slug === $category->slug ? 'active' : '' }}"
-                                style="margin-inline-start: 10px">
-                                <label class="category-list__item filters__title"
-                                    style="font-weight: 500; margin-bottom: 10px">
-                                    <a class="category-list__link"
-                                        href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">
-                                        {{ $category->name }}
-                                    </a>
-                                </label>
-                                <div class="category-list__subcategories">
-                                    @foreach ($category->subcategories as $subcategory)
-                                        <a class="category-list__item"
-                                            href="{{ route('products.index', ['productType' => $type, 'category' => $category, 'subcategory' => $subcategory]) }}">
-                                            <input type="checkbox" class="category-list__checkbox"
-                                                @checked($subcategory->slug === $filter->subcategory?->slug) @disabled($subcategory->products_count === 0)>
-                                            <span class="category-list__txt">{{ $subcategory->name }}
-                                                <span
-                                                    class="category-list__numbs">({{ $subcategory->products_count }})</span>
-                                            </span>
+                            @if ($category->subcategories->count() == 1)
+                                <div class="filters__item {{ $filter->category->slug === $category->slug ? 'active' : '' }}"
+                                    style="margin-inline-start: 10px">
+                                    <label class="category-list__item filters__title single-filter"
+                                        style="font-weight: 500; margin-bottom: 10px">
+                                        <a class="category-list__link"
+                                            href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">
+                                            {{ $category->subcategories[0]->name }}
                                         </a>
-                                    @endforeach
+                                    </label>
                                 </div>
-                            </div>
+                            @else
+                                <div class="filters__item {{ $filter->category->slug === $category->slug ? 'active' : '' }}"
+                                    style="margin-inline-start: 10px">
+                                    <label class="category-list__item filters__title"
+                                        style="font-weight: 500; margin-bottom: 10px">
+                                        <a class="category-list__link"
+                                            href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    </label>
+                                    <div class="category-list__subcategories">
+                                        @foreach ($category->subcategories as $subcategory)
+                                            <a class="category-list__item"
+                                                href="{{ route('products.index', ['productType' => $type, 'category' => $category, 'subcategory' => $subcategory]) }}">
+                                                <input type="checkbox" class="category-list__checkbox"
+                                                    @checked($subcategory->slug === $filter->subcategory?->slug) @disabled($subcategory->products_count === 0)>
+                                                <span class="category-list__txt">{{ $subcategory->name }}
+                                                    <span
+                                                        class="category-list__numbs">({{ $subcategory->products_count }})</span>
+                                                </span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         @endforeach
                     </div>
                 </div>
             </div>
         @endif
 
-        @isset($attributes)
+        @if (!empty($attributes))
             <div class="attribute-filters filters scroll">
+                <p class="attributes-title">Фильтры:</p>
                 @foreach ($attributes as $attribute)
                     @if (count($attribute->values) > 1)
                         <div class="filters__item {{ $filter->attributeExists($attribute->slug) ? 'active' : '' }}"
@@ -57,7 +71,8 @@
                                             id="filter-{{ $attribute->id }}" data-filter-id="{{ $value->slug }}"
                                             @checked($filter->inAttributeValues($attribute->slug, $value->slug)) @disabled($value->products_count === 0)>
                                         <span class="filters-list__txt">{{ $value->value }}
-                                            <span class="filters-list__numbs">(<img style="height: 9px; display: inline;"
+                                            <span class="filters-list__numbs">(<img
+                                                    style="height: 9px; display: inline;"
                                                     src="{{ asset('img/icons/loading.gif') }}">)</span>
                                         </span>
                                     </label>
@@ -66,7 +81,6 @@
                         </div>
                     @endif
                 @endforeach
-
 
                 @if ($maxPrice && $maxPrice !== $minPrice)
                     <div class="filters__item filters__item--prices">
@@ -93,10 +107,9 @@
                         </div>
                     </div>
                 @endif
-
             </div>
             <button class="btn">Применить</button>
-        @endisset
+        @endif
     </form>
 </div>
 <script>
