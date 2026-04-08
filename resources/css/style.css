@@ -8354,3 +8354,10 @@ body {
 .filters__item.active .single-filter .category-list__link {
     text-decoration: underline;
 }
+#desc table {
+    width:100%;
+}
+
+#desc table tbody tr:nth-child(2n) {
+    background-color: #dddcdc;
+}
