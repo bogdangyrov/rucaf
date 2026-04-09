@@ -52,33 +52,6 @@
 
                     @include('products.components.show.good-info')
                 </div>
-                <div class="product-specs" id="chars">
-                    <h2 style="padding-bottom: 10px">Технические характеристики</h2>
-                    @php
-                        $specs = [];
-                        foreach ($product->attributeValues as $attributeValue) {
-                            $specs[] = [
-                                'name' => $attributeValue->attribute->name,
-                                'value' => $attributeValue->value->value,
-                            ];
-                        }
-                        if (isset($product->dimensions)) {
-                            $specs[] = ['name' => 'Габариты ШхВхГ, мм', 'value' => $product->dimensions];
-                        }
-                        if (isset($product->mass)) {
-                            $specs[] = ['name' => 'Масса, кг', 'value' => $product->mass];
-                        }
-                    @endphp
-                    <div class="specs-grid">
-                        @foreach ($specs as $spec)
-                            <div class="spec-item">
-                                <span class="spec-name">{{ $spec['name'] }}</span>
-                                <span class="spec-dots"></span>
-                                <span class="spec-value">{{ $spec['value'] }}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
             @else
                 <div class="page-product">
                     <p class="product-not-available">К сожалению сейчас этот товар не доступен. С его аналогами можете

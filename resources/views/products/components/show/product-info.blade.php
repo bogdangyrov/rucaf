@@ -1,6 +1,7 @@
 <div class="product-info">
     <div class="tabs">
         <ul class="tabs__menu tabs-menu scroll">
+            <li class="tabs-menu__item"><a href="#chars" class="tabs-menu__link">Характеристики</a></li>
             <li class="tabs-menu__item"><a href="#desc" class="tabs-menu__link">Описание</a></li>
             <li class="tabs-menu__item"><a href="#how-buy" class="tabs-menu__link">Как заказать</a></li>
             <li class="tabs-menu__item"><a href="#pay" class="tabs-menu__link">Оплата</a></li>
@@ -8,6 +9,33 @@
             <li class="tabs-menu__item"><a href="#garanty" class="tabs-menu__link">Гарантия и
                     возврат</a></li>
         </ul>
+        <div class="product-specs tabs__content tabs-content" id="chars">
+            <h2 style="padding-bottom: 15px">Технические характеристики</h2>
+            @php
+                $specs = [];
+                foreach ($product->attributeValues as $attributeValue) {
+                    $specs[] = [
+                        'name' => $attributeValue->attribute->name,
+                        'value' => $attributeValue->value->value,
+                    ];
+                }
+                if (isset($product->dimensions)) {
+                    $specs[] = ['name' => 'Габариты ШхВхГ, мм', 'value' => $product->dimensions];
+                }
+                if (isset($product->mass)) {
+                    $specs[] = ['name' => 'Масса, кг', 'value' => $product->mass];
+                }
+            @endphp
+            <div class="specs-grid">
+                @foreach ($specs as $spec)
+                    <div class="spec-item">
+                        <span class="spec-name">{{ $spec['name'] }}</span>
+                        <span class="spec-dots"></span>
+                        <span class="spec-value">{{ $spec['value'] }}</span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
         <div id="desc" class="tabs__content tabs-content">
             <div class="tabs-txt">
                 <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $subcategory->description) !!}</p>
