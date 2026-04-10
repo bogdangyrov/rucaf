@@ -3885,7 +3885,11 @@ body {
     font-size: 16px;
 }
 
-.tabs-txt h1, .tabs-txt h2, .tabs-txt h3, .tabs-txt h4, .tabs-txt h5  {
+.tabs-txt h1,
+.tabs-txt h2,
+.tabs-txt h3,
+.tabs-txt h4,
+.tabs-txt h5 {
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -8360,10 +8364,72 @@ body {
     text-decoration: underline;
 }
 #desc table {
-    width:100%;
+    width: 100%;
     margin-bottom: 10px;
 }
 
 #desc table tbody tr:nth-child(2n) {
     background-color: #dddcdc;
+}
+
+.content.custom-page h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.content.custom-page p strong {
+    display: block;
+    font-size: 20px;
+    margin: 25px 0 10px;
+    font-weight: 600;
+    color: #111;
+}
+
+.content.custom-page p {
+    margin-bottom: 15px;
+}
+
+.content.custom-page ul,
+.content.custom-page ol {
+    margin: 15px 0 20px 20px;
+    padding: 0;
+}
+
+.content.custom-page ul li,
+.content.custom-page ol li {
+    margin-bottom: 8px;
+}
+
+.content.custom-page ul {
+    list-style: disc;
+}
+
+.content.custom-page ol {
+    list-style: decimal;
+}
+
+.content.custom-page strong {
+    font-weight: 600;
+}
+
+.content.custom-page p + ul,
+.content.custom-page p + ol {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .content.custom-page {
+        font-size: 15px;
+        padding: 15px 10px;
+    }
+
+    .content.custom-page h1 {
+        font-size: 26px;
+    }
+
+    .content.custom-page p strong {
+        font-size: 18px;
+    }
 }
