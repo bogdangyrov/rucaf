@@ -1595,6 +1595,7 @@ body {
         justify-content: center;
         padding: 12px;
         background: #f7f7f7;
+        height: 75%;
     }
 
     .main-catalog__img img {
