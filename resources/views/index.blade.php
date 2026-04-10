@@ -1,7 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="wrap-main">
+    @include('components.catalog')
+    <div class="wrap-main white-after">
         <div class="content content--main">
             <div class="wrap-search">
                 <livewire:search />
@@ -14,13 +15,11 @@
                 </div>
             </div>
 
-            @include('components.main-slider')
+            {{-- @include('components.main-slider') --}}
         </div>
     </div>
 
-    @include('components.catalog')
-
-    <div class="wrap wrap--brands wrap--light-gray">
+    <div class="wrap wrap--brands">
         <div class="content">
             <div class="wrap-brands-slider">
                 <div class="brands-slider">
