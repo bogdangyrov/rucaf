@@ -678,4 +678,15 @@ $(function () {
             $('input.slider-value').remove();
         }
     });
+
+    const tables = document.querySelectorAll('#desc table');
+
+    tables.forEach(table => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-responsive';
+
+        table.parentNode.insertBefore(wrapper, table);
+
+        wrapper.appendChild(table);
+    });
 });

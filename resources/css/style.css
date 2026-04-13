@@ -8443,11 +8443,18 @@ body {
 .filters__item.active .single-filter .category-list__link {
     text-decoration: underline;
 }
+
 #desc table {
     width: 100%;
-    margin-bottom: 10px;
+    border-collapse: collapse;
+    margin-bottom: 0; 
+}
+
+.table-responsive {
+    width: 100%;
     overflow-x: auto;
-    display: block;
+    margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch; 
 }
 
 #desc img {
