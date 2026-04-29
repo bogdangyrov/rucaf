@@ -27,7 +27,7 @@ class ImportProducts extends Widget
     protected function rules()
     {
         return [
-            'file' => ['required', 'file', 'mimes:json'],
+            'file' => ['required', 'file'],
         ];
     }
 
@@ -36,7 +36,6 @@ class ImportProducts extends Widget
         return [
             'file.required' => 'Пожалуйста, выберите файл для загрузки.',
             'file.file' => 'Загружаемый объект должен быть файлом.',
-            'file.mimes' => 'Файл должен быть в формате json.',
         ];
     }
 
