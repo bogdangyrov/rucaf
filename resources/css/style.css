@@ -1821,7 +1821,7 @@ body {
 
 .catalog__img img {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     object-fit: cover;
@@ -3757,7 +3757,7 @@ body {
 
 .thumbs-slider {
     display: none;
-    height: 320px;
+    height: 332px;
 }
 
 .goods-slider .slick-arrow {
@@ -6661,7 +6661,7 @@ body {
         margin-left: 70px;
         margin-top: -25px;
         float: right;
-        height: 320px;
+        height: 332px;
     }
 
     .thumbs-slider__item,
@@ -7990,7 +7990,7 @@ body {
 }
 
 .thumbs-slider .slick-list {
-    height: 320px !important;
+    height: 332px !important;
     padding-top: 24px;
 }
 
