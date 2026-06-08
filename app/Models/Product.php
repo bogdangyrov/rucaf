@@ -172,13 +172,12 @@ class Product extends Model
         );
     }
 
-    public static function scopeGetPriceRange($query)
+    public function scopeGetPriceRange($query)
     {
         return $query->select(
-            DB::raw(
-                'MAX(IFNULL(discount_price, price)) as max_price, MIN(IFNULL(discount_price, price)) as min_price',
-            )
-        )->get();
+            DB::raw('MAX(IFNULL(discount_price, price)) as max_price'),
+            DB::raw('MIN(IFNULL(discount_price, price)) as min_price')
+        );
     }
 
     public static function scopeActive($query)

@@ -37,9 +37,9 @@ class ProductController extends Controller
 
 
         $productsCopy = clone $products;
-        $priceRange = $productsCopy->getPriceRange();
-        $minPrice = $priceRange->value('min_price');
-        $maxPrice = $priceRange->value('max_price');
+        $priceRange = $productsCopy->getPriceRange()->first();
+        $minPrice = $priceRange->min_price;
+        $maxPrice = $priceRange->max_price;
 
         if ($filter->priceRange) {
             $products->filterByPriceRange($filter->priceRange);
