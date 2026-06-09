@@ -114,8 +114,8 @@ class ProductController extends Controller
         $seoTitle = $product->seo_title ?: "{$product->name}, цена, купить";
         $seoDescription = $product->seo_description ?: "Купить {$product->name} для промышленных нужд от компании Rucaf.ru Надежное оборудование с доставкой по всей России.";
 
-        $fallbackImage = ($product->image ?? null)
-            ? asset('storage/' . $product->image)
+        $fallbackImage = ($product->images[0] ?? null)
+            ? asset('storage/' . $product->images[0])
             : (($subcategory->images[0] ?? null)
                 ? asset('storage/' . $subcategory->images[0])
                 : ($productType->image ? asset('storage/' . $productType->image) : null));
