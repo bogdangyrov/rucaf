@@ -9,12 +9,10 @@ use Filament\Tables\Table;
 use App\Models\ProductType;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\RichEditor;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Textarea;
 use App\Filament\Resources\ProductTypeResource\Pages;
 use App\Filament\Resources\ProductTypeResource\RelationManagers;
 use App\Filament\Resources\ProductTypeResource\RelationManagers\CategoriesRelationManager;
-use App\Filament\Resources\ProductTypeResource\RelationManagers\CategoryRelationManager;
 use Filament\Forms\Components\FileUpload;
 
 class ProductTypeResource extends Resource
@@ -45,6 +43,21 @@ class ProductTypeResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('h1')
+                    ->label('H1')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('seo_title')
+                    ->label('SEO title')
+                    ->maxLength(255),
+                Textarea::make('seo_description')
+                    ->label('SEO description')
+                    ->rows(3),
+                Forms\Components\TextInput::make('og_title')
+                    ->label('OG title')
+                    ->maxLength(255),
+                Textarea::make('og_description')
+                    ->label('OG description')
+                    ->rows(3),
                 RichEditor::make('short_text')
                     ->label('Короткое описание')
                     ->columnSpanFull()

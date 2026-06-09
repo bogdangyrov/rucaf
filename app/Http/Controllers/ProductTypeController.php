@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Seo;
 use App\Helpers\Filter;
 use App\Models\Product;
 use App\Models\ProductType;
-use App\Http\Controllers\Controller;
-use App\Helper\Seo;
 
 class ProductTypeController extends Controller
 {
@@ -21,10 +20,11 @@ class ProductTypeController extends Controller
         if ($categories->count() == 1 && $categories[0]->subcategories->count() == 1) {
             $category = $categories[0];
             $subcategory = $categories[0]->subcategories[0];
+
             return redirect()->route('products.index', [
                 'productType' => $productType,
                 'category' => $category,
-                'subcategory' => $subcategory
+                'subcategory' => $subcategory,
             ]);
         }
 
@@ -36,18 +36,17 @@ class ProductTypeController extends Controller
             ->showProducts($filter->showProducts)
             ->paginate($filter->pageSize);
 
+        $seoTitle = $productType->seo_title ?: "{$productType->name}, цена, купить";
+        $seoDescription = $productType->seo_description ?: "Купить {$productType->name} для промышленных нужд от компании Rucaf.ru Надежное оборудование с доставкой по всей России.";
+
         $seo = new Seo(
-            "{$productType->name} — Промышленное оборудование от Rucaf | rucaf.com",
-            'Купить ' . mb_strtolower(
-                $productType->name
-            ) . ' для промышленных нужд от компании Rucaf. Надежное оборудование с доставкой по всей России.',
-            "{$productType->name} — Промышленное оборудование от Rucaf",
-            'Посмотрите наш ассортимент — ' . mb_strtolower(
-                $productType->name
-            ) . ' для различных промышленных нужд. Выбор качественного оборудования от Rucaf с доставкой по всей России.',
-            asset('storage/' . $productType->image),
-            route('product-types.index', ['productType' => $productType]),
-            'website',
+            $seoTitle,
+            $seoDescription,
+            $productType->og_title ?: $seoTitle,
+            $productType->og_description ?: $seoDescription,
+            $productType->image ? asset('storage/' . $productType->image) : null,
+            url('/catalog/' . $productType->slug),
+            'website'
         );
 
         return view('product-types.index')->with([

@@ -13,7 +13,7 @@
             </div>
 
             <div class="title title--inline">
-                <h1>{{ $type->name }}</h1>
+                <h1>{{ $type->h1 ?: $type->name }}</h1>
             </div>
 
         </div>

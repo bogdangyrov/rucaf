@@ -14,12 +14,9 @@ use Filament\Forms\Components\Toggle;
 use FilamentTiptapEditor\TiptapEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Tabs\Tab;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class ProductsRelationManager extends RelationManager
@@ -115,6 +112,24 @@ class ProductsRelationManager extends RelationManager
                                     ->label('Хит продаж'),
                                 Toggle::make('is_active')
                                     ->label('Активен'),
+                            ]),
+                        Tab::make('SEO')
+                            ->schema([
+                                Forms\Components\TextInput::make('h1')
+                                    ->label('H1')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('seo_title')
+                                    ->label('SEO title')
+                                    ->maxLength(255),
+                                Textarea::make('seo_description')
+                                    ->label('SEO description')
+                                    ->rows(3),
+                                Forms\Components\TextInput::make('og_title')
+                                    ->label('OG title')
+                                    ->maxLength(255),
+                                Textarea::make('og_description')
+                                    ->label('OG description')
+                                    ->rows(3),
                             ]),
                         Tab::make('Характеристики')
                             ->schema([

@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Web;
 
 use App\Helper\Seo;
 use App\Helpers\Filter;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\ProductType;
-use App\Models\Subcategory;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductType;
+use App\Models\Subcategory;
 use App\Services\RecentlyViewedService;
 
 class ProductController extends Controller
@@ -35,7 +35,6 @@ class ProductController extends Controller
             ->sortBy($filter->sortBy)
             ->showProducts($filter->showProducts);
 
-
         $productsCopy = clone $products;
         $priceRange = $productsCopy->getPriceRange()->first();
         $minPrice = $priceRange->min_price;
@@ -52,17 +51,20 @@ class ProductController extends Controller
             ->with('category', 'subcategory', 'attribute', 'value')
             ->get();
 
+        $seoTitle = $subcategory->seo_title ?: "{$subcategory->name}, цена, купить";
+        $seoDescription = $subcategory->seo_description ?: "Купить {$subcategory->name} для промышленных нужд от компании Rucaf.ru Надежное оборудование с доставкой по всей России.";
+
+        $fallbackImage = ($subcategory->images[0] ?? null)
+            ? asset('storage/' . $subcategory->images[0])
+            : ($productType->image ? asset('storage/' . $productType->image) : null);
+
         $seo = new Seo(
-            "{$subcategory->name} — Промышленное оборудование от Rucaf | rucaf.com",
-            'Купить ' . mb_strtolower(
-                $subcategory->name
-            ) . ' для промышленных нужд от компании Rucaf. Надежное оборудование с доставкой по всей России.',
-            "{$subcategory->name} — Промышленное оборудование от Rucaf",
-            'Посмотрите наш ассортимент — ' . mb_strtolower(
-                $subcategory->name
-            ) . ' для различных промышленных нужд. Выбор качественного оборудования от Rucaf с доставкой по всей России.',
-            asset('storage/' . $productType->image),
-            route('products.index', ['productType' => $productType->slug, 'category' => $category, 'subcategory' => $subcategory]),
+            $seoTitle,
+            $seoDescription,
+            $subcategory->og_title ?: $seoTitle,
+            $subcategory->og_description ?: $seoDescription,
+            $fallbackImage,
+            url('/catalog/' . $productType->slug . '/' . $category->slug . '/' . $subcategory->slug),
             'website',
         );
 
@@ -83,7 +85,7 @@ class ProductController extends Controller
                 'maxPrice' => $maxPrice,
                 'showProductTypeAndCategoryInBreadcrumbs' => $showProductTypeAndCategoryInBreadcrumbs,
                 'showProductTypeInBreadcrumbs' => $showProductTypeInBreadcrumbs,
-                'seo' => $seo
+                'seo' => $seo,
             ]);
     }
 
@@ -95,7 +97,7 @@ class ProductController extends Controller
             'attributeValues.value'
         );
 
-        if (!RecentlyViewedService::inProducts($product)) {
+        if (! RecentlyViewedService::inProducts($product)) {
             $product->update(['views' => $product->views + 1]);
         }
 
@@ -109,15 +111,22 @@ class ProductController extends Controller
             ->limit(5)
             ->get();
 
+        $seoTitle = $product->seo_title ?: "{$product->name}, цена, купить";
+        $seoDescription = $product->seo_description ?: "Купить {$product->name} для промышленных нужд от компании Rucaf.ru Надежное оборудование с доставкой по всей России.";
+
+        $fallbackImage = ($product->image ?? null)
+            ? asset('storage/' . $product->image)
+            : (($subcategory->images[0] ?? null)
+                ? asset('storage/' . $subcategory->images[0])
+                : ($productType->image ? asset('storage/' . $productType->image) : null));
+
         $seo = new Seo(
-            "{$product->name} — Купить промышленное оборудование в Rucaf",
-            "{$product->name} от компании Rucaf. Высокое качество и надежность для промышленных нужд. Доставка по всей России.",
-            "{$product->name} — Купить в Rucaf",
-            "{$product->name} для промышленных приложений. Отличается высокой надежностью и долговечностью. Закажите с доставкой по всей России от компании Rucaf.",
-            isset($subcategory->images[0]) ? asset('storage/' . $subcategory->images[0]) : asset(
-                'storage/' . $productType->image
-            ),
-            route('products.show', ['productType' => $productType->slug, 'category' => $category->slug, 'subcategory' => $subcategory->slug, 'product' => $product->slug]),
+            $seoTitle,
+            $seoDescription,
+            $product->og_title ?: $seoTitle,
+            $product->og_description ?: $seoDescription,
+            $fallbackImage,
+            url('/catalog/' . $productType->slug . '/' . $category->slug . '/' . $subcategory->slug . '/' . $product->slug),
             'product',
         );
 

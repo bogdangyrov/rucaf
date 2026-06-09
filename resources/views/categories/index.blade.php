@@ -16,7 +16,7 @@
             </div>
 
             <div class="title title--inline">
-                <h1>{{ $category->name }}</h1>
+                <h1>{{ $category->h1 ?: $category->name }}</h1>
             </div>
 
         </div>

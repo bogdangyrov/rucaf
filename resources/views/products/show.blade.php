@@ -33,7 +33,7 @@
                 <a class="bread__link active">{{ $product->name }}</a> --}}
             </div>
             <div class="title title--inline">
-                <h1>{{ $product->name }}</h1>
+                <h1>{{ $product->h1 ?: $product->name }}</h1>
                 @if ($product->is_new)
                     <span class="title__sale">Новинка</span>
                 @endif

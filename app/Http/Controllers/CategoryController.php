@@ -39,18 +39,17 @@ class CategoryController extends Controller
             ->showProducts($filter->showProducts)
             ->paginate($filter->pageSize);
 
+        $seoTitle = $category->seo_title ?: "{$category->name}, цена, купить";
+        $seoDescription = $category->seo_description ?: "Купить {$category->name} для промышленных нужд от компании Rucaf.ru Надежное оборудование с доставкой по всей России.";
+
         $seo = new Seo(
-            "{$category->name} — Промышленное оборудование от Rucaf | rucaf.com",
-            'Купить ' . mb_strtolower(
-                $category->name
-            ) . ' для промышленных нужд от компании Rucaf. Надежное оборудование с доставкой по всей России.',
-            "{$category->name} — Промышленное оборудование от Rucaf",
-            'Посмотрите наш ассортимент — ' . mb_strtolower(
-                $category->name
-            ) . ' для различных промышленных нужд. Выбор качественного оборудования от Rucaf с доставкой по всей России.',
-            asset('storage/' . $productType->image),
-            route('categories.index', ['productType' => $productType, 'category' => $category]),
-            'website',
+            $seoTitle,
+            $seoDescription,
+            $category->og_title ?: $seoTitle,
+            $category->og_description ?: $seoDescription,
+            $productType->image ? asset('storage/' . $productType->image) : null,
+            url('/catalog/' . $productType->slug . '/' . $category->slug),
+            'website'
         );
 
         return view('categories.index')->with([
