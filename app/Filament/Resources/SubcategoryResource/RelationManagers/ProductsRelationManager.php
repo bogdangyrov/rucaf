@@ -39,7 +39,6 @@ class ProductsRelationManager extends RelationManager
                                     ->columnSpanFull(),
                                 TiptapEditor::make('description')
                                     ->label('Описание')
-                                    ->required()
                                     ->columnSpanFull()
                                     ->profile('default'),
                                 Forms\Components\TextInput::make('dimensions')
