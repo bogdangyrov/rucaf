@@ -21,3 +21,5 @@ yarn-error.log
 /.vscode
 /.zed
 _ide_helper.php
+/public/sitemap.xml
+/public/sitemaps/*.xml

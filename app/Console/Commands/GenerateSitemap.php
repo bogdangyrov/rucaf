@@ -6,137 +6,211 @@ use Illuminate\Console\Command;
 
 class GenerateSitemap extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'app:generate-sitemap';
+    protected $description = 'Генерация sitemap для большого объема данных (300к+ товаров)';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    protected const MAX_URLS_PER_FILE = 45000;
 
-    protected $urls = [];
+    protected $fileCounter = 1;
+    protected $urlCounter = 0;
+    protected $currentFileHandle = null;
+    protected $generatedFiles = [];
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
+        $this->info('Starting sitemap generation...');
+
+        $this->startNewFile('sitemap_products_');
+
         $this->addMainPages();
         $this->addCustomPages();
         $this->addProductTypes();
         $this->addCategories();
         $this->addSubcategories();
+
         $this->addProducts();
 
-        $sitemap = $this->buildXml($this->urls);
+        $this->closeCurrentFile();
 
-        file_put_contents(public_path('sitemap.xml'), $sitemap);
+        $this->buildIndexSitemap();
 
-        $this->info('Sitemap generated successfully!');
+        $this->info('Sitemap generated successfully! Total files: ' . count($this->generatedFiles));
+    }
+
+    protected function startNewFile($prefix = 'sitemap_products_')
+    {
+        $this->closeCurrentFile();
+
+        $directory = public_path('sitemaps');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        $fileName = $prefix . $this->fileCounter . '.xml';
+        $filePath = $directory . '/' . $fileName;
+
+        $this->currentFileHandle = fopen($filePath, 'w');
+        fwrite($this->currentFileHandle, '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL);
+        fwrite($this->currentFileHandle, '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL);
+
+        $this->generatedFiles[] = $fileName;
+        $this->fileCounter++;
+        $this->urlCounter = 0;
+    }
+
+    protected function writeUrl($loc, $lastmod = null, $changefreq = 'weekly', $priority = 0.8)
+    {
+        if ($this->urlCounter >= self::MAX_URLS_PER_FILE) {
+            $this->startNewFile();
+        }
+
+        $xml = '  <url>' . PHP_EOL;
+        $xml .= '    <loc>' . htmlspecialchars($loc, ENT_QUOTES, 'UTF-8') . '</loc>' . PHP_EOL;
+        if ($lastmod) {
+            $xml .= '    <lastmod>' . $lastmod . '</lastmod>' . PHP_EOL;
+        }
+        $xml .= '    <changefreq>' . $changefreq . '</changefreq>' . PHP_EOL;
+        $xml .= '    <priority>' . $priority . '</priority>' . PHP_EOL;
+        $xml .= '  </url>' . PHP_EOL;
+
+        fwrite($this->currentFileHandle, $xml);
+        $this->urlCounter++;
+    }
+
+    protected function closeCurrentFile()
+    {
+        if ($this->currentFileHandle) {
+            fwrite($this->currentFileHandle, '</urlset>' . PHP_EOL);
+            fclose($this->currentFileHandle);
+            $this->currentFileHandle = null;
+        }
+    }
+
+    protected function buildIndexSitemap()
+    {
+        $indexPath = public_path('sitemap.xml');
+        $handle = fopen($indexPath, 'w');
+
+        fwrite($handle, '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL);
+        fwrite($handle, '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL);
+
+        $baseUrl = config('app.url');
+        $now = now()->toAtomString();
+
+        foreach ($this->generatedFiles as $file) {
+            $xml = '  <sitemap>' . PHP_EOL;
+            $xml .= '    <loc>' . rtrim($baseUrl, '/') . '/sitemaps/' . $file . '</loc>' . PHP_EOL;
+            $xml .= '    <lastmod>' . $now . '</lastmod>' . PHP_EOL;
+            $xml .= '  </sitemap>' . PHP_EOL;
+            fwrite($handle, $xml);
+        }
+
+        fwrite($handle, '</sitemapindex>' . PHP_EOL);
+        fclose($handle);
     }
 
     protected function addMainPages()
     {
-        $this->addUrl(route('home'));
-        $this->addUrl(route('cart'));
-        $this->addUrl(route('comparison'));
-        $this->addUrl(route('favorites'));
+        $this->writeUrl(route('home'), null, 'daily', 1.0);
+        $this->writeUrl(route('catalog'), null, 'daily', 0.9);
+        $this->writeUrl(route('privacy'), null, 'monthly', 0.3);
+        $this->writeUrl(route('cart'), null, 'weekly', 0.3);
+        $this->writeUrl(route('comparison'), null, 'weekly', 0.3);
+        $this->writeUrl(route('favorites'), null, 'weekly', 0.3);
     }
 
     protected function addCustomPages()
     {
-        $pages = \App\Models\Page::all();
-        foreach ($pages as $page) {
-            $this->addUrl(
-                route('page', ['page' => $page]),
-                $page->updated_at->toAtomString()
+        \App\Models\Page::select('id', 'slug', 'updated_at')->lazy()->each(function ($page) {
+            $this->writeUrl(
+                route('page', ['page' => $page->slug]),
+                $page->updated_at?->toAtomString(),
+                'monthly',
+                0.6
             );
-        }
+        });
     }
 
     protected function addProductTypes()
     {
-        $types = \App\Models\ProductType::all();
-        foreach ($types as $type) {
-            $this->addUrl(
-                route('product-types.index', ['productType' => $type]),
-                $type->updated_at->toAtomString()
+        \App\Models\ProductType::select('id', 'slug', 'updated_at')->lazy()->each(function ($type) {
+            $this->writeUrl(
+                route('product-types.index', ['productType' => $type->slug]),
+                $type->updated_at?->toAtomString(),
+                'daily',
+                0.8
             );
-        }
+        });
     }
 
     protected function addCategories()
     {
-        $categories = \App\Models\Category::with('productType')->get();
-        foreach ($categories as $category) {
-            $this->addUrl(
-                route('categories.index', ['productType' => $category->productType, 'category' => $category]),
-                $category->updated_at->toAtomString()
-            );
-        }
+        \App\Models\Category::select('id', 'product_type_id', 'slug', 'updated_at')
+            ->with('productType:id,slug')
+            ->lazy()
+            ->each(function ($category) {
+                if ($category->productType) {
+                    $this->writeUrl(
+                        route('categories.index', ['productType' => $category->productType->slug, 'category' => $category->slug]),
+                        $category->updated_at?->toAtomString(),
+                        'daily',
+                        0.8
+                    );
+                }
+            });
     }
 
     protected function addSubcategories()
     {
-        $subcategories = \App\Models\Subcategory::with('category.productType')->get();
-        foreach ($subcategories as $sub) {
-            $this->addUrl(
-                route('products.index', ['productType' => $sub->category->productType, 'category' => $sub->category, 'subcategory' => $sub]),
-                $sub->updated_at->toAtomString()
-            );
-        }
+        \App\Models\Subcategory::select('id', 'category_id', 'slug', 'updated_at')
+            ->with('category:id,product_type_id,slug', 'category.productType:id,slug')
+            ->lazy()
+            ->each(function ($sub) {
+                if ($sub->category && $sub->category->productType) {
+                    $this->writeUrl(
+                        route('products.index', [
+                            'productType' => $sub->category->productType->slug,
+                            'category' => $sub->category->slug,
+                            'subcategory' => $sub->slug
+                        ]),
+                        $sub->updated_at?->toAtomString(),
+                        'daily',
+                        0.8
+                    );
+                }
+            });
     }
 
     protected function addProducts()
     {
-        $products = \App\Models\Product::with('subcategory.category.productType')->get();
-        foreach ($products as $product) {
-            $this->addUrl(
-                route('products.show', [
-                    'productType' => $product->subcategory->category->productType,
-                    'category' => $product->subcategory->category,
-                    'subcategory' => $product->subcategory,
-                    'product' => $product
-                ]),
-                $product->updated_at->toAtomString()
-            );
-        }
-    }
+        \App\Models\Product::select('id', 'subcategory_id', 'slug', 'updated_at')
+            ->with([
+                'subcategory:id,category_id,slug',
+                'subcategory.category:id,product_type_id,slug',
+                'subcategory.category.productType:id,slug'
+            ])
+            ->chunkById(5000, function ($products) {
+                foreach ($products as $product) {
+                    $sub = $product->subcategory;
+                    $cat = $sub?->category;
+                    $type = $cat?->productType;
 
-    protected function addUrl($loc, $lastmod = null, $changefreq = 'weekly', $priority = 0.8)
-    {
-        $this->urls[] = [
-            'loc' => $loc,
-            'lastmod' => $lastmod,
-            'changefreq' => $changefreq,
-            'priority' => $priority,
-        ];
-    }
-
-    protected function buildXml($urls)
-    {
-        $xml = '<?xml version="1.0" encoding="UTF-8"?>';
-        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-
-        foreach ($urls as $url) {
-            $xml .= '<url>';
-            $xml .= '<loc>' . $url['loc'] . '</loc>';
-            if ($url['lastmod']) {
-                $xml .= '<lastmod>' . $url['lastmod'] . '</lastmod>';
-            }
-            $xml .= '<changefreq>' . $url['changefreq'] . '</changefreq>';
-            $xml .= '<priority>' . $url['priority'] . '</priority>';
-            $xml .= '</url>';
-        }
-
-        $xml .= '</urlset>';
-
-        return $xml;
+                    if ($sub && $cat && $type) {
+                        $this->writeUrl(
+                            route('products.show', [
+                                'productType' => $type->slug,
+                                'category' => $cat->slug,
+                                'subcategory' => $sub->slug,
+                                'product' => $product->slug
+                            ]),
+                            $product->updated_at?->toAtomString(),
+                            'weekly',
+                            0.7
+                        );
+                    }
+                }
+                unset($products);
+                gc_collect_cycles();
+            });
     }
 }
