@@ -23,3 +23,4 @@ yarn-error.log
 _ide_helper.php
 /public/sitemap.xml
 /public/sitemaps/*.xml
+/public/yml/yml_catalog_*.xml

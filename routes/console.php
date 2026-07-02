@@ -10,3 +10,5 @@ Schedule::command('app:generate-sitemap')->cron('0 3 */3 * *')
 
 Schedule::command('backup:clean')->daily()->at('03:00');
 Schedule::command('backup:run')->daily()->at('03:30');
+
+Schedule::command('app:generate-yml-catalog')->weekly();
