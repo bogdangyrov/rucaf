@@ -50,6 +50,17 @@
         <noscript><div><img src="https://mc.yandex.ru/watch/110258181"
         style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+
+    <div id="cookie-notice" class="cookie-notice hidden">
+    <div class="cookie-notice__container">
+        <p class="cookie-notice__text">
+            Мы используем файлы cookies для улучшения работы сайта. Оставаясь на нашем сайте, вы соглашаетесь с условиями 
+            использования файлов cookies. Чтобы ознакомиться с нашими Положениями о конфиденциальности, сборе 
+            персональных данных и об использовании файлов cookie, <a href="{{ route('privacy') }}" class="cookie-notice__link">нажмите здесь</a>.
+        </p>
+        <button id="cookie-accept" class="cookie-notice__btn">Принять</button>
+    </div>
+</div>
 </body>
 
 </html>

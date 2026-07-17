@@ -1,3 +1,19 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const cookieNotice = document.getElementById("cookie-notice");
+    const cookieAcceptBtn = document.getElementById("cookie-accept");
+
+    if (!localStorage.getItem("cookie_accepted")) {
+        setTimeout(() => {
+            cookieNotice.classList.remove("hidden");
+        }, 1000); 
+    }
+
+    cookieAcceptBtn.addEventListener("click", function () {
+        localStorage.setItem("cookie_accepted", "true");
+        cookieNotice.classList.add("hidden");
+    });
+});
+
 $(function () {
     $(function () {
         var header = $(".wrap-header"),

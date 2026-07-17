@@ -24,7 +24,7 @@
     "src": "node_modules/jquery-ui/themes/base/images/ui-icons_ffffff_256x240.png"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Dy-TG113.css",
+    "file": "assets/app-Do3NxUIq.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -44,7 +44,7 @@
     "isEntry": true
   },
   "resources/css/style.css": {
-    "file": "assets/style-CSxfwGqL.css",
+    "file": "assets/style-KL1hS6w0.css",
     "src": "resources/css/style.css",
     "isEntry": true
   },
@@ -109,7 +109,7 @@
     "src": "resources/img/bgs/coop-bg.svg"
   },
   "resources/js/app.js": {
-    "file": "assets/app-785NdR-q.js",
+    "file": "assets/app-CaO_6Fw0.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -125,7 +125,7 @@
     "isEntry": true
   },
   "resources/js/common.js": {
-    "file": "assets/common-D9JKZG4H.js",
+    "file": "assets/common-DHagCkLN.js",
     "name": "common",
     "src": "resources/js/common.js",
     "isEntry": true
