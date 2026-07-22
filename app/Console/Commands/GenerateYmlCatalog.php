@@ -12,7 +12,7 @@ class GenerateYmlCatalog extends Command
     protected $signature = 'app:generate-yml-catalog';
     protected $description = 'Generate split YML catalog files for products (Size optimized)';
 
-    protected const MAX_OFFERS_PER_FILE = 50000;
+    protected const MAX_OFFERS_PER_FILE = 30000;
 
     protected $fileCounter = 1;
     protected $offerCounter = 0;
