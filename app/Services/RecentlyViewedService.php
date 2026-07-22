@@ -8,30 +8,29 @@ class RecentlyViewedService
 {
     public static function addProduct(Product $product)
     {
-        if (RecentlyViewedService::inProducts($product)) {
-            $productIndex = array_search($product->id, session('products'));
-            session()->pull('recently-viewed.' .  $productIndex);
-        }
-        session()->push('recently-viewed', $product->id);
+        $recentlyViewed = session('recently-viewed', []);
+        $recentlyViewed = array_diff($recentlyViewed, [$product->id]);
+        
+        array_unshift($recentlyViewed, $product->id);
+        $recentlyViewed = array_slice($recentlyViewed, 0, 10);
+
+        session(['recently-viewed' => $recentlyViewed]);
     }
 
     public static function getProducts()
     {
-        $recentlyViewedProducts = session('recently-viewed', []);
+        $recentlyViewedIds = array_values(array_unique(session('recently-viewed', [])));
 
-        if ($recentlyViewedProducts) {
-            $recentlyViewedProducts = Product::whereIn('id', $recentlyViewedProducts)
-                ->active()
-                ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedProducts) . ') DESC')
-                ->with('subcategory')
-                ->with(['category' => function ($query) {
-                    $query->with('productType');
-                }])
-                ->limit(5)
-                ->get();
+        if (empty($recentlyViewedIds)) {
+            return collect();
         }
 
-        return $recentlyViewedProducts;
+        return Product::whereIn('id', $recentlyViewedIds)
+            ->active()
+            ->with('subcategory.category.productType')
+            ->orderByRaw('FIELD(id, ' . implode(',', $recentlyViewedIds) . ') DESC')
+            ->limit(5)
+            ->get();
     }
 
     public static function inProducts(Product $product)

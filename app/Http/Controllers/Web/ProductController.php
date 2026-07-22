@@ -106,6 +106,7 @@ class ProductController extends Controller
         $relatedProducts = $subcategory
             ->products()
             ->active()
+            ->with('subcategory')
             ->with('category')
             ->where('id', '<>', $product->id)
             ->limit(5)
