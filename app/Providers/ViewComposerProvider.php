@@ -50,9 +50,10 @@ class ViewComposerProvider extends ServiceProvider
             'layouts.components.header',
             'layouts.components.footer',
             'products.components.why-choose-us',
+            'products.components.show.product-info',
             'components.frequent-questions',
             'catalog',
-            'components.catalog'
+            'components.catalog',
         ], function ($view) {
             static $sharedData;
 
