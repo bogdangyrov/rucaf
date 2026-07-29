@@ -78,4 +78,22 @@
     </div>
 
     @include('products.components.modal-request-price')
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "{{ $product->name }}",
+        "url": "{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}",
+        "image": "@if (isset($product->images[0])) {{ asset("storage/{$product->images[0]}") }} @elseif (isset($product->subcategory->images[0])) {{ asset("storage/{$product->subcategory->images[0]}") }} @else {{ asset('img/content/product-1.jpg') }} @endif",
+        "category": "{{ $product->category->name ?? '' }}",
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "RUB",
+            "price": "{{ isset($product->price) ? ($product->discount_price ?? $product->price) : '0' }}",
+            "availability": "https://schema.org/InStock",
+            "url": "{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}"
+        }
+    }
+</script>
 </div>

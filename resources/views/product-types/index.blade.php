@@ -4,13 +4,11 @@
     <div class="wrap wrap--light-gray">
         <div class="content">
 
-            <div class="bread">
-                <a href="{{ route('home') }}" class="bread__link">Главная</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a href="{{ route('catalog') }}" class="bread__link">Каталог</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                <a class="bread__link">{{ $type->name }}</a>
-            </div>
+            @include('components.breadcrumbs', ['items' => [
+                ['label' => 'Главная', 'url' => route('home')],
+                ['label' => 'Каталог', 'url' => route('catalog')],
+                ['label' => $type->name],
+            ]])
 
             <div class="title title--inline">
                 <h1>{{ $type->h1 ?: $type->name }}</h1>

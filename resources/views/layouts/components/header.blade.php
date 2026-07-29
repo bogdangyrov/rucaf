@@ -142,3 +142,35 @@
         <livewire:city-search />
     </div>
 </div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "{{ route('home') }}",
+    "name": "Компания Промтеплострой",
+    "url": "{{ route('home') }}",
+    "telephone": "{{ $phoneNumbers->first()->formattedLinkNumber() }}",
+    "email": "{{ $emails->first()->email }}",
+    "logo": "{{ asset('img/logo.svg') }}",
+    "image": "{{ asset('img/logo.svg') }}",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "улица Солнечная, 12в",
+        "addressLocality": "Воронеж",
+        "addressCountry": "RU"
+    },
+    "openingHours": "Mo-Fr 09:00-18:00",
+    "contactPoint": [
+        @foreach ($phoneNumbers as $phone)
+        {
+        "@type": "ContactPoint",
+        "telephone": "{{ $phone->formattedLinkNumber() }}",
+        "contactType": "customer service",
+        "areaServed": "RU",
+        "availableLanguage": "Russian"
+        }@if(!$loop->last),@endif
+        @endforeach
+    ]
+}
+</script>

@@ -3,35 +3,20 @@
 @section('content')
     <div class="wrap wrap--light-gray">
         <div class="content">
-            <div class="bread">
-                <a href="{{ route('home') }}" class="bread__link">Главная</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-
-                <a href="{{ route('catalog') }}" class="bread__link">Каталог</a>
-                <span class="bread__sep"><i class="icon-arrow1"></i></span>
-
-                @if ($showProductTypeAndCategoryInBreadcrumbs)
-                    <a class="bread__link"
-                        href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
-                    <span class="bread__sep"><i class="icon-arrow1"></i></span>
-
-                    <a class="bread__link"
-                        href="{{ route('categories.index', ['productType' => $type, 'category' => $category]) }}">{{ $category->name }}</a>
-                    <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                @endif
-
-                @if ($showProductTypeInBreadcrumbs)
-                    <a class="bread__link"
-                        href="{{ route('product-types.index', ['productType' => $type]) }}">{{ $type->name }}</a>
-                    <span class="bread__sep"><i class="icon-arrow1"></i></span>
-                @endif
-
-                <a href="{{ route('products.index', ['productType' => $type, 'category' => $category, 'subcategory' => $subcategory]) }}"
-                    class="bread__link">{{ $subcategory->name }}</a>
-                {{--  <span class="bread__sep"><i class="icon-arrow1"></i></span>
-
-                <a class="bread__link active">{{ $product->name }}</a> --}}
-            </div>
+            @php
+                $breadcrumbs = [
+                    ['label' => 'Главная', 'url' => route('home')],
+                    ['label' => 'Каталог', 'url' => route('catalog')],
+                ];
+                if ($showProductTypeAndCategoryInBreadcrumbs) {
+                    $breadcrumbs[] = ['label' => $type->name, 'url' => route('product-types.index', ['productType' => $type])];
+                    $breadcrumbs[] = ['label' => $category->name, 'url' => route('categories.index', ['productType' => $type, 'category' => $category])];
+                } elseif ($showProductTypeInBreadcrumbs) {
+                    $breadcrumbs[] = ['label' => $type->name, 'url' => route('product-types.index', ['productType' => $type])];
+                }
+                $breadcrumbs[] = ['label' => $subcategory->name, 'url' => route('products.index', ['productType' => $type, 'category' => $category, 'subcategory' => $subcategory])];
+            @endphp
+            @include('components.breadcrumbs', ['items' => $breadcrumbs])
             <div class="title title--inline">
                 <h1>{{ $product->h1 ?: $product->name }}</h1>
                 @if ($product->is_new)
