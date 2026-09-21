@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PageResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PageResource\RelationManagers;
+use Filament\Forms\Components\Textarea;
 
 class PageResource extends Resource
 {
@@ -54,25 +55,9 @@ class PageResource extends Resource
                     ->label('Open Graph Description')
                     ->required()
                     ->maxLength(255),
-                RichEditor::make('html')
-                    ->columnSpanFull()
-                    ->toolbarButtons([
-                        'attachFiles',
-                        'blockquote',
-                        'bold',
-                        'bulletList',
-                        'codeBlock',
-                        'h1',
-                        'h2',
-                        'h3',
-                        'italic',
-                        'link',
-                        'orderedList',
-                        'redo',
-                        'strike',
-                        'underline',
-                        'undo',
-                    ]),
+                Textarea::make('html')
+                    ->rows(10)
+                    ->columnSpanFull(),
             ]);
     }
 

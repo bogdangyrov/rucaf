@@ -3823,6 +3823,51 @@ body {
     justify-content: space-between;
 }
 
+.good-card__contacts {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+}
+
+.good-card__contacts-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.good-card__contacts-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #464654;
+}
+
+.good-card__contact-row {
+    font-size: 15px;
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+.good-card__contact-label {
+    font-weight: 400;
+    color: #464654;
+}
+
+.good-card__contacts a {
+    font-size: 15px;
+    font-weight: 700;
+    color: inherit;
+    text-decoration: none;
+}
+
+.good-card__contacts a:hover {
+    text-decoration: underline;
+}
+
 .good-card__price {
     margin-right: 20px;
     font-weight: 700;
@@ -8414,8 +8459,6 @@ body {
 }
 
 .content.custom-page p strong {
-    display: block;
-    font-size: 20px;
     margin: 25px 0 10px;
     font-weight: 600;
     color: #111;
@@ -8473,7 +8516,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #3a3b45; 
+    background-color: #3a3b45;
     color: #ffffff;
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
     z-index: 9999;
@@ -8506,7 +8549,7 @@ body {
 }
 
 .cookie-notice__link {
-    color: #f1b21b; 
+    color: #f1b21b;
     text-decoration: underline;
 }
 
@@ -8536,7 +8579,7 @@ body {
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .cookie-notice__btn {
         width: 100%;
         text-align: center;

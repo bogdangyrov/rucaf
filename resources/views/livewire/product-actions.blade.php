@@ -26,6 +26,17 @@
                 <button class="good-card__one-click btn btn--gray" type="button" data-fancybox
                     data-src="#order-one-click{{ $product->id }}">Заказать в 1
                     клик</button>
+                <div class="good-card__contacts">
+                    <div class="good-card__contacts-title">Для вопросов и заявок:</div>
+                    <div class="good-card__contacts-items">
+                        @foreach(\App\Models\PhoneNumber::all() as $phone)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a></div>
+                        @endforeach
+                        @foreach(\App\Models\Email::all() as $email)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Email:</span> <a href="mailto:{{ $email->email }}">{{ $email->email }}</a></div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         @else
             <div class="good-card__wrap-actions">
@@ -48,6 +59,17 @@
                 <button class="good-card__one-click btn btn--gray" type="button" data-fancybox
                     data-src="#order-one-click{{ $product->id }}">Заказать в 1
                     клик</button>
+                <div class="good-card__contacts">
+                    <div class="good-card__contacts-title">Для вопросов и заявок</div>
+                    <div class="good-card__contacts-items">
+                        @foreach(\App\Models\PhoneNumber::all() as $phone)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a></div>
+                        @endforeach
+                        @foreach(\App\Models\Email::all() as $email)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Email:</span> <a href="mailto:{{ $email->email }}">{{ $email->email }}</a></div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         @endisset
     </div>
@@ -73,13 +95,10 @@
         @endif
     </div>
 
-    {{ debugbar()->info($product->docs_file_names)}}
-    {{ debugbar()->info($product->docs)}}
-
     @if ((isset($subcategory->docs) && count($subcategory->docs) > 0 ) || (isset($product->docs) && count($product->docs) > 0 ))
         <div class="docs">
             @foreach ($subcategory->docs_file_names ?? [] as $doc => $name)
-                <a href="{{ Storage::url($doc) }}" class="docs__item">
+                <a href="{{ Storage::url($doc) }}" class="docs__item" @if(in_array(strtolower($product::getDocExtension($doc)), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) data-fancybox="docs" @else target="_blank" @endif>
                     <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                     <div class="docs__content">
                         <div class="docs__title">{{ $name }}</div>
@@ -102,7 +121,7 @@
             @endforeach
 
             @foreach ($product->docs_file_names ?? [] as $doc => $name)
-                <a href="{{ Storage::url($doc) }}" class="docs__item">
+                <a href="{{ Storage::url($doc) }}" class="docs__item" @if(in_array(strtolower($product::getDocExtension($doc)), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) data-fancybox="docs" @else target="_blank" @endif>
                     <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                     <div class="docs__content">
                         <div class="docs__title">{{ $name }}</div>

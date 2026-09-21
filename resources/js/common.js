@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!localStorage.getItem("cookie_accepted")) {
         setTimeout(() => {
             cookieNotice.classList.remove("hidden");
-        }, 1000); 
+        }, 1000);
     }
 
     cookieAcceptBtn.addEventListener("click", function () {
@@ -704,5 +704,26 @@ $(function () {
         table.parentNode.insertBefore(wrapper, table);
 
         wrapper.appendChild(table);
+    });
+
+    document.querySelectorAll('.faq-info__title.email').forEach(link => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const email = link.textContent.trim();
+
+            try {
+                await navigator.clipboard.writeText(email);
+
+                const originalText = link.textContent;
+                link.textContent = 'Скопировано!';
+
+                setTimeout(() => {
+                    link.textContent = originalText;
+                }, 1500);
+            } catch (err) {
+                console.error('Не удалось скопировать: ', err);
+            }
+        });
     });
 });

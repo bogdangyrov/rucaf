@@ -41,7 +41,7 @@
                             <div class="faq-info__icon"><i class="icon-mail"></i></div>
                             <div class="faq-info__content">
                                 <a href="mailto:{{ $emails->first()->email }}"
-                                    class="faq-info__title">{{ $emails->first()->email }}</a>
+                                    class="faq-info__title email">{{ $emails->first()->email }}</a>
                                 <div class="faq-info__data">{{ $emails->first()->data }}</div>
                             </div>
                         </div>
