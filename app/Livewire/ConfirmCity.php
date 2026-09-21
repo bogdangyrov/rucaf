@@ -28,6 +28,14 @@ class ConfirmCity extends Component
             $ip = request()->ip();
             Log::info('Detecting city for IP', ['ip' => $ip]);
 
+            Log::info('IP debug', [
+                'request_ip' => request()->ip(),
+                'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? null,
+                'x_forwarded_for' => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? null,
+                'x_real_ip' => $_SERVER['HTTP_X_REAL_IP'] ?? null,
+                'cf_connecting_ip' => $_SERVER['HTTP_CF_CONNECTING_IP'] ?? null,
+            ]);
+
             $response = Http::timeout(3)
                 ->withHeaders([
                     'Content-Type' => 'application/json',
