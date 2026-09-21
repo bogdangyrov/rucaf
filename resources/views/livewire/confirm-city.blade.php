@@ -1,4 +1,4 @@
-<div class="wrap-msg-city">
+<div class="wrap-msg-city" @if ($city) hidden @endif>
     <div class="w-msg-city">
         <div class="msg-city">
             <div class="msg-city__icon">
@@ -7,7 +7,7 @@
 
             <div class="msg-city__content">
                 <div class="msg-city__title">
-                    {{ $city ?: 'Загрузка...' }}
+                    {{ $detectedCity ?: 'Загрузка...' }}
                 </div>
 
                 <div class="msg-city__data">
@@ -21,7 +21,7 @@
                 class="msg-city__btn btn"
                 type="button"
                 wire:click="confirm"
-                @disabled(!$city)
+                @disabled(!$detectedCity)
             >
                 Подтвердить
             </button>

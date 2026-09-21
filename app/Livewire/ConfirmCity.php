@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Services\CustomerService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -13,29 +14,40 @@ class ConfirmCity extends Component
 
     public ?string $city = null;
 
+    public ?string $detectedCity = null;
+
     public function mount(): void
     {
         $this->city = CustomerService::getCity();
 
-        if (!$this->city) {
-            $this->detectCity();
+        if ($this->city) {
+            return;
         }
+
+        $this->detectCity();
     }
 
     private function detectCity(): void
     {
+        $ip = request()->ip();
+
+        if (!$ip) {
+            $this->detectedCity = self::DEFAULT_CITY;
+
+            return;
+        }
+
+        $cacheKey = 'city_by_ip:' . $ip;
+
+        $cachedCity = Cache::get($cacheKey);
+
+        if ($cachedCity) {
+            $this->detectedCity = $cachedCity;
+
+            return;
+        }
+
         try {
-            $ip = request()->ip();
-            Log::info('Detecting city for IP', ['ip' => $ip]);
-
-            Log::info('IP debug', [
-                'request_ip' => request()->ip(),
-                'remote_addr' => $_SERVER['REMOTE_ADDR'] ?? null,
-                'x_forwarded_for' => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? null,
-                'x_real_ip' => $_SERVER['HTTP_X_REAL_IP'] ?? null,
-                'cf_connecting_ip' => $_SERVER['HTTP_CF_CONNECTING_IP'] ?? null,
-            ]);
-
             $response = Http::timeout(3)
                 ->withHeaders([
                     'Content-Type' => 'application/json',
@@ -49,34 +61,52 @@ class ConfirmCity extends Component
                     ]
                 );
 
-            if ($response->successful()) {
-                $this->city = $response->json('location.data.city')
-                    ?: self::DEFAULT_CITY;
-            } else {
-                $this->city = self::DEFAULT_CITY;
+            if (!$response->successful()) {
+                Log::warning('DaData city detection failed', [
+                    'ip' => $ip,
+                    'status' => $response->status(),
+                    'response' => $response->json(),
+                ]);
+
+                $this->detectedCity = self::DEFAULT_CITY;
+
+                return;
             }
 
-            Log::info('Detected city', [
-                'ip' => $ip,
-                'city' => $this->city,
-                'response' => $response->json(),
-            ]);
-        } catch (\Throwable $e) {
-            $this->city = self::DEFAULT_CITY;
+            $detectedCity = $response->json('location.data.city');
 
+            if (!$detectedCity) {
+                $this->detectedCity = self::DEFAULT_CITY;
+
+                return;
+            }
+
+            Cache::put(
+                $cacheKey,
+                $detectedCity,
+                now()->addDays(30)
+            );
+
+            $this->detectedCity = $detectedCity;
+        } catch (\Throwable $e) {
             Log::error('Failed to fetch city from DaData', [
+                'ip' => $ip,
                 'message' => $e->getMessage(),
             ]);
+
+            $this->detectedCity = self::DEFAULT_CITY;
         }
     }
 
     public function confirm(): void
     {
-        if (!$this->city) {
+        if (!$this->detectedCity) {
             return;
         }
 
-        CustomerService::addCity($this->city);
+        CustomerService::addCity($this->detectedCity);
+
+        $this->city = $this->detectedCity;
 
         $this->dispatch('cityUpdated');
     }
