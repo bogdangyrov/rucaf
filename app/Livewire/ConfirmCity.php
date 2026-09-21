@@ -3,25 +3,77 @@
 namespace App\Livewire;
 
 use App\Services\CustomerService;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class ConfirmCity extends Component
 {
-    public $city;
+    private const DEFAULT_CITY = 'Санкт-Петербург';
 
-    public $listeners = [
-        'cityUpdated' => 'render',
-    ];
+    public ?string $city = null;
+
+    public function mount(): void
+    {
+        $this->city = CustomerService::getCity();
+
+        if (!$this->city) {
+            $this->detectCity();
+        }
+    }
+
+    private function detectCity(): void
+    {
+        try {
+            $ip = request()->ip();
+
+            $response = Http::timeout(3)
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Token ' . config('services.dadata.token'),
+                ])
+                ->post(
+                    'https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address',
+                    [
+                        'ip' => $ip,
+                    ]
+                );
+
+            if ($response->successful()) {
+                $this->city = $response->json('location.data.city')
+                    ?: self::DEFAULT_CITY;
+            } else {
+                $this->city = self::DEFAULT_CITY;
+            }
+
+            Log::info('Detected city', [
+                'ip' => $ip,
+                'city' => $this->city,
+                'response' => $response->json(),
+            ]);
+        } catch (\Throwable $e) {
+            $this->city = self::DEFAULT_CITY;
+
+            Log::error('Failed to fetch city from DaData', [
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function confirm(): void
+    {
+        if (!$this->city) {
+            return;
+        }
+
+        CustomerService::addCity($this->city);
+
+        $this->dispatch('cityUpdated');
+    }
 
     public function render()
     {
-        $this->city = CustomerService::getCity();
         return view('livewire.confirm-city');
-    }
-
-    public function confirm()
-    {
-        CustomerService::addCity('Санкт-Петербург');
-        $this->dispatch('cityUpdated');
     }
 }
