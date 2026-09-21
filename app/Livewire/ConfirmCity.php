@@ -26,6 +26,7 @@ class ConfirmCity extends Component
     {
         try {
             $ip = request()->ip();
+            Log::info('Detecting city for IP', ['ip' => $ip]);
 
             $response = Http::timeout(3)
                 ->withHeaders([
