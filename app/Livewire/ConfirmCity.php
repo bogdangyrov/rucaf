@@ -37,6 +37,18 @@ class ConfirmCity extends Component
             return;
         }
 
+        if (request()->hasHeader('User-Agent') && preg_match('/(bot|crawl|slurp|spider|mediapartners)/i', request()->header('User-Agent'))) {
+            $this->detectedCity = self::DEFAULT_CITY;
+            return;
+        }
+
+        $ip = request()->ip();
+
+        if (!$ip || !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            $this->detectedCity = self::DEFAULT_CITY;
+            return;
+        }
+
         $cacheKey = 'city_by_ip:' . $ip;
 
         $cachedCity = Cache::get($cacheKey);
@@ -62,18 +74,14 @@ class ConfirmCity extends Component
                 );
 
             if (!$response->successful()) {
-                Log::warning('DaData city detection failed', [
-                    'ip' => $ip,
-                    'status' => $response->status(),
-                    'response' => $response->json(),
-                ]);
-
                 $this->detectedCity = self::DEFAULT_CITY;
 
                 return;
             }
 
             $detectedCity = $response->json('location.data.city');
+
+            Log::info('Get city for ip: ' . $ip);
 
             if (!$detectedCity) {
                 $this->detectedCity = self::DEFAULT_CITY;
