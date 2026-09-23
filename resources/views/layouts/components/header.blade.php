@@ -48,18 +48,6 @@
                             <div class="faq-info__data">{{ $emails->first()->data }}</div>
                         </div>
                     </div>
-                    <div class="hidden-info faq-info">
-                        @for ($i = 1; $i < count($emails); $i++)
-                            <div class="hidden-info__item">
-                                <div class="faq-info__icon"><i class="icon-mail"></i></div>
-                                <div class="faq-info__content">
-                                    <a href="mailto:{{ $emails[$i]->email }}"
-                                        class="faq-info__title">{{ $emails[$i]->email }}</a>
-                                    <div class="faq-info__data">{{ $emails[$i]->data }}</div>
-                                </div>
-                            </div>
-                        @endfor
-                    </div>
                 </div>
             </div>
         </div>
