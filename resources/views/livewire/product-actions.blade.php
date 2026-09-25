@@ -29,11 +29,17 @@
                 <div class="good-card__contacts">
                     <div class="good-card__contacts-title">Для вопросов и заявок:</div>
                     <div class="good-card__contacts-items">
-                        @foreach(\App\Models\PhoneNumber::all() as $phone)
-                            <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a></div>
+                        @foreach (\App\Models\PhoneNumber::all() as $phone)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a
+                                    href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a>
+                            </div>
                         @endforeach
-                        @foreach(\App\Models\Email::all() as $email)
-                            <div class="good-card__contact-row"><span class="good-card__contact-label">Email:</span> <a href="mailto:{{ $email->email }}">{{ $email->email }}</a></div>
+                        @foreach (\App\Models\Email::all() as $email)
+                            <div style="position: relative;">
+                                <div class="good-card__contact-row faq-info__title email"><span
+                                        class="good-card__contact-label">Email:</span> <a
+                                        href="mailto:{{ $email->email }}">{{ $email->email }}</a></div>
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -62,11 +68,14 @@
                 <div class="good-card__contacts">
                     <div class="good-card__contacts-title">Для вопросов и заявок</div>
                     <div class="good-card__contacts-items">
-                        @foreach(\App\Models\PhoneNumber::all() as $phone)
-                            <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a></div>
+                        @foreach (\App\Models\PhoneNumber::all() as $phone)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a
+                                    href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a>
+                            </div>
                         @endforeach
-                        @foreach(\App\Models\Email::all() as $email)
-                            <div class="good-card__contact-row"><span class="good-card__contact-label">Email:</span> <a href="mailto:{{ $email->email }}">{{ $email->email }}</a></div>
+                        @foreach (\App\Models\Email::all() as $email)
+                            <div class="good-card__contact-row"><span class="good-card__contact-label">Email:</span> <a
+                                    href="mailto:{{ $email->email }}">{{ $email->email }}</a></div>
                         @endforeach
                     </div>
                 </div>
@@ -95,10 +104,13 @@
         @endif
     </div>
 
-    @if ((isset($subcategory->docs) && count($subcategory->docs) > 0 ) || (isset($product->docs) && count($product->docs) > 0 ))
+    @if (
+        (isset($subcategory->docs) && count($subcategory->docs) > 0) ||
+            (isset($product->docs) && count($product->docs) > 0))
         <div class="docs">
             @foreach ($subcategory->docs_file_names ?? [] as $doc => $name)
-                <a href="{{ Storage::url($doc) }}" class="docs__item" @if(in_array(strtolower($product::getDocExtension($doc)), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) data-fancybox="docs" @else target="_blank" @endif>
+                <a href="{{ Storage::url($doc) }}" class="docs__item"
+                    @if (in_array(strtolower($product::getDocExtension($doc)), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) data-fancybox="docs" @else target="_blank" @endif>
                     <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                     <div class="docs__content">
                         <div class="docs__title">{{ $name }}</div>
@@ -121,7 +133,8 @@
             @endforeach
 
             @foreach ($product->docs_file_names ?? [] as $doc => $name)
-                <a href="{{ Storage::url($doc) }}" class="docs__item" @if(in_array(strtolower($product::getDocExtension($doc)), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) data-fancybox="docs" @else target="_blank" @endif>
+                <a href="{{ Storage::url($doc) }}" class="docs__item"
+                    @if (in_array(strtolower($product::getDocExtension($doc)), ['jpg', 'jpeg', 'png', 'webp', 'gif'])) data-fancybox="docs" @else target="_blank" @endif>
                     <i class="docs__icon {{ $product::getDocIcon($doc) }}"></i>
                     <div class="docs__content">
                         <div class="docs__title">{{ $name }}</div>
