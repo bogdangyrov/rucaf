@@ -38,8 +38,12 @@
         </div>
         <div id="desc" class="tabs__content tabs-content">
             <div class="tabs-txt">
-                <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $subcategory->description) !!}</p>
-                <p>{!! str_replace('{NAME}', explode(' ', $product->name)[1], $product->description) !!}</p>
+                @php
+                    $nameParts = explode(' ', $product->name);
+                    $replacementName = count($nameParts) > 1 ? $nameParts[1] : $product->name;
+                @endphp
+                <p>{!! str_replace('{NAME}', $replacementName, $subcategory->description) !!}</p>
+                <p>{!! str_replace('{NAME}', $replacementName, $product->description) !!}</p>
             </div>
             <div class="tabs-info">
                 @if (isset($subcategory->docs) && count($subcategory->docs) > 0)
