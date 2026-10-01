@@ -48,7 +48,7 @@ class ModalRequestPrice extends Component
             'category.productType'
         )->findOrFail($this->product->id);
 
-        Mail::to(env('MAIL_TO_ADDRESS'))->queue(new RequestPrice(
+        Mail::to(config('mail.to.address'))->queue(new RequestPrice(
             $this->name,
             $this->phone,
             $this->comment,

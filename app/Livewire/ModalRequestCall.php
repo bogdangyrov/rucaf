@@ -34,7 +34,7 @@ class ModalRequestCall extends Component
     {
         $this->validate();
 
-        Mail::to(env('MAIL_TO_ADDRESS'))->queue(new RequestCall(
+        Mail::to(config('mail.to.address'))->queue(new RequestCall(
             $this->name,
             $this->phone,
             $this->comment,

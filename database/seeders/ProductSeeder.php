@@ -76,7 +76,7 @@ class ProductSeeder extends Seeder
             "Категория размещения" => 9,
         ];
 
-        $apiKey = env('OPENAI_API_KEY'); // Храним API-ключ в .env
+        // $apiKey = env('OPENAI_API_KEY'); // Храним API-ключ в .env
         $url = "https://api.openai.com/v1/chat/completions";
 
         $prompt = "Определи регулярное выражение для извлечения переменных из следующего описания:\n\n" .

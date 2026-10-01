@@ -25,3 +25,4 @@ _ide_helper.php
 /public/sitemaps/*.xml
 /public/yml/
 .aider*
+_ide_helper_models.php

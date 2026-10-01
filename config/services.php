@@ -37,6 +37,10 @@ return [
 
     'dadata' => [
         'token' => env('DADATA_TOKEN')
+    ],
+
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY')
     ]
 
 ];

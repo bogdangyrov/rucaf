@@ -8,6 +8,7 @@ use App\Models\Page;
 use App\Models\PhoneNumber;
 use App\Models\ProductType;
 use App\Services\RecentlyViewedService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,22 +28,28 @@ class ViewComposerProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('components.cities', function ($view) {
-            $cities = City::orderBy('name')->get();
-            $citiesGrouped = City::groupByCapitalLetter($cities);
+            $citiesGrouped = Cache::rememberForever('global_cities_grouped', function () {
+                $cities = City::orderBy('name')->get();
+                return City::groupByCapitalLetter($cities);
+            });
+
             $view->with('citiesGrouped', $citiesGrouped);
         });
 
         View::composer('layouts.components.catalog-menu', function ($view) {
-            $types = ProductType::withWhereHas(
-                'categories',
-                function ($query) {
-                    $query->orderBy('name')->with([
-                        'subcategories' => function ($query) {
-                            $query->orderBy('name');
-                        }
-                    ]);
-                }
-            )->orderBy('name')->get();
+            $types = Cache::rememberForever('global_catalog_menu', function () {
+                return ProductType::withWhereHas(
+                    'categories',
+                    function ($query) {
+                        $query->orderBy('name')->with([
+                            'subcategories' => function ($query) {
+                                $query->orderBy('name');
+                            }
+                        ]);
+                    }
+                )->orderBy('name')->get();
+            });
+
             $view->with('types', $types);
         });
 
@@ -58,12 +65,14 @@ class ViewComposerProvider extends ServiceProvider
             static $sharedData;
 
             if (!$sharedData) {
-                $sharedData = [
-                    'pages' => Page::orderBy('title')->get(),
-                    'productTypes' => ProductType::withWhereHas('categories')->get(),
-                    'phoneNumbers' => PhoneNumber::get(),
-                    'emails' => Email::get()
-                ];
+                $sharedData = Cache::rememberForever('global_shared_data', function () {
+                    return [
+                        'pages'        => Page::orderBy('title')->get(),
+                        'productTypes' => ProductType::withWhereHas('categories')->get(),
+                        'phoneNumbers' => PhoneNumber::all(),
+                        'emails'       => Email::all(),
+                    ];
+                });
             }
 
             $view->with($sharedData);

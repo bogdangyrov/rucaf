@@ -62,7 +62,7 @@ class ProcessDescription extends Command
     private static function getParaphrasedDescription($description): ?string
     {
         $tables = self::extractTables($description);
-        $apiKey = env('OPENAI_API_KEY');
+        $apiKey = config('services.openai.api_key');
         $url = "https://api.openai.com/v1/chat/completions";
 
         $prompt = "Перефразируй следующее описание товара, сохранив его смысл: \"$description\"";
