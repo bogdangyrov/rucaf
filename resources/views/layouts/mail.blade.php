@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Rucaf.com</title>
+    <title>Rucaf.ru</title>
     <style>
         * {
             font-family: Arial, Helvetica, sans-serif;

@@ -195,7 +195,7 @@
         <div id="garanty" class="tabs__content tabs-content">
             <div class="tabs-txt">
                 <h2>Гарантийные обязательства и сервис</h2>
-                <p>Приобретая промышленное оборудование на портале <a href="{{ route('home') }}">rucaf.com</a>, вы
+                <p>Приобретая промышленное оборудование на портале <a href="{{ route('home') }}">rucaf.ru</a>, вы
                     получаете официальную гарантию качества от <strong>12 до 60 месяцев</strong>.</p>
 
                 <p><strong>Ваши права как покупателя:</strong></p>
