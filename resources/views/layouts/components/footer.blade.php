@@ -15,7 +15,7 @@
                     </div>
                 @endforeach
                 <div class="info__item">
-                    <button class="info__btn btn" type="button" data-fancybox data-src="#form-price">Звонок
+                    <button class="info__btn btn" type="button" data-fancybox data-src="#request-call">Звонок
                         специалиста</button>
                 </div>
             </div>

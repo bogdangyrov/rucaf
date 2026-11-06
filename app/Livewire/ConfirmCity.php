@@ -12,10 +12,12 @@ use Livewire\Component;
 #[Lazy]
 class ConfirmCity extends Component
 {
-    private const DEFAULT_CITY = 'Санкт-Петербург';
-
     public ?string $city = null;
     public ?string $detectedCity = null;
+
+    protected $listeners = [
+        'cityUpdated' => 'mount'
+    ];
 
     public function mount(): void
     {
@@ -25,7 +27,7 @@ class ConfirmCity extends Component
             return;
         }
 
-        $this->detectCity();
+        $this->detectedCity = CustomerService::getCityWithDetection();
     }
 
     public function placeholder()
@@ -33,83 +35,6 @@ class ConfirmCity extends Component
         return <<<'HTML'
         <div></div>
         HTML;
-    }
-
-    private function detectCity(): void
-    {
-        if ($this->isBot()) {
-            $this->detectedCity = self::DEFAULT_CITY;
-            return;
-        }
-
-        $ip = request()->ip();
-
-        if (!$ip || !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-            $this->detectedCity = self::DEFAULT_CITY;
-            return;
-        }
-
-        $cacheKey = 'city_by_ip:' . $ip;
-
-        if (Cache::has($cacheKey)) {
-            $this->detectedCity = Cache::get($cacheKey) ?: self::DEFAULT_CITY;
-            return;
-        }
-
-        try {
-            $response = Http::timeout(3)
-                ->withHeaders([
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                    'Authorization' => 'Token ' . config('services.dadata.token'),
-                ])
-                ->post('https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address', [
-                    'ip' => $ip,
-                ]);
-
-            if (!$response->successful()) {
-                $this->cacheAndSetDefault($cacheKey);
-                return;
-            }
-
-            $detectedCity = $response->json('location.data.city');
-
-            Log::info('Get city for ip: ' . $ip);
-
-            if (!$detectedCity) {
-                $this->cacheAndSetDefault($cacheKey);
-                return;
-            }
-
-            Cache::put($cacheKey, $detectedCity, now()->addDays(30));
-            $this->detectedCity = $detectedCity;
-        } catch (\Throwable $e) {
-            Log::error('Failed to fetch city from DaData', [
-                'ip' => $ip,
-                'message' => $e->getMessage(),
-            ]);
-
-            $this->detectedCity = self::DEFAULT_CITY;
-        }
-    }
-
-    private function isBot(): bool
-    {
-        $userAgent = request()->header('User-Agent');
-
-        if (!$userAgent) {
-            return true;
-        }
-
-        $botPattern = '/(googlebot|yandex|bingbot|slurp|duckduckbot|baiduspider|sogou|exabot|facebot|facebookexternalhit|ia_archiver|curl|python|wget|bot|crawl|spider|seeker|preview)/i';
-
-        return (bool) preg_match($botPattern, $userAgent);
-    }
-
-    private function cacheAndSetDefault(string $cacheKey): void
-    {
-        Cache::put($cacheKey, self::DEFAULT_CITY, now()->addDays(30));
-        $this->detectedCity = self::DEFAULT_CITY;
     }
 
     public function confirm(): void
