@@ -8652,6 +8652,10 @@ body {
         width: 300px;
     }
 
+    .coop.content {
+        padding: 0 20px;
+    }
+
     .good-card {
         margin-top: 35px;
     }
