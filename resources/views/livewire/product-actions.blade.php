@@ -31,7 +31,7 @@
                     <div class="good-card__contacts-items">
                         @foreach (\App\Models\PhoneNumber::all() as $phone)
                             <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a
-                                    href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a>
+                                    href="tel:{{ $phone->formattedLinkNumber() }}">{{ $phone->formattedNumber() }}</a>
                             </div>
                         @endforeach
                         @foreach (\App\Models\Email::all() as $email)
@@ -70,7 +70,7 @@
                     <div class="good-card__contacts-items">
                         @foreach (\App\Models\PhoneNumber::all() as $phone)
                             <div class="good-card__contact-row"><span class="good-card__contact-label">Тел:</span> <a
-                                    href="tel:{{ $phone->formattedLinkNumber() }}">+{{ $phone->formattedNumber() }}</a>
+                                    href="tel:{{ $phone->formattedLinkNumber() }}">{{ $phone->formattedNumber() }}</a>
                             </div>
                         @endforeach
                         @foreach (\App\Models\Email::all() as $email)

@@ -5,7 +5,11 @@
                 <div class="cart-item">
                     <a class="cart-item__image"
                         href="{{ route('products.show', ['productType' => $product->category->productType, 'category' => $product->category, 'subcategory' => $product->subcategory, 'product' => $product]) }}">
-                        <img src="{{ asset(isset($product->subcategory->images[0]) ? "storage/{$product->subcategory->images[0]}" : 'img/content/product-1.jpg') }}"
+                        <img src="{{ asset(
+                            isset($product->subcategory->images[0])
+                                ? "storage/{$product->subcategory->images[0]}"
+                                : (isset($product->images[0]) ? "storage/{$product->images[0]}" : 'img/content/product-1.jpg'),
+                        ) }}"
                             alt="{{ $product->name }}">
                     </a>
                     <div class="cart-item__details">

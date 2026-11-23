@@ -12,7 +12,7 @@ class PhoneNumber extends Model
     public function formattedNumber()
     {
         $phone = new PhoneNumberFormatter($this->number, 'RU');
-        return $phone->formatNational();
+        return $phone->formatInternational();
     }
 
     public function formattedLinkNumber()
