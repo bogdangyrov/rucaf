@@ -5541,6 +5541,7 @@ body {
 
     .footer-bottom__copy {
         max-width: 270px;
+        padding-bottom: 50px;
     }
 
     .footer-top__logo {
@@ -7600,6 +7601,7 @@ body {
         top: 110px;
         width: 100%;
         max-width: 360px;
+        padding-bottom: 50px;
     }
 
     .footer-copy__copy br {
