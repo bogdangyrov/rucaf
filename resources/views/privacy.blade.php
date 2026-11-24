@@ -364,7 +364,7 @@
                 <p><strong>ООО "Промтеплострой"</strong><br>
                     Юр.Адрес:  394026, Воронежская область, г. Воронеж, Солнечная ул., д. 12в, офис 44а<br>
                     ИНН: 3662312568, КПП: 366201001, ОГРН: 1243600020069<br>
-                    Тел.: <a href="{{ $phoneNumber->formattedLinkNumber() }}">+{{ $phoneNumber->formattedNumber() }}</a>
+                    Тел.: <a href="{{ $phoneNumber->formattedLinkNumber() }}">{{ $phoneNumber->formattedNumber() }}</a>
                 </p>
             </div>
         </div>
